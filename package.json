@@ -1,0 +1,61 @@
+{
+  "name": "sroc-charging-module-api-tests",
+  "version": "1.0.0",
+  "description": "Automated API tests for the SROC Charging Module API",
+  "main": "index.js",
+  "scripts": {
+    "cy:open": "rm cypress/reports/json/*.json && cypress open",
+    "cy:open:local": "rm cypress/reports/json/*.json && cypress open --env environment=local",
+    "cy:open:dev": "rm cypress/reports/json/*.json && cypress open --env environment=dev",
+    "cy:open:tst": "rm cypress/reports/json/*.json && cypress open --env environment=tst",
+    "cy:open:pre": "rm cypress/reports/json/*.json && cypress open --env environment=pre",
+    "cy:open:tra": "rm cypress/reports/json/*.json && cypress open --env environment=tra",
+    "cy:run": "rm cypress/reports/json/*.json && cypress run",
+    "cy:run:local": "rm cypress/reports/json/*.json && cypress run --env environment=local",
+    "cy:run:dev": "rm cypress/reports/json/*.json && cypress run --env environment=dev",
+    "cy:run:tst": "rm cypress/reports/json/*.json && cypress run --env environment=tst",
+    "cy:run:pre": "rm cypress/reports/json/*.json && cypress run --env environment=pre",
+    "cy:run:tra": "rm cypress/reports/json/*.json && cypress run --env environment=tra",
+    "lint": "standard",
+    "test": "rm cypress/reports/json/*.json && cypress run",
+    "report": "node cypress/reports/report_generator.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DEFRA/sroc-charging-module-api-tests.git"
+  },
+  "author": "Department for Environment, Food & Rural Affairs",
+  "license": "OGL-UK-3.0",
+  "bugs": {
+    "url": "https://github.com/DEFRA/sroc-charging-module-api-tests/issues"
+  },
+  "homepage": "https://github.com/DEFRA/sroc-charging-module-api-tests#readme",
+  "dependencies": {
+    "@bahmutov/cy-api": "^1.5.0",
+    "cucumber-html-reporter": "^5.5.0",
+    "cypress": "^8.3.1",
+    "cypress-cucumber-preprocessor": "^4.2.0",
+    "cypress-dotenv": "^1.2.2",
+    "dotenv": "^8.2.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "standard": "^16.0.3"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true,
+    "cucumberJson": {
+      "generate": true,
+      "outputFolder": "cypress/reports/json",
+      "filePrefix": "",
+      "fileSuffix": ".cucumber"
+    }
+  },
+  "standard": {
+    "globals": [
+      "cy",
+      "Cypress",
+      "expect"
+    ]
+  }
+}
