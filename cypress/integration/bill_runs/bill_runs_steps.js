@@ -39,13 +39,19 @@ Then('details of the bill run are returned', () => {
   })
 })
 
-And('I add {int} standard transactions to it', (numberToAdd) => {
-  cy.fixture('standard.transaction').then((transaction) => {
+And('I add {int} {word} transactions to it', (numberToAdd, transactionType) => {
+  cy.fixture(`${transactionType}.transaction`).then((transaction) => {
     transaction.customerReference = 'TH230000222'
     transaction.licenceNumber = 'TONY/TF9222/38'
 
     cy.get('@billRun').then((billRun) => {
-      const genArr = Array.from({ length: numberToAdd }, (v, k) => k + 1)
+      // Due to the async nature of Cypress a classic `for` or `while` loop will not work because it will result in a
+      // non-deterministic execution order. So, we generate an array from our param using `Array.from`. For example,
+      // 5 would become [1, 2, 3, 4, 5]. We then use Cypress `each()` function to give us an async iterator!
+      //
+      // > Cypress each() - Iterate through an array like structure (arrays or objects with a length property).
+      // - solution provided by https://stackoverflow.com/a/53487016/6117745
+      const genArr = Array.from({ length: numberToAdd }, (v) => v)
       cy.wrap(genArr).each(() => {
         TransactionEndpoints.create(billRun.id, transaction)
       })
