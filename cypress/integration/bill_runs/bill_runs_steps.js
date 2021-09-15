@@ -1,4 +1,4 @@
-import { When, Then } from 'cypress-cucumber-preprocessor/steps'
+import { And, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import BillRunEndpoints from '../../endpoints/bill_run_endpoints'
 import TransactionEndpoints from '../../endpoints/transaction_endpoints'
 
@@ -39,27 +39,31 @@ Then('details of the bill run are returned', () => {
   })
 })
 
-When('I request to generate a bill run', () => {
-  BillRunEndpoints.create({ region: 'A' }).its('body.billRun.id').as('billRunId')
-
+And('I add {int} standard transactions to it', (numberToAdd) => {
   cy.fixture('standard.transaction').then((transaction) => {
     transaction.customerReference = 'TH230000222'
     transaction.licenceNumber = 'TONY/TF9222/38'
 
-    cy.get('@billRunId').then((billRunId) => {
-      TransactionEndpoints.create(billRunId, transaction)
+    cy.get('@billRun').then((billRun) => {
+      const genArr = Array.from({ length: numberToAdd }, (v, k) => k + 1)
+      cy.wrap(genArr).each(() => {
+        TransactionEndpoints.create(billRun.id, transaction)
+      })
     })
   })
-  cy.get('@billRunId').then((billRunId) => {
-    BillRunEndpoints.generate(billRunId).then((response) => {
+})
+
+And('I request to generate the bill run', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.generate(billRun.id).then((response) => {
       expect(response.status).to.be.equal(204)
     })
   })
 })
 
 Then('bill run status is updated to {string}', (status) => {
-  cy.get('@billRunId').then((billRunId) => {
-    BillRunEndpoints.pollForStatus(billRunId, status).then((response) => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.pollForStatus(billRun.id, status).then((response) => {
       expect(response.status).to.equal(200)
       expect(response.body.status).to.equal(status)
     })
