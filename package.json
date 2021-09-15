@@ -16,6 +16,7 @@
     "cy:run:tst": "rm cypress/reports/json/*.json && cypress run --env environment=tst",
     "cy:run:pre": "rm cypress/reports/json/*.json && cypress run --env environment=pre",
     "cy:run:tra": "rm cypress/reports/json/*.json && cypress run --env environment=tra",
+    "cy:run:ci": "rm cypress/reports/json/*.json && cypress-tags run --env environment=ci TAGS='@ci'",
     "lint": "standard",
     "test": "rm cypress/reports/json/*.json && cypress run",
     "report": "node cypress/reports/report_generator.js"
