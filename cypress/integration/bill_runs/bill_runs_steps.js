@@ -41,8 +41,8 @@ Then('details of the bill run are returned', () => {
 
 And('I add {int} {word} transactions to it', (numberToAdd, transactionType) => {
   cy.fixture(`${transactionType}.transaction`).then((transaction) => {
-    transaction.customerReference = 'TH230000222'
-    transaction.licenceNumber = 'TONY/TF9222/38'
+    transaction.customerReference = 'C000000001'
+    transaction.licenceNumber = 'LIC/00000/01'
 
     cy.get('@billRun').then((billRun) => {
       // Due to the async nature of Cypress a classic `for` or `while` loop will not work because it will result in a
@@ -63,6 +63,40 @@ And('I request to generate the bill run', () => {
   cy.get('@billRun').then((billRun) => {
     BillRunEndpoints.generate(billRun.id).then((response) => {
       expect(response.status).to.be.equal(204)
+    })
+  })
+})
+
+And('I request to approve the bill run', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.approve(billRun.id).then((response) => {
+      expect(response.status).to.be.equal(204)
+    })
+  })
+})
+
+And('I request to send the bill run', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.send(billRun.id).then((response) => {
+      expect(response.status).to.be.equal(204)
+    })
+  })
+})
+
+And('I request to delete the bill run', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.delete(billRun.id).then((response) => {
+      expect(response.status).to.be.equal(204)
+    })
+  })
+})
+
+Then('bill run is not found', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.view(billRun.id).then((response) => {
+      expect(response.status).to.equal(404)
+      expect(response.body.error).to.equal('Not Found')
+      expect(response.body.message).to.equal('Bill run ' + billRun.id + ' is unknown.')
     })
   })
 })
