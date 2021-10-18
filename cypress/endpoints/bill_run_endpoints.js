@@ -26,6 +26,20 @@ class BillRunEndpoints {
       })
   }
 
+  static viewDeleted (id) {
+    return cy
+      .api({
+        method: 'GET',
+        url: `/v2/wrls/bill-runs/${id}`,
+        failOnStatusCode: false,
+        headers: {
+          'content-type': 'application/json',
+          accept: 'application/json',
+          Authorization: `Bearer ${Cypress.env('token')}`
+        }
+      })
+  }
+
   static generate (id) {
     return cy
       .api({

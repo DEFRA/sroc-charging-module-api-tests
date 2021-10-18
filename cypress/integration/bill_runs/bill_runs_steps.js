@@ -93,7 +93,7 @@ And('I request to delete the bill run', () => {
 
 Then('bill run is not found', () => {
   cy.get('@billRun').then((billRun) => {
-    BillRunEndpoints.view(billRun.id).then((response) => {
+    BillRunEndpoints.viewDeleted(billRun.id).then((response) => {
       expect(response.status).to.equal(404)
       expect(response.body.error).to.equal('Not Found')
       expect(response.body.message).to.equal('Bill run ' + billRun.id + ' is unknown.')
