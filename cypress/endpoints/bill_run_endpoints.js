@@ -39,6 +39,45 @@ class BillRunEndpoints {
       })
   }
 
+  static approve (id) {
+    return cy
+      .api({
+        method: 'PATCH',
+        url: `/v2/wrls/bill-runs/${id}/approve`,
+        headers: {
+          'content-type': 'application/json',
+          accept: 'application/json',
+          Authorization: `Bearer ${Cypress.env('token')}`
+        }
+      })
+  }
+
+  static send (id) {
+    return cy
+      .api({
+        method: 'PATCH',
+        url: `/v2/wrls/bill-runs/${id}/send`,
+        headers: {
+          'content-type': 'application/json',
+          accept: 'application/json',
+          Authorization: `Bearer ${Cypress.env('token')}`
+        }
+      })
+  }
+
+  static delete (id) {
+    return cy
+      .api({
+        method: 'DELETE',
+        url: `/v2/wrls/bill-runs/${id}`,
+        headers: {
+          'content-type': 'application/json',
+          accept: 'application/json',
+          Authorization: `Bearer ${Cypress.env('token')}`
+        }
+      })
+  }
+
   static status (id) {
     return cy
       .api({
