@@ -3,12 +3,10 @@ Feature: Bill runs
   Background: Authenticate
     Given I am the 'system' user
 
-  @ignore
   Scenario: Creating a new bill run
     When I request a new bill run
     Then the bill run ID and number are returned
 
-  @ignore
   Scenario: Viewing a bill run
     When I request to view a bill run
     Then details of the bill run are returned
