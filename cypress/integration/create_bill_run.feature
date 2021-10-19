@@ -22,7 +22,7 @@ Feature: Create a Bill Run
 #AC2
   Scenario Outline: Acceptable values of the ruleset flag are presroc & sroc
     When I request an invalid new <ruleset> bill run
-    Then I am told that acceptable values are Pre-SRoC or SRoC
+    Then I am told that acceptable values are presroc or sroc
 
     Examples:
     | ruleset  |

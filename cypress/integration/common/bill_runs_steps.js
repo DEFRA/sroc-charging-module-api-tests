@@ -23,7 +23,7 @@ When('I request an invalid new {word} bill run', (rulesetType) => {
   })
 })
 
-Then('I am told that acceptable values are Pre-SRoC or SRoC', () => {
+Then('I am told that acceptable values are presroc or sroc', () => {
   cy.get('@error').then((error) => {
     expect(error.message).to.equal('"ruleset" must be one of [presroc, sroc]')
   })
