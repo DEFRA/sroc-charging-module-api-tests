@@ -5,14 +5,14 @@ Feature: Create a Bill Run
     Given I am the 'system' user
 
 #AC1
-  Scenario: Creating a Pre-SRoC Bill Run
-    When I request a valid new presroc bill run
+  Scenario Outline: Create bill run accepts a rule set flag
+    When I request a valid new <ruleset> bill run
     Then the bill run ID and number are returned
 
-#AC1
-  Scenario: Creating a SRoC Bill Run
-    When I request a valid new sroc bill run
-    Then the bill run ID and number are returned 
+    Examples:
+    | ruleset |
+    | presroc |
+    | sroc    |
 
 #AC3
   Scenario: The ruleset flag is not mandatory
