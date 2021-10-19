@@ -2,10 +2,30 @@ import { And, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import BillRunEndpoints from '../../endpoints/bill_run_endpoints'
 import TransactionEndpoints from '../../endpoints/transaction_endpoints'
 
-When('I request a new bill run', () => {
+When('I request a valid new bill run', () => {
   BillRunEndpoints.create({ region: 'A' }).then((response) => {
     expect(response.status).to.equal(201)
     cy.wrap(response.body.billRun).as('billRun')
+  })
+})
+
+When('I request a valid new {word} bill run', (rulesetType) => {
+  BillRunEndpoints.create({ region: 'A', ruleset: `${rulesetType}` }).then((response) => {
+    expect(response.status).to.equal(201)
+    cy.wrap(response.body.billRun).as('billRun')
+  })
+})
+
+When('I request an invalid new {word} bill run', (rulesetType) => {
+  BillRunEndpoints.createInvalid({ region: 'A', ruleset: `${rulesetType}` }).then((response) => {
+    expect(response.status).to.equal(422)
+    cy.wrap(response.body).as('error')
+  })
+})
+
+Then('I am told that acceptable values are presroc or sroc', () => {
+  cy.get('@error').then((error) => {
+    expect(error.message).to.equal('"ruleset" must be one of [presroc, sroc]')
   })
 })
 

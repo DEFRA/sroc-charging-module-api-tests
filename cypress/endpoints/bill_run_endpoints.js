@@ -3,7 +3,22 @@ class BillRunEndpoints {
     return cy
       .api({
         method: 'POST',
-        url: '/v2/wrls/bill-runs',
+        url: '/v3/wrls/bill-runs',
+        headers: {
+          'content-type': 'application/json',
+          accept: 'application/json',
+          Authorization: `Bearer ${Cypress.env('token')}`
+        },
+        body
+      })
+  }
+
+  static createInvalid (body) {
+    return cy
+      .api({
+        method: 'POST',
+        url: '/v3/wrls/bill-runs',
+        failOnStatusCode: false,
         headers: {
           'content-type': 'application/json',
           accept: 'application/json',
