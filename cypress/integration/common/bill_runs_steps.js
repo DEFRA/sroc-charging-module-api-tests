@@ -10,7 +10,7 @@ When('I request a valid new bill run', () => {
 })
 
 When('I request a valid new {word} bill run', (rulesetType) => {
-  BillRunEndpoints.createInvalid({ region: 'A', ruleset: `${rulesetType}` }).then((response) => {
+  BillRunEndpoints.create({ region: 'A', ruleset: `${rulesetType}` }).then((response) => {
     expect(response.status).to.equal(201)
     cy.wrap(response.body.billRun).as('billRun')
   })
