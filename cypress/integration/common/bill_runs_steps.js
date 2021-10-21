@@ -9,15 +9,29 @@ When('I request a valid new bill run', () => {
   })
 })
 
-When('I request a valid new {word} bill run', (rulesetType) => {
-  BillRunEndpoints.create({ region: 'A', ruleset: `${rulesetType}` }).then((response) => {
+And('I request another valid new bill run', () => {
+  BillRunEndpoints.create({ region: 'A' }).then((response) => {
+    expect(response.status).to.equal(201)
+    cy.wrap(response.body.billRun).as('billRun1')
+  })
+})
+
+When('I request an invalid new bill run', () => {
+  BillRunEndpoints.createInvalid({ region: ' ' }).then((response) => {
+    expect(response.status).to.equal(422)
+    cy.wrap(response.body).as('error')
+  })
+})
+
+When('I request a valid new {word} bill run for {word}', (rulesetType, regionCode) => {
+  BillRunEndpoints.create({ region: `${regionCode}`, ruleset: `${rulesetType}` }).then((response) => {
     expect(response.status).to.equal(201)
     cy.wrap(response.body.billRun).as('billRun')
   })
 })
 
-When('I request an invalid new {word} bill run', (rulesetType) => {
-  BillRunEndpoints.createInvalid({ region: 'A', ruleset: `${rulesetType}` }).then((response) => {
+When('I request an invalid new {word} bill run for {word}', (rulesetType, regionCode) => {
+  BillRunEndpoints.createInvalid({ region: `${regionCode}`, ruleset: `${rulesetType}` }).then((response) => {
     expect(response.status).to.equal(422)
     cy.wrap(response.body).as('error')
   })
@@ -29,10 +43,30 @@ Then('I am told that acceptable values are presroc or sroc', () => {
   })
 })
 
+Then('I am told that region must be one of A, B, E, N, S, T, W, Y', () => {
+  cy.get('@error').then((error) => {
+    expect(error.message).to.equal('"region" must be one of [A, B, E, N, S, T, W, Y]')
+  })
+})
+
+Then('I am told that region is required', () => {
+  cy.get('@error').then((error) => {
+    expect(error.message).to.equal('"region" is required')
+  })
+})
+
 Then('the bill run ID and number are returned', () => {
   cy.get('@billRun').then((billRun) => {
     expect(billRun.id).not.to.equal(null)
     expect(billRun.billRunNumber).not.to.equal(null)
+  })
+})
+
+Then('the bill run numbers are issued in ascending order', () => {
+  cy.get('@billRun').then((billRun) => {
+    cy.get('@billRun1').then((billRun1) => {
+      expect(billRun1.billRunNumber).to.equal(billRun.billRunNumber + 1)
+    })
   })
 })
 
@@ -55,6 +89,16 @@ Then('details of the bill run are returned', () => {
 
       expect(response.body.billRun.region).to.equal('A')
       expect(response.body.billRun.status).to.equal('initialised')
+    })
+  })
+})
+
+Then('the bill run does not contain any transactions', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.view(billRun.id).then((response) => {
+      expect(response.status).to.equal(200)
+
+      expect(response.body.billRun.invoices).to.be.empty
     })
   })
 })
