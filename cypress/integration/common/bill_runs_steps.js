@@ -1,3 +1,6 @@
+// We disable this rule to prevent chai matchers like `to.be.empty` causing linting errors:
+/* eslint-disable no-unused-expressions */
+
 import { And, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import BillRunEndpoints from '../../endpoints/bill_run_endpoints'
 import TransactionEndpoints from '../../endpoints/transaction_endpoints'
