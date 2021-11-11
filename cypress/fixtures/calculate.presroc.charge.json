@@ -1,0 +1,19 @@
+{
+  "ruleset": "presroc",
+  "periodStart": "01-APR-2018",
+  "periodEnd": "31-MAR-2019",
+  "credit": false,
+  "billableDays": 310,
+  "authorisedDays": 365,
+  "volume": "6.22",
+  "source": "Supported",
+  "season": "Summer",
+  "loss": "Low",
+  "twoPartTariff": false,
+  "compensationCharge": false,
+  "eiucSource": "Tidal",
+  "waterUndertaker": false,
+  "regionalChargingArea": "Anglian",
+  "section127Agreement": false,
+  "section130Agreement": false
+}
