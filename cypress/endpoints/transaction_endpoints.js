@@ -17,7 +17,7 @@ class TransactionEndpoints {
     return cy
       .api({
         method: 'POST',
-        url: `/v3/wrls/calculate-charge`,
+        url: '/v3/wrls/calculate-charge',
         failOnStatusCode: false,
         headers: {
           'content-type': 'application/json',
@@ -32,7 +32,7 @@ class TransactionEndpoints {
     return cy
       .api({
         method: 'POST',
-        url: `/v3/wrls/calculate-charge`,
+        url: '/v3/wrls/calculate-charge',
         headers: {
           'content-type': 'application/json',
           accept: 'application/json',
