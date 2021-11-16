@@ -1,5 +1,5 @@
 import { When, Then } from 'cypress-cucumber-preprocessor/steps'
-import TransactionEndpoints from '../../endpoints/transaction_endpoints'
+import CalculateChargeEndpoints from '../../endpoints/calculate_charge_endpoints'
 
 function invalid (ruleSet, dataItems) {
   cy.fixture(`calculate.${ruleSet}.charge`).then((calculateCharge) => {
@@ -8,7 +8,7 @@ function invalid (ruleSet, dataItems) {
       calculateCharge[item.key] = item.value
     })
 
-    TransactionEndpoints.calculateInvalid(calculateCharge).then((response) => {
+    CalculateChargeEndpoints.calculateInvalid(calculateCharge).then((response) => {
       expect(response.status).to.equal(422)
       cy.wrap(response.body).as('calculateChargeResponse')
     })
@@ -22,7 +22,7 @@ function valid (ruleSet, dataItems) {
       calculateCharge[item.key] = item.value
     })
 
-    TransactionEndpoints.calculate(calculateCharge).then((response) => {
+    CalculateChargeEndpoints.calculate(calculateCharge).then((response) => {
       expect(response.status).to.equal(200)
       cy.wrap(response.body).as('calculateChargeResponse')
     })
