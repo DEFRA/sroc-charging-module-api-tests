@@ -8,7 +8,7 @@
   "chargeCategoryCode": "2.1.1",
   "waterUndertaker": true,
   "regionalChargingArea": "Midlands",
-  "supportedSource": false, 
+  "supportedSource": false,
   "supportedSourceName": "",
   "abatementAdjustment": 1,
   "section127Agreement": true,
@@ -17,7 +17,7 @@
   "waterCompanyCharge": true,
   "loss": "Medium",
   "billableDays": 216,
-  "authorisedDays": 221, 
+  "authorisedDays": 221,
   "winterOnly": false,
   "actualVolume": 1,
   "volume": 225

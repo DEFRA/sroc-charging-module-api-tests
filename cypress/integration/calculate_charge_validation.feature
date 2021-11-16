@@ -20,7 +20,7 @@ Feature: Calculate Charge Validation
 
     Examples:
     | ruleset | dataItem            | value |
-    | sroc    | chargeCategoryCode  | ' '   | 
+    | sroc    | chargeCategoryCode  | ' '   |
     | sroc    | periodStart         | ' '   |
     | sroc    | authorisedDays      | ' '   |
     | sroc    | billableDays        | ' '   |
@@ -55,12 +55,12 @@ Feature: Calculate Charge Validation
     | sroc    | compensationCharge  | true  | waterUndertaker      | ' '    |
     | sroc    | twoPartTariff       | true  | actualVolume         | ' '    |
     | sroc    | supportedSource     | true  | supportedSourceName  | ' '    |
-     
+
 #AC5
   Scenario Outline: abatementAdjustment and aggregateProportion default 1.0 if not included in the request
     When I calculate a valid <ruleset> charge with <dataItem> as <value>
     Then <value1> is returned for <responseDataItem> in the response
-     And <value1> is returned for <responseDataItem> in the response
+    And <value1> is returned for <responseDataItem> in the response
 
     Examples:
     | ruleset | dataItem            | value | value1 | responseDataItem    |
@@ -111,7 +111,7 @@ Feature: Calculate Charge Validation
     Then a charge is calculated
 
     Examples:
-    | ruleset | dataItem            | value       | 
+    | ruleset | dataItem            | value       |
     | sroc    | abatementFactor     | 1.242       |
     | sroc    | aggregateProportion | 0.001       |
     | sroc    | volume              | 0.00048     |
@@ -136,7 +136,7 @@ Feature: Calculate Charge Validation
     Then a charge is calculated
 
     Examples:
-    | ruleset | dataItem       | value | 
+    | ruleset | dataItem       | value |
     | sroc    | authorisedDays | 366   |
     | sroc    | authorisedDays | 0     |
     | sroc    | authorisedDays | 152   |
@@ -170,7 +170,7 @@ Feature: Calculate Charge Validation
     Then I am told the <dataItem> must be an <value1>
 
     Examples:
-    | ruleset | dataItem       | value | value1  | 
+    | ruleset | dataItem       | value | value1  |
     | sroc    | authorisedDays | 1.1   | integer |
     | sroc    | authorisedDays | 1.1   | integer |
     | sroc    | billableDays   | 1.1   | integer |
@@ -178,7 +178,7 @@ Feature: Calculate Charge Validation
     | presroc | authorisedDays | 1.1   | integer |
     | presroc | authorisedDays | 1.1   | integer |
     | presroc | billableDays   | 1.1   | integer |
-    | presroc | billableDays   | 1.1   | integer | 
+    | presroc | billableDays   | 1.1   | integer |
 
 #AC10
 Scenario Outline: authorisedVolume must greater than 0
@@ -196,7 +196,7 @@ Scenario Outline: authorisedVolume must greater than 0
 
     Examples:
     | ruleset | dataItem1   | value       | dataItem  | value1      | value2  |
-    | sroc    | periodStart | 31-MAR-2021 | periodEnd | 31-MAR-2021 | greater |  
+    | sroc    | periodStart | 31-MAR-2021 | periodEnd | 31-MAR-2021 | greater |
 
 #AC12/13/14
   Scenario Outline: CM rejects invalid data item combinations
@@ -206,8 +206,8 @@ Scenario Outline: authorisedVolume must greater than 0
     Examples:
     | ruleset | dataItem1          | value | dataItem            | value1 |
     | sroc    | twoPartTariff      | true  | section127Agreement | false  |
-    | sroc    | compensationCharge | true  | section127Agreement | true   | 
-    | sroc    | twoPartTariff      | true  | compensationCharge  | true   |  
+    | sroc    | compensationCharge | true  | section127Agreement | true   |
+    | sroc    | twoPartTariff      | true  | compensationCharge  | true   |
 
 
 #AC15
@@ -216,7 +216,7 @@ Scenario Outline: authorisedVolume must greater than 0
     Then a charge is calculated
 
     Examples:
-    | ruleset | dataItem             | value                              | 
+    | ruleset | dataItem             | value                              |
     | sroc    | loss                 | low                                |
     | sroc    | loss                 | mediuM                             |
     | sroc    | loss                 | hIgh                               |
@@ -245,7 +245,7 @@ Scenario Outline: authorisedVolume must greater than 0
     | sroc    | supportedSourceName  | witham and ancholme                |
     | sroc    | supportedSourceName  | wye                                |
     | sroc    | regionalChargingArea | anglian                            |
-    | sroc    | regionalChargingArea | midlands                           | 
+    | sroc    | regionalChargingArea | midlands                           |
     | sroc    | regionalChargingArea | northumbria                        |
     | sroc    | regionalChargingArea | north west                         |
     | sroc    | regionalChargingArea | southern                           |
@@ -262,7 +262,7 @@ Scenario Outline: authorisedVolume must greater than 0
 
 #AC17
   @ignore
-  Scenario Outline: Supported Source Name is handled if Supported Source is false 
+  Scenario Outline: Supported Source Name is handled if Supported Source is false
     When I calculate a valid <ruleset> charge with <dataItem1> as <value> and <dataItem> as <value1>
     #Then {placeholder for assertion according to error messages}
 
@@ -270,9 +270,9 @@ Scenario Outline: authorisedVolume must greater than 0
     | ruleset | dataItem1       | value | dataItem            | value1 |
     | sroc    | supportedSource | false | supportedSourceName | Dee    |
     | sroc    | supportedSource | true  | supportedSourceName | ' '    |
-  
+
   @ignore
-  Scenario Outline: Supported Source Name must be present if Supported Source is true 
+  Scenario Outline: Supported Source Name must be present if Supported Source is true
     When I calculate an invalid <ruleset> charge with <dataItem1> as <value> and <dataItem> as <value1>
     #Then {placeholder for assertion according to error messages}
 
