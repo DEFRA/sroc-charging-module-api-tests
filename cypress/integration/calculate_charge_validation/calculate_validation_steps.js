@@ -1,29 +1,22 @@
 import { When, Then } from 'cypress-cucumber-preprocessor/steps'
 import CalculateChargeEndpoints from '../../endpoints/calculate_charge_endpoints'
 
-function invalid (ruleSet, dataItems) {
+function calculateChargeValidationRequest (valid, ruleSet, dataItems) {
+  let requestValues
+  if (valid === true) {
+    requestValues = { failOnStatusCode: true, expectedStatus: 200 }
+  } else {
+    requestValues = { failOnStatusCode: false, expectedStatus: 422 }
+  }
+
   cy.fixture(`calculate.${ruleSet}.charge`).then((calculateCharge) => {
     calculateCharge.ruleset = ruleSet
     dataItems.forEach(item => {
       calculateCharge[item.key] = item.value
     })
 
-    CalculateChargeEndpoints.calculateInvalid(calculateCharge).then((response) => {
-      expect(response.status).to.equal(422)
-      cy.wrap(response.body).as('calculateChargeResponse')
-    })
-  })
-}
-
-function valid (ruleSet, dataItems) {
-  cy.fixture(`calculate.${ruleSet}.charge`).then((calculateCharge) => {
-    calculateCharge.ruleset = ruleSet
-    dataItems.forEach(item => {
-      calculateCharge[item.key] = item.value
-    })
-
-    CalculateChargeEndpoints.calculate(calculateCharge).then((response) => {
-      expect(response.status).to.equal(200)
+    CalculateChargeEndpoints.calculate(calculateCharge, requestValues.failOnStatusCode).then((response) => {
+      expect(response.status).to.equal(requestValues.expectedStatus)
       cy.wrap(response.body).as('calculateChargeResponse')
     })
   })
@@ -31,92 +24,92 @@ function valid (ruleSet, dataItems) {
 
 When('I calculate an invalid {word} charge with {word} as {string}', (ruleSet, dataItem, value) => {
   const dataItems = [{ key: dataItem, value: value }]
-  invalid(ruleSet, dataItems)
+  calculateChargeValidationRequest(false, ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {float}', (ruleSet, dataItem, value) => {
   const dataItems = [{ key: dataItem, value: value }]
-  invalid(ruleSet, dataItems)
+  calculateChargeValidationRequest(false, ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {int}', (ruleSet, dataItem, value) => {
   const dataItems = [{ key: dataItem, value: value }]
-  invalid(ruleSet, dataItems)
+  calculateChargeValidationRequest(false, ruleSet, dataItems)
 })
 
 When('I calculate a valid {word} charge with {word} as {string}', (ruleSet, dataItem, value) => {
   const dataItems = [{ key: dataItem, value: value }]
-  valid(ruleSet, dataItems)
+  calculateChargeValidationRequest(true, ruleSet, dataItems)
 })
 
 When('I calculate a valid {word} charge with {word} as {float}', (ruleSet, dataItem, value) => {
   const dataItems = [{ key: dataItem, value: value }]
-  valid(ruleSet, dataItems)
+  calculateChargeValidationRequest(true, ruleSet, dataItems)
 })
 
 When('I calculate a valid {word} charge with {word} as {int}', (ruleSet, dataItem, value) => {
   const dataItems = [{ key: dataItem, value: value }]
-  valid(ruleSet, dataItems)
+  calculateChargeValidationRequest(true, ruleSet, dataItems)
 })
 
 When('I calculate a valid {word} charge with {word} as {word}', (ruleSet, dataItem, value) => {
   const dataItems = [{ key: dataItem, value: value }]
-  valid(ruleSet, dataItems)
+  calculateChargeValidationRequest(true, ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {string} and {word} as {string}', (ruleSet, dataItem1, value, dataItem, value1) => {
   const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
-  invalid(ruleSet, dataItems)
+  calculateChargeValidationRequest(false, ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {float} and {word} as {float}', (ruleSet, dataItem1, value, dataItem, value1) => {
   const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
-  invalid(ruleSet, dataItems)
+  calculateChargeValidationRequest(false, ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {int} and {word} as {int}', (ruleSet, dataItem1, value, dataItem, value1) => {
   const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
-  invalid(ruleSet, dataItems)
+  calculateChargeValidationRequest(false, ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {word} and {word} as {word}', (ruleSet, dataItem1, value, dataItem, value1) => {
   const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
-  invalid(ruleSet, dataItems)
+  calculateChargeValidationRequest(false, ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {word} and {word} as {string}', (ruleSet, dataItem1, value, dataItem, value1) => {
   const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
-  invalid(ruleSet, dataItems)
+  calculateChargeValidationRequest(false, ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {word} and {word} as {float}', (ruleSet, dataItem1, value, dataItem, value1) => {
   const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
-  invalid(ruleSet, dataItems)
+  calculateChargeValidationRequest(false, ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {word} and {word} as {int}', (ruleSet, dataItem1, value, dataItem, value1) => {
   const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
-  invalid(ruleSet, dataItems)
+  calculateChargeValidationRequest(false, ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {string} and {word} as {word}', (ruleSet, dataItem1, value, dataItem, value1) => {
   const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
-  invalid(ruleSet, dataItems)
+  calculateChargeValidationRequest(false, ruleSet, dataItems)
 })
 
 When('I calculate a valid {word} charge with {word} as {string} and {word} as {string}', (ruleSet, dataItem1, value, dataItem, value1) => {
   const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
-  valid(ruleSet, dataItems)
+  calculateChargeValidationRequest(true, ruleSet, dataItems)
 })
 
 When('I calculate a valid {word} charge with {word} as {float} and {word} as {float}', (ruleSet, dataItem1, value, dataItem, value1) => {
   const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
-  valid(ruleSet, dataItems)
+  calculateChargeValidationRequest(true, ruleSet, dataItems)
 })
 
 When('I calculate a valid {word} charge with {word} as {int} and {word} as {int}', (ruleSet, dataItem1, value, dataItem, value1) => {
   const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
-  valid(ruleSet, dataItems)
+  calculateChargeValidationRequest(true, ruleSet, dataItems)
 })
 
 Then('I am told that a valid ruleset is required', () => {
