@@ -1,127 +1,123 @@
 import { When, Then } from 'cypress-cucumber-preprocessor/steps'
 import TransactionEndpoints from '../../endpoints/transaction_endpoints'
 
+function invalid (ruleSet, dataItems) {
+  cy.fixture(`calculate.${ruleSet}.charge`).then((calculateCharge) => {
+    calculateCharge.ruleset = ruleSet
+    dataItems.forEach(item => {
+      calculateCharge[item.key] = item.value
+    })
+
+    TransactionEndpoints.calculateInvalid(calculateCharge).then((response) => {
+      expect(response.status).to.equal(422)
+      cy.wrap(response.body).as('calculateChargeResponse')
+    })
+  })
+}
+
+function valid (ruleSet, dataItems) {
+  cy.fixture(`calculate.${ruleSet}.charge`).then((calculateCharge) => {
+    calculateCharge.ruleset = ruleSet
+    dataItems.forEach(item => {
+      calculateCharge[item.key] = item.value
+    })
+
+    TransactionEndpoints.calculate(calculateCharge).then((response) => {
+      expect(response.status).to.equal(200)
+      cy.wrap(response.body).as('calculateChargeResponse')
+    })
+  })
+}
+
 When('I calculate an invalid {word} charge with {word} as {string}', (ruleSet, dataItem, value) => {
-  calcInvalid(ruleSet, dataItem, value)
+  const dataItems = [{ key: dataItem, value: value }]
+  invalid(ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {float}', (ruleSet, dataItem, value) => {
-  calcInvalid(ruleSet, dataItem, value)
+  const dataItems = [{ key: dataItem, value: value }]
+  invalid(ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {int}', (ruleSet, dataItem, value) => {
-  calcInvalid(ruleSet, dataItem, value)
+  const dataItems = [{ key: dataItem, value: value }]
+  invalid(ruleSet, dataItems)
 })
 
-function calcInvalid (ruleSet, dataItem, value) {
-  cy.fixture(`calculate.${ruleSet}.charge`).then((calculateCharge) => {
-    calculateCharge.ruleset = ruleSet
-    calculateCharge[dataItem] = value
-
-    TransactionEndpoints.calculateInvalid(calculateCharge).then((response) => {
-      expect(response.status).to.equal(422)
-      cy.wrap(response.body).as('calculateChargeResponse')
-    })
-  })
-}
-
 When('I calculate a valid {word} charge with {word} as {string}', (ruleSet, dataItem, value) => {
-  calcValid(ruleSet, dataItem, value)
+  const dataItems = [{ key: dataItem, value: value }]
+  valid(ruleSet, dataItems)
 })
 
 When('I calculate a valid {word} charge with {word} as {float}', (ruleSet, dataItem, value) => {
-  calcValid(ruleSet, dataItem, value)
+  const dataItems = [{ key: dataItem, value: value }]
+  valid(ruleSet, dataItems)
 })
 
 When('I calculate a valid {word} charge with {word} as {int}', (ruleSet, dataItem, value) => {
-  calcValid(ruleSet, dataItem, value)
+  const dataItems = [{ key: dataItem, value: value }]
+  valid(ruleSet, dataItems)
 })
 
 When('I calculate a valid {word} charge with {word} as {word}', (ruleSet, dataItem, value) => {
-  calcValid(ruleSet, dataItem, value)
+  const dataItems = [{ key: dataItem, value: value }]
+  valid(ruleSet, dataItems)
 })
 
-function calcValid (ruleSet, dataItem, value) {
-  cy.fixture(`calculate.${ruleSet}.charge`).then((calculateCharge) => {
-    calculateCharge.ruleset = ruleSet
-    calculateCharge[dataItem] = value
-
-    TransactionEndpoints.calculate(calculateCharge).then((response) => {
-      expect(response.status).to.equal(200)
-      cy.wrap(response.body).as('calculateChargeResponse')
-    })
-  })
-}
-
 When('I calculate an invalid {word} charge with {word} as {string} and {word} as {string}', (ruleSet, dataItem1, value, dataItem, value1) => {
-  calcMultInvalid(ruleSet, dataItem1, value, dataItem, value1)
+  const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
+  invalid(ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {float} and {word} as {float}', (ruleSet, dataItem1, value, dataItem, value1) => {
-  calcMultInvalid(ruleSet, dataItem1, value, dataItem, value1)
+  const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
+  invalid(ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {int} and {word} as {int}', (ruleSet, dataItem1, value, dataItem, value1) => {
-  calcMultInvalid(ruleSet, dataItem1, value, dataItem, value1)
+  const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
+  invalid(ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {word} and {word} as {word}', (ruleSet, dataItem1, value, dataItem, value1) => {
-  calcMultInvalid(ruleSet, dataItem1, value, dataItem, value1)
+  const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
+  invalid(ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {word} and {word} as {string}', (ruleSet, dataItem1, value, dataItem, value1) => {
-  calcMultInvalid(ruleSet, dataItem1, value, dataItem, value1)
+  const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
+  invalid(ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {word} and {word} as {float}', (ruleSet, dataItem1, value, dataItem, value1) => {
-  calcMultInvalid(ruleSet, dataItem1, value, dataItem, value1)
+  const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
+  invalid(ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {word} and {word} as {int}', (ruleSet, dataItem1, value, dataItem, value1) => {
-  calcMultInvalid(ruleSet, dataItem1, value, dataItem, value1)
+  const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
+  invalid(ruleSet, dataItems)
 })
 
 When('I calculate an invalid {word} charge with {word} as {string} and {word} as {word}', (ruleSet, dataItem1, value, dataItem, value1) => {
-  calcMultInvalid(ruleSet, dataItem1, value, dataItem, value1)
+  const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
+  invalid(ruleSet, dataItems)
 })
 
-function calcMultInvalid (ruleSet, dataItem1, value, dataItem, value1) {
-  cy.fixture(`calculate.${ruleSet}.charge`).then((calculateCharge) => {
-    calculateCharge.ruleset = ruleSet
-    calculateCharge[dataItem1] = value
-    calculateCharge[dataItem] = value1
-
-    TransactionEndpoints.calculateInvalid(calculateCharge).then((response) => {
-      expect(response.status).to.equal(422)
-      cy.wrap(response.body).as('calculateChargeResponse')
-    })
-  })
-}
-
 When('I calculate a valid {word} charge with {word} as {string} and {word} as {string}', (ruleSet, dataItem1, value, dataItem, value1) => {
-  calcMultValid(ruleSet, dataItem1, value, dataItem, value1)
+  const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
+  valid(ruleSet, dataItems)
 })
 
 When('I calculate a valid {word} charge with {word} as {float} and {word} as {float}', (ruleSet, dataItem1, value, dataItem, value1) => {
-  calcMultValid(ruleSet, dataItem1, value, dataItem, value1)
+  const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
+  valid(ruleSet, dataItems)
 })
 
 When('I calculate a valid {word} charge with {word} as {int} and {word} as {int}', (ruleSet, dataItem1, value, dataItem, value1) => {
-  calcMultValid(ruleSet, dataItem1, value, dataItem, value1)
+  const dataItems = [{ key: dataItem1, value: value }, { key: dataItem, value: value1 }]
+  valid(ruleSet, dataItems)
 })
-
-function calcMultValid (ruleSet, dataItem1, value, dataItem, value1) {
-  cy.fixture(`calculate.${ruleSet}.charge`).then((calculateCharge) => {
-    calculateCharge.ruleset = ruleSet
-    calculateCharge[dataItem1] = value
-    calculateCharge[dataItem] = value1
-
-    TransactionEndpoints.calculate(calculateCharge).then((response) => {
-      expect(response.status).to.equal(200)
-      cy.wrap(response.body).as('calculateChargeResponse')
-    })
-  })
-}
 
 Then('I am told that a valid ruleset is required', () => {
   cy.get('@calculateChargeResponse').then((error) => {
