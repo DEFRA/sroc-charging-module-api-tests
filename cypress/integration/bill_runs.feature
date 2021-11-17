@@ -18,14 +18,14 @@ Feature: Bill runs
   Scenario: Approving a bill run
     And I add 5 standard transactions to it
     And I request to generate the bill run
-    And bill run status is updated to 'generated' 
+    And bill run status is updated to 'generated'
     And I request to approve the bill run
     Then bill run status is updated to 'approved'
-  
+
   Scenario: Sending a bill run
     And I add 5 standard transactions to it
     And I request to generate the bill run
-    And bill run status is updated to 'generated' 
+    And bill run status is updated to 'generated'
     And I request to approve the bill run
     And bill run status is updated to 'approved'
     And I request to send the bill run
