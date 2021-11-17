@@ -2,7 +2,7 @@ Feature: Calculate Charge Validation
 #CMEA-194
 
   Background: Authenticate
-    Given I am the 'system' user
+    Given I am the "system" user
 
 #AC1
   Scenario Outline: ruleset data item must be valid

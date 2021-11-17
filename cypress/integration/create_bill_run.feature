@@ -2,7 +2,7 @@ Feature: Create a Bill Run
 #CMEA-89
 
   Background: Authenticate
-    Given I am the 'system' user
+    Given I am the "system" user
 
 #AC1
   Scenario Outline: Create bill run accepts a rule set flag
