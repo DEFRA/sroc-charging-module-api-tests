@@ -181,7 +181,7 @@ Feature: Calculate Charge Validation
     | presroc | billableDays   | 1.1   | integer |
 
 #AC10
-Scenario Outline: authorisedVolume must greater than 0
+  Scenario Outline: authorisedVolume must greater than 0
     When I calculate an invalid <ruleset> charge with <dataItem> as <value>
     Then I am told that the <dataItem> number must be <value1> than <value2>
 
@@ -208,7 +208,6 @@ Scenario Outline: authorisedVolume must greater than 0
     | sroc    | twoPartTariff      | true  | section127Agreement | false  |
     | sroc    | compensationCharge | true  | section127Agreement | true   |
     | sroc    | twoPartTariff      | true  | compensationCharge  | true   |
-
 
 #AC15
   Scenario Outline: Case sensitive data items are handled correctly
@@ -258,9 +257,8 @@ Scenario Outline: authorisedVolume must greater than 0
     | sroc    | regionalChargingArea | wye                                |
     | sroc    | regionalChargingArea | wales                              |
 
-#Populate with correct Then step
-
 #AC17
+  # TODO: Populate with correct Then step
   @ignore
   Scenario Outline: Supported Source Name is handled if Supported Source is false
     When I calculate a valid <ruleset> charge with <dataItem1> as <value> and <dataItem> as <value1>
@@ -271,6 +269,7 @@ Scenario Outline: authorisedVolume must greater than 0
     | sroc    | supportedSource | false | supportedSourceName | Dee    |
     | sroc    | supportedSource | true  | supportedSourceName | ' '    |
 
+  # TODO: Populate with correct Then step
   @ignore
   Scenario Outline: Supported Source Name must be present if Supported Source is true
     When I calculate an invalid <ruleset> charge with <dataItem1> as <value> and <dataItem> as <value1>

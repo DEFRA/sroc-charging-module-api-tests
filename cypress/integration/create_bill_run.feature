@@ -1,4 +1,4 @@
-Feature: Create a Bill Run 
+Feature: Create a Bill Run
 #CMEA-89
 
   Background: Authenticate
@@ -17,7 +17,7 @@ Feature: Create a Bill Run
 #AC3
   Scenario: The ruleset flag is not mandatory
     When I request a valid new bill run
-    Then the bill run ID and number are returned 
+    Then the bill run ID and number are returned
 
   Scenario Outline: Create bill run accepts a region flag
     When I request a valid new <ruleset> bill run for <region>
@@ -26,7 +26,7 @@ Feature: Create a Bill Run
     Examples:
     | ruleset | region |
     | presroc | A      |
-    | presroc | B      | 
+    | presroc | B      |
     | presroc | E      |
     | presroc | N      |
     | presroc | S      |
@@ -34,17 +34,17 @@ Feature: Create a Bill Run
     | presroc | W      |
     | presroc | Y      |
     | sroc    | A      |
-    | sroc    | B      | 
+    | sroc    | B      |
     | sroc    | E      |
     | sroc    | N      |
     | sroc    | S      |
     | sroc    | T      |
     | sroc    | W      |
-    | sroc    | Y      | 
-  
+    | sroc    | Y      |
+
   Scenario: Bill run numbers are issued in ascending order
-    When I request a valid new bill run 
-     And I request another valid new bill run
+    When I request a valid new bill run
+    And I request another valid new bill run
     Then the bill run numbers are issued in ascending order
 
 #AC2
