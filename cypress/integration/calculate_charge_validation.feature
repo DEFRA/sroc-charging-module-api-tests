@@ -5,15 +5,6 @@ Feature: Calculate Charge Validation
     Given I am the "system" user
 
   #AC1
-  Scenario Outline: ruleset data item must be valid
-    When I calculate an invalid <ruleset> charge with <dataItem> as <value>
-    Then I am told that a valid ruleset is required
-
-    Examples:
-      | ruleset | dataItem | value |
-      | sroc    | ruleset  | ' '   |
-      | presroc | ruleset  | ' '   |
-
   Scenario Outline: Data input items are mandatory
     When I calculate an invalid <ruleset> charge with <dataItem> as <value>
     Then I am told that <dataItem> is required
