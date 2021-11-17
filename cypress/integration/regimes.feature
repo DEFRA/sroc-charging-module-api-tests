@@ -1,7 +1,7 @@
 Feature: Regimes
 
   Background: Authenticate
-    Given I am the 'admin' user
+    Given I am the "admin" user
 
   Scenario: Listing regimes
     When I request a list of all regimes
