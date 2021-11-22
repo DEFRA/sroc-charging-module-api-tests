@@ -16,19 +16,6 @@ Feature: Calculate Charge Validation
       | sroc    | volume              | 0.00048     |
       | sroc    | actualVolume        | 14254.11249 |
 
-  Scenario Outline: Data items must be numbers
-    When I calculate an invalid <ruleset> charge with <dataItem> as <value>
-    Then I am told the <dataItem> must be a <value1>
-
-    Examples:
-      | ruleset | dataItem            | value    | value1 |
-      | sroc    | abatementFactor     | 'three'  | number |
-      | sroc    | aggregateProportion | 'five'   | number |
-      | sroc    | volume              | 'ninety' | number |
-      | sroc    | actualVolume        | 'three'  | number |
-      | presroc | abatementFactor     | 'three'  | number |
-      | presroc | volume              | 'ninety' | number |
-
   #AC9
   Scenario Outline: authorisedDays and billableDays must be integers between 0 and 366
     When I calculate a valid <ruleset> charge with <dataItem> as <value>
@@ -87,15 +74,6 @@ Feature: Calculate Charge Validation
     Examples:
       | ruleset | dataItem | value | value1  | value2 |
       | sroc    | volume   | 0     | greater | 0      |
-
-  #AC11
-  Scenario Outline: SRoC Period start must be greater than or equal to 1st April 2021
-    When I calculate an invalid <ruleset> charge with <dataItem1> as <value> and <dataItem> as <value1>
-    Then I am told that the <dataItem1> date must be <value2> than or equal to 2021-04-01T00:00:00.000Z
-
-    Examples:
-      | ruleset | dataItem1   | value       | dataItem  | value1      | value2  |
-      | sroc    | periodStart | 31-MAR-2021 | periodEnd | 31-MAR-2021 | greater |
 
   #AC12/13/14
   Scenario Outline: CM rejects invalid data item combinations
