@@ -4,18 +4,6 @@ Feature: Calculate Charge Validation
   Background: Authenticate
     Given I am the "system" user
 
-  #AC8
-  Scenario Outline: Data items must allow numbers with decimal places
-    When I calculate a valid <ruleset> charge with <dataItem> as <value>
-    Then a charge is calculated
-
-    Examples:
-      | ruleset | dataItem            | value       |
-      | sroc    | abatementFactor     | 1.242       |
-      | sroc    | aggregateProportion | 0.001       |
-      | sroc    | volume              | 0.00048     |
-      | sroc    | actualVolume        | 14254.11249 |
-
   #AC9
   Scenario Outline: authorisedDays and billableDays must be integers between 0 and 366
     When I calculate a valid <ruleset> charge with <dataItem> as <value>
@@ -50,21 +38,6 @@ Feature: Calculate Charge Validation
       | presroc | authorisedDays | -1    | greater | 0      |
       | presroc | billableDays   | 367   | less    | 366    |
       | presroc | billableDays   | -1    | greater | 0      |
-
-  Scenario Outline: authorisedDays and billableDays must be an integer
-    When I calculate an invalid <ruleset> charge with <dataItem> as <value>
-    Then I am told the <dataItem> must be an <value1>
-
-    Examples:
-      | ruleset | dataItem       | value | value1  |
-      | sroc    | authorisedDays | 1.1   | integer |
-      | sroc    | authorisedDays | 1.1   | integer |
-      | sroc    | billableDays   | 1.1   | integer |
-      | sroc    | billableDays   | 1.1   | integer |
-      | presroc | authorisedDays | 1.1   | integer |
-      | presroc | authorisedDays | 1.1   | integer |
-      | presroc | billableDays   | 1.1   | integer |
-      | presroc | billableDays   | 1.1   | integer |
 
   #AC10
   Scenario Outline: authorisedVolume must greater than 0

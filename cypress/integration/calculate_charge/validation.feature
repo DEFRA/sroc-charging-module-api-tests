@@ -89,6 +89,22 @@ Feature: Calculate Charge Validation
       | presroc | section126Factor    | number  |
       | presroc | volume              | number  |
 
+  Scenario: Checks integer data properties are not sent as decimals
+    When I send the following properties as decimals I am told they should be integers
+      | sroc    | authorisedDays |
+      | sroc    | billableDays   |
+      | presroc | authorisedDays |
+      | presroc | billableDays   |
+
+  Scenario: Allows decimal values in number data properties
+    When I send the following properties as decimals calculates the charge without error
+      | sroc    | abatementFactor     | number  |
+      | sroc    | aggregateProportion | number  |
+      | sroc    | authorisedVolume    | number  |
+      | sroc    | actualVolume        | number  |
+      | presroc | section126Factor    | number  |
+      | presroc | volume              | number  |
+
   Scenario: Check period start and end dates fall in the same financial year
     When I send the following period start and end dates I am told what financial year periodEnd must be
       | sroc    | 01-APR-2022 | 01-APR-2023 | 2022 |

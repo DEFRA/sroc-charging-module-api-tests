@@ -114,6 +114,46 @@ When('I send the following properties with the wrong data types I am told what t
   })
 })
 
+When('I send the following properties as decimals I am told they should be integers', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' integer property '${property}' doesn't like decimals`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture[property] = 1.1
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(422)
+        expect(response.body.message).to.contain(`"${property}" must be an integer`)
+      })
+    })
+  })
+})
+
+When('I send the following properties as decimals calculates the charge without error', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' number property '${property}' likes decimals`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture[property] = 1.1
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(200)
+        expect(response.body).to.have.property('calculation')
+      })
+    })
+  })
+})
+
 When('I send the following period start and end dates I am told what financial year periodEnd must be', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const ruleset = row[0]
