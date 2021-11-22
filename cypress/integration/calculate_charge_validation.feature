@@ -4,37 +4,6 @@ Feature: Calculate Charge Validation
   Background: Authenticate
     Given I am the "system" user
 
-  #AC1
-  Scenario Outline: Data input items are mandatory
-    When I calculate an invalid <ruleset> charge with <dataItem> as <value>
-    Then I am told that <dataItem> is required
-
-    Examples:
-      | ruleset | dataItem            | value |
-      | sroc    | chargeCategoryCode  | ' '   |
-      | sroc    | periodStart         | ' '   |
-      | sroc    | authorisedDays      | ' '   |
-      | sroc    | billableDays        | ' '   |
-      | sroc    | winterOnly          | ' '   |
-      | sroc    | section130Agreement | ' '   |
-      | sroc    | section127Agreement | ' '   |
-      | sroc    | twoPartTariff       | ' '   |
-      | sroc    | compensationCharge  | ' '   |
-      | sroc    | waterCompanyCharge  | ' '   |
-      | sroc    | supportedSource     | ' '   |
-      | sroc    | loss                | ' '   |
-      | sroc    | volume              | ' '   |
-      | sroc    | credit              | ' '   |
-
-  Scenario Outline: periodEnd data item is mandatory
-    When I calculate an invalid <ruleset> charge with <dataItem> as <value>
-    Then I am told that periodEnd is required with information about date requirements
-
-    Examples:
-      | ruleset | dataItem  | value |
-      | sroc    | periodEnd | ' '   |
-      | presroc | periodEnd | ' '   |
-
   #AC2/3/4
   Scenario Outline: Data items are mandatory when compensationCharge is true
     When I calculate an invalid <ruleset> charge with <dataItem1> as <value> and <dataItem> as <value1>
