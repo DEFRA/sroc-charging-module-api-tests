@@ -4,18 +4,6 @@ Feature: Calculate Charge Validation
   Background: Authenticate
     Given I am the "system" user
 
-  #AC2/3/4
-  Scenario Outline: Data items are mandatory when compensationCharge is true
-    When I calculate an invalid <ruleset> charge with <dataItem1> as <value> and <dataItem> as <value1>
-    Then I am told that <dataItem> is required
-
-    Examples:
-      | ruleset | dataItem1          | value | dataItem             | value1 |
-      | sroc    | compensationCharge | true  | regionalChargingArea | ' '    |
-      | sroc    | compensationCharge | true  | waterUndertaker      | ' '    |
-      | sroc    | twoPartTariff      | true  | actualVolume         | ' '    |
-      | sroc    | supportedSource    | true  | supportedSourceName  | ' '    |
-
   #AC5
   Scenario Outline: abatementAdjustment and aggregateProportion default 1.0 if not included in the request
     When I calculate a valid <ruleset> charge with <dataItem> as <value>

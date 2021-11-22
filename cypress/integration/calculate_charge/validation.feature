@@ -29,3 +29,25 @@ Feature: Calculate Charge Validation
       | sroc     | periodStart         |
       | sroc     | periodEnd           |
       | presroc  | periodEnd           |
+
+  Scenario: Checks for mandatory values when compensationCharge is true (SROC)
+    When I send a sroc request where compensationCharge is true
+    Then If I do not send the following values I get the expected response
+      | regionalChargingArea |
+      | waterUndertaker      |
+
+  Scenario: Checks for mandatory values when compensationCharge is true (PRESROC)
+    When I send a presroc request where compensationCharge is true
+    Then If I do not send the following values I get the expected response
+      | eiucSource           |
+      | waterUndertaker      |
+
+  Scenario: Checks for mandatory values when twoPartTariff is true
+    When I send a sroc request where twoPartTariff is true
+    Then If I do not send the following values I get the expected response
+      | actualVolume |
+
+  Scenario: Checks for mandatory values when supportedSource is true
+    When I send a sroc request where supportedSource is true
+    Then If I do not send the following values I get the expected response
+      | supportedSourceName |
