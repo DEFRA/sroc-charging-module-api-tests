@@ -4,50 +4,6 @@ Feature: Calculate Charge Validation
   Background: Authenticate
     Given I am the "system" user
 
-  #AC9
-  Scenario Outline: authorisedDays and billableDays must be integers between 0 and 366
-    When I calculate a valid <ruleset> charge with <dataItem> as <value>
-    Then a charge is calculated
-
-    Examples:
-      | ruleset | dataItem       | value |
-      | sroc    | authorisedDays | 366   |
-      | sroc    | authorisedDays | 0     |
-      | sroc    | authorisedDays | 152   |
-      | sroc    | billableDays   | 366   |
-      | sroc    | billableDays   | 0     |
-      | sroc    | billableDays   | 75    |
-      | presroc | authorisedDays | 366   |
-      | presroc | authorisedDays | 0     |
-      | presroc | authorisedDays | 152   |
-      | presroc | billableDays   | 366   |
-      | presroc | billableDays   | 0     |
-      | presroc | billableDays   | 75    |
-
-  Scenario Outline: authorisedDays and billableDays must be less than or equal to 366 and greater than or equal to 0
-    When I calculate an invalid <ruleset> charge with <dataItem> as <value>
-    Then I am told that the <dataItem> number must be <value1> than or equal to <value2>
-
-    Examples:
-      | ruleset | dataItem       | value | value1  | value2 |
-      | sroc    | authorisedDays | 367   | less    | 366    |
-      | sroc    | authorisedDays | -1    | greater | 0      |
-      | sroc    | billableDays   | 367   | less    | 366    |
-      | sroc    | billableDays   | -1    | greater | 0      |
-      | presroc | authorisedDays | 367   | less    | 366    |
-      | presroc | authorisedDays | -1    | greater | 0      |
-      | presroc | billableDays   | 367   | less    | 366    |
-      | presroc | billableDays   | -1    | greater | 0      |
-
-  #AC10
-  Scenario Outline: authorisedVolume must greater than 0
-    When I calculate an invalid <ruleset> charge with <dataItem> as <value>
-    Then I am told that the <dataItem> number must be <value1> than <value2>
-
-    Examples:
-      | ruleset | dataItem | value | value1  | value2 |
-      | sroc    | volume   | 0     | greater | 0      |
-
   #AC12/13/14
   Scenario Outline: CM rejects invalid data item combinations
     When I calculate an invalid <ruleset> charge with <dataItem1> as <value> and <dataItem> as <value1>

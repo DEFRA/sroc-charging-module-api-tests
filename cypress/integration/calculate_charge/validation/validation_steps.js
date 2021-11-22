@@ -154,6 +154,53 @@ When('I send the following properties as decimals calculates the charge without 
   })
 })
 
+When('I send the following properties at less than their minimum I am told what they should be', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const minimum = row[2]
+    const greaterThanOrEqualTo = row[3]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' number property '${property}' is ${greaterThanOrEqualTo} a minimum of ${minimum}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture[property] = Number(minimum) - 1
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(422)
+        if (greaterThanOrEqualTo === '=') {
+          expect(response.body.message).to.equal(`"${property}" must be greater than or equal to ${minimum}`)
+        } else {
+          expect(response.body.message).to.equal(`"${property}" must be greater than ${minimum}`)
+        }
+      })
+    })
+  })
+})
+
+When('I send the following properties at more than their maximum I am told what they should be', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const maximum = row[2]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' number property '${property}' is less than or equal to a maximum of ${maximum}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture[property] = Number(maximum) + 1
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(422)
+        expect(response.body.message).to.equal(`"${property}" must be less than or equal to ${maximum}`)
+      })
+    })
+  })
+})
+
 When('I send the following period start and end dates I am told what financial year periodEnd must be', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const ruleset = row[0]

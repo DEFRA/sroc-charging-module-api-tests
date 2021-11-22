@@ -105,6 +105,23 @@ Feature: Calculate Charge Validation
       | presroc | section126Factor    | number  |
       | presroc | volume              | number  |
 
+  Scenario: Checks data values are not below the minimum expected
+    When I send the following properties at less than their minimum I am told what they should be
+      | sroc    | authorisedDays   | 0 | = |
+      | sroc    | billableDays     | 0 | = |
+      | sroc    | authorisedVolume | 0 | > |
+      | sroc    | actualVolume     | 0 | > |
+      | presroc | authorisedDays   | 0 | = |
+      | presroc | billableDays     | 0 | = |
+      | presroc | volume           | 0 | = |
+
+  Scenario: Checks data values are not above the maximum expected
+    When I send the following properties at more than their maximum I am told what they should be
+      | sroc    | authorisedDays   | 366 |
+      | sroc    | billableDays     | 366 |
+      | presroc | authorisedDays   | 366 |
+      | presroc | billableDays     | 366 |
+
   Scenario: Check period start and end dates fall in the same financial year
     When I send the following period start and end dates I am told what financial year periodEnd must be
       | sroc    | 01-APR-2022 | 01-APR-2023 | 2022 |
