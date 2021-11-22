@@ -4,23 +4,6 @@ Feature: Calculate Charge Validation
   Background: Authenticate
     Given I am the "system" user
 
-  #AC6
-  Scenario Outline: Data items must be a boolean type
-    When I calculate an invalid <ruleset> charge with <dataItem> as <value>
-    Then I am told the <dataItem> must be a <value1>
-
-    Examples:
-      | ruleset | dataItem            | value  | value1  |
-      | sroc    | winterOnly          | 'test' | boolean |
-      | sroc    | section130Agreement | 'test' | boolean |
-      | sroc    | section127Agreement | 'test' | boolean |
-      | sroc    | twoPartTariff       | 'test' | boolean |
-      | sroc    | compensationCharge  | 'test' | boolean |
-      | sroc    | waterCompanyCharge  | 'test' | boolean |
-      | sroc    | supportedSource     | 'test' | boolean |
-      | sroc    | credit              | 'test' | boolean |
-      | sroc    | waterUndertaker     | 'test' | boolean |
-
   #AC7
   Scenario Outline: Period start and end dates fall in same financial year
     When I calculate an invalid <ruleset> charge with <dataItem1> as <value> and <dataItem> as <value1>

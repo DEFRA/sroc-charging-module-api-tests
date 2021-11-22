@@ -92,3 +92,25 @@ When('I do not send the following values the CM sets the correct default', (data
     })
   })
 })
+
+When('I send the following properties with the wrong data types I am told what they should be', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const correctDataType = row[2]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' property '${property}' should be a ${correctDataType}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture[property] = 'crazy'
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(422)
+        expect(response.body.message).to.contain(`"${property}" must be a ${correctDataType}`)
+      })
+    })
+  })
+})
+

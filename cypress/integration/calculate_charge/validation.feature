@@ -61,3 +61,31 @@ Feature: Calculate Charge Validation
     When I do not send the following values the CM sets the correct default
       | sroc    | abatementAdjustment | abatementFactor     | 1 |
       | sroc    | aggregateProportion | aggregateProportion | 1 |
+
+  Scenario: Checks data types of values
+    When I send the following properties with the wrong data types I am told what they should be
+      | sroc    | winterOnly          | boolean |
+      | sroc    | section130Agreement | boolean |
+      | sroc    | section127Agreement | boolean |
+      | sroc    | twoPartTariff       | boolean |
+      | sroc    | compensationCharge  | boolean |
+      | sroc    | waterCompanyCharge  | boolean |
+      | sroc    | supportedSource     | boolean |
+      | sroc    | credit              | boolean |
+      | sroc    | waterUndertaker     | boolean |
+      | sroc    | abatementFactor     | number  |
+      | sroc    | aggregateProportion | number  |
+      | sroc    | authorisedDays      | number  |
+      | sroc    | billableDays        | number  |
+      | sroc    | authorisedVolume    | number  |
+      | sroc    | actualVolume        | number  |
+      | presroc | section130Agreement | boolean |
+      | presroc | section127Agreement | boolean |
+      | presroc | twoPartTariff       | boolean |
+      | presroc | compensationCharge  | boolean |
+      | presroc | credit              | boolean |
+      | presroc | authorisedDays      | number  |
+      | presroc | billableDays        | number  |
+      | presroc | section126Factor    | number  |
+      | presroc | volume              | number  |
+
