@@ -15,8 +15,6 @@ When('I use the following ruleset values I get the expected response', (dataTabl
       CalculateChargeEndpoints.calculate(fixture, failOnStatusCode).then((response) => {
         expect(response.status.toString()).to.equal(row[1])
       })
-
-      cy.wrap({ body: fixture, expectedStatus: row.status }).as('requestDetails')
     })
   })
 })
@@ -42,8 +40,6 @@ When('I do not send the following values I get the expected response', (dataTabl
       CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
         expect(response.status).to.equal(422)
       })
-
-      cy.wrap({ body: fixture, expectedStatus: row.status }).as('requestDetails')
     })
   })
 })
