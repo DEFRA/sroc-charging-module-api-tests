@@ -114,3 +114,74 @@ When('I send the following properties with the wrong data types I am told what t
   })
 })
 
+When('I send the following period start and end dates I am told what financial year periodEnd must be', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const periodStart = row[1]
+    const periodEnd = row[2]
+    const financialYear = row[3]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' when period is ${periodStart}-${periodEnd} periodEnd year should be ${financialYear}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture.periodStart = periodStart
+      fixture.periodEnd = periodEnd
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(422)
+        expect(response.body.message).to.equal(`"periodEndFinancialYear" must be [${financialYear}]`)
+      })
+    })
+  })
+})
+
+When(
+  'I send the following period dates I am told that periodStart must be less than or equal to periodEnd',
+  (dataTable) => {
+    cy.wrap(dataTable.rawTable).each(row => {
+      const ruleset = row[0]
+      const periodStart = row[1]
+      const periodEnd = row[2]
+      const fixtureName = `calculate.${ruleset}.charge`
+
+      cy.log(`Testing '${ruleset}' when period is ${periodStart}-${periodEnd} periodStart is invalid`)
+
+      cy.fixture(fixtureName).then((fixture) => {
+        fixture.ruleset = ruleset
+        fixture.periodStart = periodStart
+        fixture.periodEnd = periodEnd
+
+        CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+          expect(response.status).to.equal(422)
+          expect(response.body.message).to.equal('"periodStart" must be less than or equal to "ref:periodEnd"')
+        })
+      })
+    })
+  })
+
+When('I send the following period dates I am told that periodStart is before the ruleset start date', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const periodStart = row[1]
+    const periodEnd = row[2]
+    const startDate = row[3]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' when period is ${periodStart}-${periodEnd} it's before ruleset start of ${startDate}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture.periodStart = periodStart
+      fixture.periodEnd = periodEnd
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(422)
+        expect(response.body.message)
+          .to
+          .equal(`"periodStart" must be greater than or equal to "${startDate}T00:00:00.000Z"`)
+      })
+    })
+  })
+})

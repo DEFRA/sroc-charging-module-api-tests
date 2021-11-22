@@ -4,27 +4,6 @@ Feature: Calculate Charge Validation
   Background: Authenticate
     Given I am the "system" user
 
-  #AC7
-  Scenario Outline: Period start and end dates fall in same financial year
-    When I calculate an invalid <ruleset> charge with <dataItem1> as <value> and <dataItem> as <value1>
-    Then I am told that the <dataItem1> financial year must be <value2>
-
-    Examples:
-      | ruleset | dataItem1 | value       | dataItem    | value1      | value2 |
-      | sroc    | periodEnd | 01-APR-2023 | periodStart | 01-APR-2022 | 2022   |
-      | sroc    | periodEnd | 01-APR-2023 | periodStart | 31-MAR-2023 | 2022   |
-      | presroc | periodEnd | 01-APR-2021 | periodStart | 01-APR-2020 | 2020   |
-      | presroc | periodEnd | 01-APR-2021 | periodStart | 31-MAR-2021 | 2020   |
-
-  Scenario Outline: Period end must be equal to or later than Period start
-    When I calculate an invalid <ruleset> charge with <dataItem1> as <value> and <dataItem> as <value1>
-    Then I am told that the <dataItem1> must be <value2> than or equal to <dataItem>
-
-    Examples:
-      | ruleset | dataItem1   | value       | dataItem  | value1      | value2 |
-      | sroc    | periodStart | 01-APR-2022 | periodEnd | 31-MAR-2022 | less   |
-      | presroc | periodStart | 01-APR-2019 | periodEnd | 31-MAR-2019 | less   |
-
   #AC8
   Scenario Outline: Data items must allow numbers with decimal places
     When I calculate a valid <ruleset> charge with <dataItem> as <value>

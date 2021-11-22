@@ -89,3 +89,19 @@ Feature: Calculate Charge Validation
       | presroc | section126Factor    | number  |
       | presroc | volume              | number  |
 
+  Scenario: Check period start and end dates fall in the same financial year
+    When I send the following period start and end dates I am told what financial year periodEnd must be
+      | sroc    | 01-APR-2022 | 01-APR-2023 | 2022 |
+      | sroc    | 31-MAR-2023 | 01-APR-2023 | 2022 |
+      | presroc | 01-APR-2020 | 01-APR-2021 | 2020 |
+      | presroc | 31-MAR-2021 | 01-APR-2021 | 2020 |
+
+  Scenario: Checks that periodStart is less than or equal to periodEnd
+    When I send the following period dates I am told that periodStart must be less than or equal to periodEnd
+      | sroc    | 01-APR-2022 | 31-MAR-2022 |
+      | presroc | 01-APR-2019 | 31-MAR-2019 |
+
+  Scenario: Checks that periodStart is greater than or equal to the ruleset start date
+    When I send the following period dates I am told that periodStart is before the ruleset start date
+      | sroc    | 01-APR-2020 | 31-MAR-2021 | 2021-04-01 |
+      | presroc | 01-APR-2013 | 31-MAR-2014 | 2014-04-01 |
