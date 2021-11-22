@@ -51,3 +51,13 @@ Feature: Calculate Charge Validation
     When I send a sroc request where supportedSource is true
     Then If I do not send the following values I get the expected response
       | supportedSourceName |
+
+  # TODO: This scenario is checking that the CM defaults certain fields when they are not included in the request.
+  # However, it is doing this by checking the values of certain fields in the CM response. The problem is the fields
+  # listed are returned from the rules service, not the CM. So, at this time we're not sure how the scenario needs to be
+  # re-configured to confirm the default values are applied.
+  @ignore
+  Scenario: Sets default values
+    When I do not send the following values the CM sets the correct default
+      | sroc    | abatementAdjustment | abatementFactor     | 1 |
+      | sroc    | aggregateProportion | aggregateProportion | 1 |

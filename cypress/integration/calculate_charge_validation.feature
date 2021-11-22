@@ -4,17 +4,6 @@ Feature: Calculate Charge Validation
   Background: Authenticate
     Given I am the "system" user
 
-  #AC5
-  Scenario Outline: abatementAdjustment and aggregateProportion default 1.0 if not included in the request
-    When I calculate a valid <ruleset> charge with <dataItem> as <value>
-    Then <value1> is returned for <responseDataItem> in the response
-    And <value1> is returned for <responseDataItem> in the response
-
-    Examples:
-      | ruleset | dataItem            | value | value1 | responseDataItem    |
-      | sroc    | abatementAdjustment | ' '   | 1      | abatementFactor     |
-      | sroc    | aggregateProportion | ' '   | 1      | aggregateProportion |
-
   #AC6
   Scenario Outline: Data items must be a boolean type
     When I calculate an invalid <ruleset> charge with <dataItem> as <value>

@@ -70,3 +70,25 @@ Then('If I do not send the following values I get the expected response', (dataT
     })
   })
 })
+
+When('I do not send the following values the CM sets the correct default', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const requestProperty = row[1]
+    const responseProperty = row[2]
+    const expectedValue = row[3]
+
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' property '${requestProperty}' comes back as '${responseProperty} = ${expectedValue}'`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture[requestProperty] = ''
+
+      CalculateChargeEndpoints.calculate(fixture).then((response) => {
+        expect(response.status).to.equal(200)
+        expect(response[responseProperty]).to.equal(expectedValue)
+      })
+    })
+  })
+})
