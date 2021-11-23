@@ -138,3 +138,20 @@ Feature: Calculate Charge Validation
     When I send the following period dates I am told that periodStart is before the ruleset start date
       | sroc    | 01-APR-2020 | 31-MAR-2021 | 2021-04-01 |
       | presroc | 01-APR-2013 | 31-MAR-2014 | 2014-04-01 |
+
+  Scenario: Checks for invalid combinations
+    When I send the following invalid combinations I am told what value a property should be
+      | sroc    | twoPartTariff      | true | section127Agreement | false | true  |
+      | sroc    | compensationCharge | true | section127Agreement | true  | false |
+      | sroc    | compensationCharge | true | twoPartTariff       | true  | false |
+
+  # TODO: Remove the ignore tag when https://eaflood.atlassian.net/browse/CMEA-193 is fixed and the error caused by
+  # compensationCharge being false is resolved (will also need to default compensationCharge to false in the fixture)
+  @ignore
+  Scenario: Allows valid combinations
+    When I send the following valid combinations it calculates the charge without error
+      | sroc    | twoPartTariff      | true  | section127Agreement | true  |
+      | sroc    | twoPartTariff      | false | section127Agreement | true  |
+      | sroc    | compensationCharge | true  | twoPartTariff       | false |
+      # | sroc    | compensationCharge | false | section127Agreement | true  |
+      # | sroc    | compensationCharge | false | twoPartTariff       | true  |

@@ -4,17 +4,6 @@ Feature: Calculate Charge Validation
   Background: Authenticate
     Given I am the "system" user
 
-  #AC12/13/14
-  Scenario Outline: CM rejects invalid data item combinations
-    When I calculate an invalid <ruleset> charge with <dataItem1> as <value> and <dataItem> as <value1>
-    Then I am told the <dataItem> must be <value>
-
-    Examples:
-      | ruleset | dataItem1          | value | dataItem            | value1 |
-      | sroc    | twoPartTariff      | true  | section127Agreement | false  |
-      | sroc    | compensationCharge | true  | section127Agreement | true   |
-      | sroc    | twoPartTariff      | true  | compensationCharge  | true   |
-
   #AC15
   Scenario Outline: Case sensitive data items are handled correctly
     When I calculate a valid <ruleset> charge with <dataItem> as '<value>'
