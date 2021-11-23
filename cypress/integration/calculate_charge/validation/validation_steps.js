@@ -349,3 +349,38 @@ When('I send the following properties it corrects the case and calculates the ch
     })
   })
 })
+
+When('I send the following supported source values I get the expected response', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const supportedSource = row[1]
+    const supportedSourceName = row[2]
+    const expectedStatus = row[3]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' supportedSource=${supportedSource} and supportedSourceName='${supportedSourceName}'`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture.supportedSource = supportedSource
+      fixture.supportedSourceName = supportedSourceName
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        if (expectedStatus === '200') {
+          expect(response.status).to.equal(200)
+          expect(response.body).to.have.property('calculation')
+        } else {
+          expect(response.status).to.equal(422)
+
+          if ((supportedSource === 'true')) {
+            // If supported source was true then we get this error because supportedSourceName is null/undefined
+            expect(response.body.message).to.equal('"supportedSourceName" is required')
+          } else {
+            // If supported source was false we get this error if supportedSourceName is set
+            expect(response.body.message).to.equal('"supportedSourceName" is not allowed')
+          }
+        }
+      })
+    })
+  })
+})

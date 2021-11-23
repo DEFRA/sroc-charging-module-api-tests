@@ -198,3 +198,9 @@ Feature: Calculate Charge Validation
       | sroc | regionalChargingArea | dee                                |
       | sroc | regionalChargingArea | wye                                |
       | sroc | regionalChargingArea | wales                              |
+
+  Scenario: Checks that supportedSourceName is set correctly according to how supportedSource is set
+    When I send the following supported source values I get the expected response
+      | sroc | false | Dee | 422 |
+      | sroc | true  |     | 422 |
+      | sroc | true  | Dee | 200 |
