@@ -325,3 +325,27 @@ When('I send the following valid combinations it calculates the charge without e
     })
   })
 })
+
+When('I send the following properties it corrects the case and calculates the charge without error', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const value = row[2]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' corrects the case for '${property}' when the value is '${value}'`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      // The CM will throw an error if supportedSourceName is defined but supportedSource is false. So, we need a bit
+      // of logic to handle this when testing supportedSourceName
+      fixture.supportedSource = (property === 'supportedSourceName')
+      fixture[property] = value
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(200)
+        expect(response.body).to.have.property('calculation')
+      })
+    })
+  })
+})

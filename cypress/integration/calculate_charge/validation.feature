@@ -155,3 +155,46 @@ Feature: Calculate Charge Validation
       | sroc    | compensationCharge | true  | twoPartTariff       | false |
       # | sroc    | compensationCharge | false | section127Agreement | true  |
       # | sroc    | compensationCharge | false | twoPartTariff       | true  |
+
+  Scenario: Correctly handles case sensitive data items
+    When I send the following properties it corrects the case and calculates the charge without error
+      | sroc | loss                 | low                                |
+      | sroc | loss                 | mediuM                             |
+      | sroc | loss                 | hIgh                               |
+      | sroc | supportedSourceName  | candover                           |
+      | sroc | supportedSourceName  | dee                                |
+      | sroc | supportedSourceName  | earl soham - Deben                 |
+      | sroc | supportedSourceName  | glen groundwater                   |
+      | sroc | supportedSourceName  | great east anglian groundwater     |
+      | sroc | supportedSourceName  | great eAst anglian surface water   |
+      | sroc | supportedSourceName  | kielder                            |
+      | sroc | supportedSourceName  | lodes granta groundwater           |
+      | sroc | supportedSourceName  | lower yorkshire derwent            |
+      | sroc | supportedSourceName  | medway - allington                 |
+      | sroc | supportedSourceName  | nene – northampton                 |
+      | sroc | supportedSourceName  | nene – water newton                |
+      | sroc | supportedSourceName  | ouse – eaton socon                 |
+      | sroc | supportedSourceName  | ouse – hermitage                   |
+      | sroc | supportedSourceName  | ouse - oFford                      |
+      | sroc | supportedSourceName  | rhee groundwateR                   |
+      | sroc | supportedSourceName  | severn                             |
+      | sroc | supportedSourceName  | thames                             |
+      | sroc | supportedSourceName  | thet and little ouse surface water |
+      | sroc | supportedSourceName  | waveney groundwater                |
+      | sroc | supportedSourceName  | waveney surface water              |
+      | sroc | supportedSourceName  | welland – tinwell sluices          |
+      | sroc | supportedSourceName  | witham and ancholme                |
+      | sroc | supportedSourceName  | wye                                |
+      | sroc | regionalChargingArea | anglian                            |
+      | sroc | regionalChargingArea | midlands                           |
+      | sroc | regionalChargingArea | northumbria                        |
+      | sroc | regionalChargingArea | north west                         |
+      | sroc | regionalChargingArea | southern                           |
+      | sroc | regionalChargingArea | south west (incl wessex)           |
+      | sroc | regionalChargingArea | devon and cornwall (south west)    |
+      | sroc | regionalChargingArea | north and south wessex             |
+      | sroc | regionalChargingArea | thames                             |
+      | sroc | regionalChargingArea | yorkshire                          |
+      | sroc | regionalChargingArea | dee                                |
+      | sroc | regionalChargingArea | wye                                |
+      | sroc | regionalChargingArea | wales                              |
