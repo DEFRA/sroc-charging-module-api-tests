@@ -52,15 +52,11 @@ Feature: Calculate Charge Validation
     Then If I do not send the following values I get the expected response
       | supportedSourceName |
 
-  # TODO: This scenario is checking that the CM defaults certain fields when they are not included in the request.
-  # However, it is doing this by checking the values of certain fields in the CM response. The problem is the fields
-  # listed are returned from the rules service, not the CM. So, at this time we're not sure how the scenario needs to be
-  # re-configured to confirm the default values are applied.
-  @ignore
   Scenario: Sets default values
     When I do not send the following values the CM sets the correct default
-      | sroc    | abatementAdjustment | abatementFactor     | 1 |
-      | sroc    | aggregateProportion | aggregateProportion | 1 |
+      | sroc    | abatementFactor     | 1.0 |
+      | sroc    | aggregateProportion | 1.0 |
+      | presroc | section126Factor    | 1.0 |
 
   Scenario: Checks data types of values
     When I send the following properties with the wrong data types I am told what they should be

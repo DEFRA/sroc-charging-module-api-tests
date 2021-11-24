@@ -74,20 +74,27 @@ Then('If I do not send the following values I get the expected response', (dataT
 When('I do not send the following values the CM sets the correct default', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const ruleset = row[0]
-    const requestProperty = row[1]
-    const responseProperty = row[2]
-    const expectedValue = row[3]
-
+    const property = row[1]
+    const defaultValue = Number(row[2])
     const fixtureName = `calculate.${ruleset}.charge`
 
-    cy.log(`Testing '${ruleset}' property '${requestProperty}' comes back as '${responseProperty} = ${expectedValue}'`)
+    cy.log(`Testing '${ruleset}' property '${property}' when not set results in same charge value when it is set`)
 
+    // Using the assumption that if the charge value, when all other things are equal, is the same when the property is
+    // not set and when set with the default value we can conclude that the CM defaults it as expected.
     cy.fixture(fixtureName).then((fixture) => {
-      fixture[requestProperty] = ''
+      const blankedFixture = { ...fixture }
+      blankedFixture[property] = null
 
-      CalculateChargeEndpoints.calculate(fixture).then((response) => {
-        expect(response.status).to.equal(200)
-        expect(response[responseProperty]).to.equal(expectedValue)
+      const populatedFixture = { ...fixture }
+      populatedFixture[property] = defaultValue
+
+      CalculateChargeEndpoints.calculate(blankedFixture).then((response) => {
+        const defaultedChargeValue = response.body.calculation.chargeValue
+
+        CalculateChargeEndpoints.calculate(populatedFixture).then((response) => {
+          expect(response.body.calculation.chargeValue).to.equal(defaultedChargeValue)
+        })
       })
     })
   })
