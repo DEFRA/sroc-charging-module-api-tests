@@ -135,22 +135,25 @@ Feature: Calculate Charge Validation
       | sroc    | 01-APR-2020 | 31-MAR-2021 | 2021-04-01 |
       | presroc | 01-APR-2013 | 31-MAR-2014 | 2014-04-01 |
 
+  # The values in the table relate to what will be sent in the request plus what the CM will report as invalid and what
+  # it should actually be
+  # | ruleset | twoPartTariff | compensationCharge | section127Agreement | invalid property | should be |
   Scenario: Checks for invalid combinations
     When I send the following invalid combinations I am told what value a property should be
-      | sroc    | twoPartTariff      | true | section127Agreement | false | true  |
-      | sroc    | compensationCharge | true | section127Agreement | true  | false |
-      | sroc    | compensationCharge | true | twoPartTariff       | true  | false |
+      | sroc | true  | false | false  | section127Agreement | true  |
+      | sroc | false | true  | true   | section127Agreement | false |
+      | sroc | true  | true  | false  | twoPartTariff | false |
+      | sroc | true  | true  | true   | twoPartTariff | false |
 
-  # TODO: Remove the ignore tag when https://eaflood.atlassian.net/browse/CMEA-193 is fixed and the error caused by
-  # compensationCharge being false is resolved (will also need to default compensationCharge to false in the fixture)
-  @ignore
+  # The values in the table relate to what will be sent in the request for
+  # | ruleset | twoPartTariff | compensationCharge | section127Agreement |
   Scenario: Allows valid combinations
     When I send the following valid combinations it calculates the charge without error
-      | sroc    | twoPartTariff      | true  | section127Agreement | true  |
-      | sroc    | twoPartTariff      | false | section127Agreement | true  |
-      | sroc    | compensationCharge | true  | twoPartTariff       | false |
-      # | sroc    | compensationCharge | false | section127Agreement | true  |
-      # | sroc    | compensationCharge | false | twoPartTariff       | true  |
+      | sroc | true  | false | true  |
+      | sroc | false | false | true  |
+      | sroc | false | true  | false |
+      | sroc | true  | false | true  |
+      | sroc | false | false | false |
 
   Scenario: Correctly handles case sensitive data items
     When I send the following properties it corrects the case and calculates the charge without error

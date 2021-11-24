@@ -283,25 +283,29 @@ When('I send the following period dates I am told that periodStart is before the
 When('I send the following invalid combinations I am told what value a property should be', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const ruleset = row[0]
-    const property1 = row[1]
-    const property1Value = row[2]
-    const property2 = row[3]
-    const property2Value = row[4]
-    const mustBeValue = row[5]
+
+    const params = {
+      twoPartTariff: (row[1] === 'true'),
+      compensationCharge: (row[2] === 'true'),
+      section127Agreement: (row[3] === 'true')
+    }
+
+    const incorrectProperty = row[4]
+    const correctValue = row[5]
     const fixtureName = `calculate.${ruleset}.charge`
 
-    cy.log(`Testing '${ruleset}' combination ${property1}=${property1Value} and ${property2}=${property2Value}`)
+    cy.log(`Testing '${ruleset}' combination ${JSON.stringify(params)}`)
 
     cy.fixture(fixtureName).then((fixture) => {
       fixture.ruleset = ruleset
-      // TODO: Remove and set as false in the fixture when https://eaflood.atlassian.net/browse/CMEA-193 is fixed
-      fixture.compensationCharge = false
-      fixture[property1] = (property1Value === 'true')
-      fixture[property2] = (property2Value === 'true')
+
+      fixture.twoPartTariff = params.twoPartTariff
+      fixture.compensationCharge = params.compensationCharge
+      fixture.section127Agreement = params.section127Agreement
 
       CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
         expect(response.status).to.equal(422)
-        expect(response.body.message).to.equal(`"${property2}" must be [${mustBeValue}]`)
+        expect(response.body.message).to.equal(`"${incorrectProperty}" must be [${correctValue}]`)
       })
     })
   })
@@ -310,20 +314,22 @@ When('I send the following invalid combinations I am told what value a property 
 When('I send the following valid combinations it calculates the charge without error', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const ruleset = row[0]
-    const property1 = row[1]
-    const property1Value = row[2]
-    const property2 = row[3]
-    const property2Value = row[4]
+
+    const params = {
+      twoPartTariff: (row[1] === 'true'),
+      compensationCharge: (row[2] === 'true'),
+      section127Agreement: (row[3] === 'true')
+    }
     const fixtureName = `calculate.${ruleset}.charge`
 
-    cy.log(`Testing '${ruleset}' combination ${property1}=${property1Value} and ${property2}=${property2Value}`)
+    cy.log(`Testing '${ruleset}' combination ${JSON.stringify(params)}`)
 
     cy.fixture(fixtureName).then((fixture) => {
       fixture.ruleset = ruleset
-      // TODO: Remove and set as false in the fixture when https://eaflood.atlassian.net/browse/CMEA-193 is fixed
-      fixture.compensationCharge = false
-      fixture[property1] = (property1Value === 'true')
-      fixture[property2] = (property2Value === 'true')
+
+      fixture.twoPartTariff = params.twoPartTariff
+      fixture.compensationCharge = params.compensationCharge
+      fixture.section127Agreement = params.section127Agreement
 
       CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
         expect(response.status).to.equal(200)
