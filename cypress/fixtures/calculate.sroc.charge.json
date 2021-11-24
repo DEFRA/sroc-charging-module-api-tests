@@ -5,7 +5,7 @@
   "periodEnd": "31-MAR-2022",
   "credit": false,
   "twoPartTariff": false,
-  "compensationCharge": true,
+  "compensationCharge": false,
   "chargeCategoryCode": "2.1.211",
   "waterUndertaker": false,
   "regionalChargingArea": "Midlands",
