@@ -331,4 +331,56 @@ Feature: Create Transaction Validation
       | sroc | S | region | S |
       | sroc | T | region | T |
       | sroc | W | region | W |
-      | sroc | Y | region | Y |     
+      | sroc | Y | region | Y |
+
+  Scenario: Checks special characters are rejected (SROC)
+    When I request a valid new sroc bill run
+     And I send the following properties with special characters I am told the request cannot be accepted
+      | sroc | customerReference         | test“ |
+      | sroc | licenceNumber             | test“ |
+      | sroc | areaCode                  | test“ |
+      | sroc | chargeCategoryDescription | test“ |
+      | sroc | lineDescription           | test“ |
+      | sroc | chargePeriod              | test“ |
+      | sroc | customerReference         | test” |
+      | sroc | licenceNumber             | test” |
+      | sroc | areaCode                  | test” |
+      | sroc | chargeCategoryDescription | test” |
+      | sroc | lineDescription           | test” |
+      | sroc | chargePeriod              | test” |
+      | sroc | customerReference         | test? |
+      | sroc | licenceNumber             | test? |
+      | sroc | areaCode                  | test? |
+      | sroc | chargeCategoryDescription | test? |
+      | sroc | lineDescription           | test? |
+      | sroc | chargePeriod              | test? |
+      | sroc | customerReference         | test^ |
+      | sroc | licenceNumber             | test^ |
+      | sroc | areaCode                  | test^ |
+      | sroc | chargeCategoryDescription | test^ |
+      | sroc | lineDescription           | test^ |
+      | sroc | chargePeriod              | test^ |
+      | sroc | customerReference         | test£ |
+      | sroc | licenceNumber             | test£ |
+      | sroc | areaCode                  | test£ |
+      | sroc | chargeCategoryDescription | test£ |
+      | sroc | lineDescription           | test£ |
+      | sroc | chargePeriod              | test£ |
+      | sroc | customerReference         | test> |
+      | sroc | licenceNumber             | test> |
+      | sroc | areaCode                  | test> |
+      | sroc | chargeCategoryDescription | test> |
+      | sroc | lineDescription           | test> |
+      | sroc | chargePeriod              | test> |
+      | sroc | customerReference         | test< |
+      | sroc | licenceNumber             | test< |
+      | sroc | areaCode                  | test< |
+      | sroc | chargeCategoryDescription | test< |
+      | sroc | lineDescription           | test< |
+      | sroc | chargePeriod              | test< |
+      | sroc | customerReference         | test— |
+      | sroc | licenceNumber             | test— |
+      | sroc | areaCode                  | test— |
+      | sroc | chargeCategoryDescription | test— |
+      | sroc | lineDescription           | test— |
+      | sroc | chargePeriod              | test— |

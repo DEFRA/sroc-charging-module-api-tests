@@ -492,3 +492,25 @@ And('I send the following valid Billrun and transaction combinations it creates 
     })
   })
 })
+
+And('I send the following properties with special characters I am told the request cannot be accepted', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const value = row[2]
+    const fixtureName = `standard.${ruleset}.transaction`
+
+    cy.log(`Testing '${ruleset}' property '${property}' does not accept requests containing '${value}'`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture[property] = value
+
+      cy.get('@billRun').then((billRun) => {
+        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+          expect(response.status).to.equal(422)
+          expect(response.body.message).to.equal('We cannot accept any request that contains the following characters: ? £ — ≤ ≥ “ ”')
+        })
+      })
+    })
+  })
+})
