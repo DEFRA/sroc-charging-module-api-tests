@@ -126,10 +126,10 @@ Feature: Create Transaction Validation
   Scenario: Checks data values are not below the minimum expected (SROC)
     When I request a valid new sroc bill run
      And I send the following properties at less than their minimum I am told what they should be
-      | sroc    | authorisedDays   | 0 | = |
-      | sroc    | billableDays     | 0 | = |
-      | sroc    | authorisedVolume | 0 | > |
-      | sroc    | actualVolume     | 0 | > |
+      | sroc | authorisedDays   | 0 | = |
+      | sroc | billableDays     | 0 | = |
+      | sroc | authorisedVolume | 0 | > |
+      | sroc | actualVolume     | 0 | > |
 
   Scenario: Checks data values are not below the minimum expected (PRESROC)
     When I request a valid new presroc bill run
@@ -141,8 +141,8 @@ Feature: Create Transaction Validation
   Scenario: Checks data values are not above the maximum expected (SROC)
     When I request a valid new sroc bill run
      And I send the following properties at more than their maximum I am told what they should be
-      | sroc    | authorisedDays   | 366 |
-      | sroc    | billableDays     | 366 |
+      | sroc | authorisedDays   | 366 |
+      | sroc | billableDays     | 366 |
 
   Scenario: Checks data values are not above the maximum expected (PRESROC)
     When I request a valid new presroc bill run
@@ -153,8 +153,8 @@ Feature: Create Transaction Validation
   Scenario: Check period start and end dates fall in the same financial year (SROC)
     When I request a valid new sroc bill run
      And I send the following period start and end dates I am told what financial year periodEnd must be
-      | sroc    | 01-APR-2022 | 01-APR-2023 | 2022 |
-      | sroc    | 31-MAR-2023 | 01-APR-2023 | 2022 |
+      | sroc | 01-APR-2022 | 01-APR-2023 | 2022 |
+      | sroc | 31-MAR-2023 | 01-APR-2023 | 2022 |
 
   Scenario: Check period start and end dates fall in the same financial year (PRESROC)
     When I request a valid new presroc bill run
@@ -165,7 +165,7 @@ Feature: Create Transaction Validation
   Scenario: Checks that periodStart is less than or equal to periodEnd (SROC)
     When I request a valid new sroc bill run
      And I send the following period dates I am told that periodStart must be less than or equal to periodEnd
-      | sroc    | 01-APR-2022 | 31-MAR-2022 |
+      | sroc | 01-APR-2022 | 31-MAR-2022 |
 
   Scenario: Checks that periodStart is less than or equal to periodEnd (PRESROC)
     When I request a valid new presroc bill run
@@ -175,7 +175,7 @@ Feature: Create Transaction Validation
   Scenario: Checks that periodStart is greater than or equal to the ruleset start date (SROC)
     When I request a valid new sroc bill run
      And I send the following period dates I am told that periodStart is before the ruleset start date
-      | sroc    | 01-APR-2020 | 31-MAR-2021 | 2021-04-01 |
+      | sroc | 01-APR-2020 | 31-MAR-2021 | 2021-04-01 |
 
   Scenario: Checks that periodStart is greater than or equal to the ruleset start date (PRESROC)
     When I request a valid new presroc bill run
@@ -246,4 +246,11 @@ Feature: Create Transaction Validation
       | sroc | regionalChargingArea | yorkshire                          |
       | sroc | regionalChargingArea | dee                                |
       | sroc | regionalChargingArea | wye                                |
-      | sroc | regionalChargingArea | wales                              |    
+      | sroc | regionalChargingArea | wales                              |
+
+  Scenario: Checks that supportedSourceName is set correctly according to how supportedSource is set
+    When I request a valid new sroc bill run
+     And I send the following supported source values I get the expected response
+      | sroc | false | Dee | 422 |
+      | sroc | true  |     | 422 |
+      | sroc | true  | Dee | 200 |
