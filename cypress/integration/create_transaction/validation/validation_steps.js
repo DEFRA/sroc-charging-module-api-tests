@@ -296,3 +296,28 @@ And('I send the following valid combinations it creates the transaction without 
     })
   })
 })
+
+And('I send the following properties it corrects the case and creates the transaction without error', (dataTable) => {
+    cy.wrap(dataTable.rawTable).each(row => {
+      const ruleset = row[0]
+      const property = row[1]
+      const value = row[2]
+      const fixtureName = `standard.${ruleset}.transaction`
+  
+      cy.log(`Testing '${ruleset}' corrects the case for '${property}' when the value is '${value}'`)
+  
+      cy.fixture(fixtureName).then((fixture) => {
+        // The CM will throw an error if supportedSourceName is defined but supportedSource is false. So, we need a bit
+        // of logic to handle this when testing supportedSourceName
+        fixture.supportedSource = (property === 'supportedSourceName')
+        fixture[property] = value
+  
+      cy.get('@billRun').then((billRun) => {  
+        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+          expect(response.status).to.equal(201)
+          expect(response.body).to.have.property('transaction')
+          })
+        })
+      })
+    })
+  })
