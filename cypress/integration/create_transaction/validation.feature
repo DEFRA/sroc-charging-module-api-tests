@@ -98,13 +98,27 @@ Feature: Create Transaction Validation
       | presroc | volume              | number  |
 
   Scenario: Checks integer data properties are not sent as decimals (SROC)
-    When I request a valid new presroc bill run
+    When I request a valid new sroc bill run
      And I send the following properties as decimals I am told they should be integers
-      | sroc    | authorisedDays |
-      | sroc    | billableDays   |
+      | sroc | authorisedDays |
+      | sroc | billableDays   |
 
   Scenario: Checks integer data properties are not sent as decimals (PRESROC)
     When I request a valid new presroc bill run
      And I send the following properties as decimals I am told they should be integers    
       | presroc | authorisedDays |
       | presroc | billableDays   |
+
+  Scenario: Allows decimal values in number data properties (SROC)
+    When I request a valid new sroc bill run
+     And I send the following properties as decimals creates the transaction without error
+      | sroc | abatementFactor     | number  |
+      | sroc | aggregateProportion | number  |
+      | sroc | authorisedVolume    | number  |
+      | sroc | actualVolume        | number  |
+
+  Scenario: Allows decimal values in number data properties (PRESROC)
+    When I request a valid new presroc bill run
+     And I send the following properties as decimals creates the transaction without error    
+      | presroc | section126Factor    | number  |
+      | presroc | volume              | number  |    

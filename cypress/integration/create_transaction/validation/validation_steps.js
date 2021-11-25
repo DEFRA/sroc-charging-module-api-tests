@@ -93,3 +93,24 @@ And('I send the following properties as decimals I am told they should be intege
       })
     })
   })
+
+When('I send the following properties as decimals creates the transaction without error', (dataTable) => {
+    cy.wrap(dataTable.rawTable).each(row => {
+      const ruleset = row[0]
+      const property = row[1]
+      const fixtureName = `standard.${ruleset}.transaction`
+  
+      cy.log(`Testing '${ruleset}' number property '${property}' likes decimals`)
+  
+      cy.fixture(fixtureName).then((fixture) => {
+        fixture[property] = 1.1
+        
+      cy.get('@billRun').then((billRun) => {  
+        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+          expect(response.status).to.equal(201)
+          expect(response.body).to.have.property('transaction')
+          })
+        })
+      })
+    })
+  })
