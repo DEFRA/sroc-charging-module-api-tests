@@ -388,3 +388,47 @@ And('I send the following properties with more than their maximum chars I am tol
     })
   })
 })
+
+And('I send the following values it creates the transaction without error', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const value = row[2]
+    const fixtureName = `standard.${ruleset}.transaction`
+
+    cy.log(`Testing '${ruleset}' accepts '${value}' as the value for '${property}'`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture[property] = value
+
+      cy.get('@billRun').then((billRun) => {
+        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+          expect(response.status).to.equal(201)
+          expect(response.body).to.have.property('transaction')
+        })
+      })
+    })
+  })
+})
+
+And('I send invalid areaCode I am told what it should be', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const value = row[2]
+    const fixtureName = `standard.${ruleset}.transaction`
+
+    cy.log(`Testing '${ruleset}' rejects '${value}' as the value for '${property}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture[property] = value
+
+      cy.get('@billRun').then((billRun) => {
+        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+          expect(response.status).to.equal(422)
+          expect(response.body.message).to.equal(`"${property}" must be one of [ARCA, AREA, ARNA, CASC, MIDLS, MIDLT, MIDUS, MIDUT, AACOR, AADEV, AANWX, AASWX, NWCEN, NWNTH, NWSTH, HAAR, KAEA, SAAR, AGY2N, AGY2S, AGY3, AGY3N, AGY3S, AGY4N, AGY4S, N, SE, SE1, SE2, SW, ABNRTH, DALES, NAREA, RIDIN, DEFAULT, MULTI]`)
+        })
+      })
+    })
+  })
+})

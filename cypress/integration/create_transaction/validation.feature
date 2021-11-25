@@ -262,4 +262,49 @@ Feature: Create Transaction Validation
       | sroc | licenceNumber             | 150 |
       | sroc | chargeCategoryDescription | 150 |
       | sroc | lineDescription           | 240 |
-      | sroc | chargePeriod              | 150 |    
+      | sroc | chargePeriod              | 150 |
+
+   Scenario: Checks that areaCode rejects unexpected values (SROC)
+    When I request a valid new sroc bill run
+     And I send invalid areaCode I am told what it should be
+      | sroc | areaCode | 1 |
+
+  Scenario: Checks that areaCode allows expected values (SROC)
+    When I request a valid new sroc bill run
+     And I send the following values it creates the transaction without error
+      | sroc | areaCode | ArCA    |
+      | sroc | areaCode | AREA    |
+      | sroc | areaCode | ARNA    | 
+      | sroc | areaCode | CASc    |
+      | sroc | areaCode | MIDLS   |
+      | sroc | areaCode | MIDLT   |
+      | sroc | areaCode | MIDUS   |
+      | sroc | areaCode | MIDUT   |
+      | sroc | areaCode | AACOR   |
+      | sroc | areaCode | AaDEV   |
+      | sroc | areaCode | AANWX   | 
+      | sroc | areaCode | AASWX   |
+      | sroc | areaCode | NWCEN   | 
+      | sroc | areaCode | NWNTH   |
+      | sroc | areaCode | NWSTH   |
+      | sroc | areaCode | HAAR    |
+      | sroc | areaCode | KAEA    |
+      | sroc | areaCode | SAAR    |
+      | sroc | areaCode | AGY2N   |
+      | sroc | areaCode | AGY2S   |
+      | sroc | areaCode | AGY3    | 
+      | sroc | areaCode | AGY3N   |
+      | sroc | areaCode | AGY3S   | 
+      | sroc | areaCode | AgY4N   |
+      | sroc | areaCode | AGY4S   |
+      | sroc | areaCode | N       |
+      | sroc | areaCode | SE      |
+      | sroc | areaCode | SE1     |
+      | sroc | areaCode | SE2     |
+      | sroc | areaCode | SW      |
+      | sroc | areaCode | ABNRTH  |
+      | sroc | areaCode | DALES   | 
+      | sroc | areaCode | NAREA   |
+      | sroc | areaCode | RIDIN   | 
+      | sroc | areaCode | DEFAULT |
+      | sroc | areaCode | MULTI   |   
