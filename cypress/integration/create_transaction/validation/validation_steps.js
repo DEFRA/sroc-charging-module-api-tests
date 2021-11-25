@@ -48,3 +48,26 @@ Then('If I do not send the following values I get the expected response', (dataT
       })
     })
   })
+
+And('I send the following properties with the wrong data types I am told what they should be', (dataTable) => {
+    cy.wrap(dataTable.rawTable).each(row => {
+      const ruleset = row[0]
+      const property = row[1]
+      const correctDataType = row[2]
+      const fixtureName = `standard.${ruleset}.transaction`
+  
+      cy.log(`Testing '${ruleset}' property '${property}' should be a ${correctDataType}`)
+  
+      cy.fixture(fixtureName).then((fixture) => {
+        fixture.ruleset = ruleset
+        fixture[property] = 'crazy'
+  
+      cy.get('@billRun').then((billRun) => {
+        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+          expect(response.status).to.equal(422)
+          expect(response.body.message).to.contain(`"${property}" must be a ${correctDataType}`)
+          })
+        })
+      })
+    })
+  })
