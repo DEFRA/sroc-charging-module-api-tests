@@ -1,5 +1,5 @@
 import { Then, When, And } from 'cypress-cucumber-preprocessor/steps'
-// import BillRunEndpoints from '../../../endpoints/bill_run_endpoints'
+import BillRunEndpoints from '../../../endpoints/bill_run_endpoints'
 import TransactionEndpoints from '../../../endpoints/transaction_endpoints'
 
 When('I do not send the following values I get the expected response', (dataTable) => {
@@ -427,6 +427,66 @@ And('I send invalid areaCode I am told what it should be', (dataTable) => {
         TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
           expect(response.status).to.equal(422)
           expect(response.body.message).to.equal(`"${property}" must be one of [ARCA, AREA, ARNA, CASC, MIDLS, MIDLT, MIDUS, MIDUT, AACOR, AADEV, AANWX, AASWX, NWCEN, NWNTH, NWSTH, HAAR, KAEA, SAAR, AGY2N, AGY2S, AGY3, AGY3N, AGY3S, AGY4N, AGY4S, N, SE, SE1, SE2, SW, ABNRTH, DALES, NAREA, RIDIN, DEFAULT, MULTI]`)
+        })
+      })
+    })
+  })
+})
+
+And('I send the following invalid combinations I am told Billrun and transaction regions do not match', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const value = row[1]
+    const property = row[2]
+    const value1 = row[3]
+    const fixtureName = `standard.${ruleset}.transaction`
+
+    cy.log(`Testing '${ruleset}' billRun for region '${value}' rejects transactions for region '${value1}'`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture[property] = value1
+
+      cy.log(`Creating '${ruleset}' bill run for region '${value}'`)
+
+      BillRunEndpoints.create({ region: `${value}`, ruleset: `${ruleset}` }).then((response) => {
+        expect(response.status).to.equal(201)
+        cy.wrap(response.body.billRun).as('billRun')
+
+        cy.get('@billRun').then((billRun) => {
+          TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+            expect(response.status).to.equal(422)
+            expect(response.body.message).to.equal(`Bill run ${billRun.id} is for region ${value} but transaction is for region ${value1}.`)
+          })
+        })
+      })
+    })
+  })
+})
+
+And('I send the following valid Billrun and transaction combinations it creates the transaction without error', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const value = row[1]
+    const property = row[2]
+    const value1 = row[3]
+    const fixtureName = `standard.${ruleset}.transaction`
+
+    cy.log(`Testing '${ruleset}' billRun for region '${value}' accepts transactions for region '${value1}'`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture[property] = value1
+
+      cy.log(`Creating '${ruleset}' bill run for region '${value}'`)
+
+      BillRunEndpoints.create({ region: `${value}`, ruleset: `${ruleset}` }).then((response) => {
+        expect(response.status).to.equal(201)
+        cy.wrap(response.body.billRun).as('billRun')
+
+        cy.get('@billRun').then((billRun) => {
+          TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+            expect(response.status).to.equal(201)
+            expect(response.body).to.have.property('transaction')
+          })
         })
       })
     })

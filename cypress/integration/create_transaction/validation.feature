@@ -307,4 +307,28 @@ Feature: Create Transaction Validation
       | sroc | areaCode | NAREA   |
       | sroc | areaCode | RIDIN   | 
       | sroc | areaCode | DEFAULT |
-      | sroc | areaCode | MULTI   |   
+      | sroc | areaCode | MULTI   |
+
+  Scenario: Checks that region rejects unexpected values (SROC)
+    When I request a valid new sroc bill run
+     And I send the following invalid combinations I am told Billrun and transaction regions do not match
+      | sroc | A | region | Y |
+      | sroc | B | region | W |
+      | sroc | E | region | T |
+      | sroc | N | region | S |
+      | sroc | S | region | N |
+      | sroc | T | region | E |
+      | sroc | W | region | B |
+      | sroc | Y | region | A |
+
+   Scenario: Checks that region allows expected values (SROC) 
+    When I request a valid new sroc bill run
+     And I send the following valid Billrun and transaction combinations it creates the transaction without error
+      | sroc | A | region | A |
+      | sroc | B | region | B |
+      | sroc | E | region | E |
+      | sroc | N | region | N |
+      | sroc | S | region | S |
+      | sroc | T | region | T |
+      | sroc | W | region | W |
+      | sroc | Y | region | Y |     
