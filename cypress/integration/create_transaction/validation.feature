@@ -181,3 +181,25 @@ Feature: Create Transaction Validation
     When I request a valid new presroc bill run
      And I send the following period dates I am told that periodStart is before the ruleset start date    
       | presroc | 01-APR-2013 | 31-MAR-2014 | 2014-04-01 |
+
+# The values in the table relate to what will be sent in the request plus what the CM will report as invalid and what
+# it should actually be
+# | ruleset | twoPartTariff | compensationCharge | section127Agreement | invalid property | should be |
+  Scenario: Checks for invalid combinations
+    When I request a valid new sroc bill run
+     And I send the following invalid combinations I am told what value a property should be
+      | sroc | true  | false | false  | section127Agreement | true  |
+      | sroc | false | true  | true   | section127Agreement | false |
+      | sroc | true  | true  | false  | twoPartTariff       | false |
+      | sroc | true  | true  | true   | twoPartTariff       | false |
+
+  # The values in the table relate to what will be sent in the request for
+  # | ruleset | twoPartTariff | compensationCharge | section127Agreement |
+  Scenario: Allows valid combinations
+    When I request a valid new sroc bill run
+     And I send the following valid combinations it creates the transaction without error
+      | sroc | true  | false | true  |
+      | sroc | false | false | true  |
+      | sroc | false | true  | false |
+      | sroc | true  | false | true  |
+      | sroc | false | false | false |    

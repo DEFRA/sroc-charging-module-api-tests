@@ -237,3 +237,62 @@ And('I send the following period dates I am told that periodStart is before the 
     })
   })
 })
+
+And('I send the following invalid combinations I am told what value a property should be', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+
+    const params = {
+      twoPartTariff: (row[1] === 'true'),
+      compensationCharge: (row[2] === 'true'),
+      section127Agreement: (row[3] === 'true')
+    }
+
+    const incorrectProperty = row[4]
+    const correctValue = row[5]
+    const fixtureName = `standard.${ruleset}.transaction`
+
+    cy.log(`Testing '${ruleset}' combination ${JSON.stringify(params)}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.twoPartTariff = params.twoPartTariff
+      fixture.compensationCharge = params.compensationCharge
+      fixture.section127Agreement = params.section127Agreement
+
+      cy.get('@billRun').then((billRun) => {
+        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+          expect(response.status).to.equal(422)
+          expect(response.body.message).to.equal(`"${incorrectProperty}" must be [${correctValue}]`)
+        })
+      })
+    })
+  })
+})
+
+And('I send the following valid combinations it creates the transaction without error', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+
+    const params = {
+      twoPartTariff: (row[1] === 'true'),
+      compensationCharge: (row[2] === 'true'),
+      section127Agreement: (row[3] === 'true')
+    }
+    const fixtureName = `standard.${ruleset}.transaction`
+
+    cy.log(`Testing '${ruleset}' combination ${JSON.stringify(params)}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.twoPartTariff = params.twoPartTariff
+      fixture.compensationCharge = params.compensationCharge
+      fixture.section127Agreement = params.section127Agreement
+
+      cy.get('@billRun').then((billRun) => {
+        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+          expect(response.status).to.equal(201)
+          expect(response.body).to.have.property('transaction')
+        })
+      })
+    })
+  })
+})
