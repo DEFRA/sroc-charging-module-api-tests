@@ -71,3 +71,25 @@ And('I send the following properties with the wrong data types I am told what th
       })
     })
   })
+
+And('I send the following properties as decimals I am told they should be integers', (dataTable) => {
+    cy.wrap(dataTable.rawTable).each(row => {
+      const ruleset = row[0]
+      const property = row[1]
+      const fixtureName = `standard.${ruleset}.transaction`
+  
+      cy.log(`Testing '${ruleset}' integer property '${property}' doesn't like decimals`)
+  
+      cy.fixture(fixtureName).then((fixture) => {
+        fixture.ruleset = ruleset
+        fixture[property] = 1.1
+
+      cy.get('@billRun').then((billRun) => {
+        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+          expect(response.status).to.equal(422)
+          expect(response.body.message).to.contain(`"${property}" must be an integer`)
+          })
+        })
+      })
+    })
+  })

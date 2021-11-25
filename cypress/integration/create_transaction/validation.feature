@@ -68,21 +68,21 @@ Feature: Create Transaction Validation
   Scenario: Checks data types of values (SROC)
     When I request a valid new sroc bill run
      And I send the following properties with the wrong data types I am told what they should be
-      | sroc    | winterOnly          | boolean |
-      | sroc    | section130Agreement | boolean |
-      | sroc    | section127Agreement | boolean |
-      | sroc    | twoPartTariff       | boolean |
-      | sroc    | compensationCharge  | boolean |
-      | sroc    | waterCompanyCharge  | boolean |
-      | sroc    | supportedSource     | boolean |
-      | sroc    | credit              | boolean |
-      | sroc    | waterUndertaker     | boolean |
-      | sroc    | abatementFactor     | number  |
-      | sroc    | aggregateProportion | number  |
-      | sroc    | authorisedDays      | number  |
-      | sroc    | billableDays        | number  |
-      | sroc    | authorisedVolume    | number  |
-      | sroc    | actualVolume        | number  |
+      | sroc | winterOnly          | boolean |
+      | sroc | section130Agreement | boolean |
+      | sroc | section127Agreement | boolean |
+      | sroc | twoPartTariff       | boolean |
+      | sroc | compensationCharge  | boolean |
+      | sroc | waterCompanyCharge  | boolean |
+      | sroc | supportedSource     | boolean |
+      | sroc | credit              | boolean |
+      | sroc | waterUndertaker     | boolean |
+      | sroc | abatementFactor     | number  |
+      | sroc | aggregateProportion | number  |
+      | sroc | authorisedDays      | number  |
+      | sroc | billableDays        | number  |
+      | sroc | authorisedVolume    | number  |
+      | sroc | actualVolume        | number  |
 
   Scenario: Checks data types of values (PRESROC)
     When I request a valid new presroc bill run
@@ -95,4 +95,16 @@ Feature: Create Transaction Validation
       | presroc | authorisedDays      | number  |
       | presroc | billableDays        | number  |
       | presroc | section126Factor    | number  |
-      | presroc | volume              | number  |    
+      | presroc | volume              | number  |
+
+  Scenario: Checks integer data properties are not sent as decimals (SROC)
+    When I request a valid new presroc bill run
+     And I send the following properties as decimals I am told they should be integers
+      | sroc    | authorisedDays |
+      | sroc    | billableDays   |
+
+  Scenario: Checks integer data properties are not sent as decimals (PRESROC)
+    When I request a valid new presroc bill run
+     And I send the following properties as decimals I am told they should be integers    
+      | presroc | authorisedDays |
+      | presroc | billableDays   |
