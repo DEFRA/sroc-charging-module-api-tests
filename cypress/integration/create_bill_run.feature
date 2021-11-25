@@ -16,7 +16,7 @@ Feature: Create a Bill Run
 
   #AC3
   Scenario: The ruleset flag is not mandatory
-    When I request a valid new bill run
+    When I request a valid new sroc bill run
     Then the bill run ID and number are returned
 
   Scenario Outline: Create bill run accepts a region flag
@@ -43,8 +43,8 @@ Feature: Create a Bill Run
       | sroc    | Y      |
 
   Scenario: Bill run numbers are issued in ascending order
-    When I request a valid new bill run
-    And I request another valid new bill run
+    When I request a valid new sroc bill run
+    And I request another valid new sroc bill run
     Then the bill run numbers are issued in ascending order
 
   #AC2
@@ -77,5 +77,5 @@ Feature: Create a Bill Run
       | presroc | 123    |
 
   Scenario: The Bill Run does not contain any transactions when created
-    When I request a valid new bill run
+    When I request a valid new sroc bill run
     Then the bill run does not contain any transactions

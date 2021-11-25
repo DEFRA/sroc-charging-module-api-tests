@@ -5,15 +5,15 @@ import { And, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import BillRunEndpoints from '../../endpoints/bill_run_endpoints'
 import TransactionEndpoints from '../../endpoints/transaction_endpoints'
 
-When('I request a valid new bill run', () => {
-  BillRunEndpoints.create({ region: 'A' }).then((response) => {
+When('I request a valid new {word} bill run', (ruleset) => {
+  BillRunEndpoints.create({ region: 'A', ruleset: ruleset }).then((response) => {
     expect(response.status).to.equal(201)
     cy.wrap(response.body.billRun).as('billRun')
   })
 })
 
-And('I request another valid new bill run', () => {
-  BillRunEndpoints.create({ region: 'A' }).then((response) => {
+And('I request another valid new {word} bill run', (ruleset) => {
+  BillRunEndpoints.create({ region: 'A', ruleset: ruleset }).then((response) => {
     expect(response.status).to.equal(201)
     cy.wrap(response.body.billRun).as('billRun1')
   })
