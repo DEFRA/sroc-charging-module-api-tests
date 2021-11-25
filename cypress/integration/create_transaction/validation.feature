@@ -254,3 +254,12 @@ Feature: Create Transaction Validation
       | sroc | false | Dee | 422 |
       | sroc | true  |     | 422 |
       | sroc | true  | Dee | 200 |
+
+  Scenario: Checks data strings are not above the maximum expected (SROC)
+    When I request a valid new sroc bill run
+     And I send the following properties with more than their maximum chars I am told what they should be
+      | sroc | customerReference         | 12  |
+      | sroc | licenceNumber             | 150 |
+      | sroc | chargeCategoryDescription | 150 |
+      | sroc | lineDescription           | 240 |
+      | sroc | chargePeriod              | 150 |    

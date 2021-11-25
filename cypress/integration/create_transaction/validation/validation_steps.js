@@ -298,52 +298,52 @@ And('I send the following valid combinations it creates the transaction without 
 })
 
 And('I send the following properties it corrects the case and creates the transaction without error', (dataTable) => {
-    cy.wrap(dataTable.rawTable).each(row => {
-      const ruleset = row[0]
-      const property = row[1]
-      const value = row[2]
-      const fixtureName = `standard.${ruleset}.transaction`
-  
-      cy.log(`Testing '${ruleset}' corrects the case for '${property}' when the value is '${value}'`)
-  
-      cy.fixture(fixtureName).then((fixture) => {
-        // The CM will throw an error if supportedSourceName is defined but supportedSource is false. So, we need a bit
-        // of logic to handle this when testing supportedSourceName
-        fixture.supportedSource = (property === 'supportedSourceName')
-        fixture[property] = value
-  
-      cy.get('@billRun').then((billRun) => {  
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const value = row[2]
+    const fixtureName = `standard.${ruleset}.transaction`
+
+    cy.log(`Testing '${ruleset}' corrects the case for '${property}' when the value is '${value}'`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      // The CM will throw an error if supportedSourceName is defined but supportedSource is false. So, we need a bit
+      // of logic to handle this when testing supportedSourceName
+      fixture.supportedSource = (property === 'supportedSourceName')
+      fixture[property] = value
+
+      cy.get('@billRun').then((billRun) => {
         TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
           expect(response.status).to.equal(201)
           expect(response.body).to.have.property('transaction')
-          })
         })
       })
     })
   })
+})
 
 And('I send the following supported source values I get the expected response', (dataTable) => {
-    cy.wrap(dataTable.rawTable).each(row => {
-      const ruleset = row[0]
-      const supportedSource = row[1]
-      const supportedSourceName = row[2]
-      const expectedStatus = row[3]
-      const fixtureName = `standard.${ruleset}.transaction`
-  
-      cy.log(`Testing '${ruleset}' supportedSource=${supportedSource} and supportedSourceName='${supportedSourceName}'`)
-  
-      cy.fixture(fixtureName).then((fixture) => {
-        fixture.supportedSource = supportedSource
-        fixture.supportedSourceName = supportedSourceName
-  
-      cy.get('@billRun').then((billRun) => {  
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const supportedSource = row[1]
+    const supportedSourceName = row[2]
+    const expectedStatus = row[3]
+    const fixtureName = `standard.${ruleset}.transaction`
+
+    cy.log(`Testing '${ruleset}' supportedSource=${supportedSource} and supportedSourceName='${supportedSourceName}'`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.supportedSource = supportedSource
+      fixture.supportedSourceName = supportedSourceName
+
+      cy.get('@billRun').then((billRun) => {
         TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
           if (expectedStatus === '200') {
             expect(response.status).to.equal(201)
             expect(response.body).to.have.property('transaction')
           } else {
             expect(response.status).to.equal(422)
-  
+
             if ((supportedSource === 'true')) {
               // If supported source was true then we get this error because supportedSourceName is null/undefined
               expect(response.body.message).to.equal('"supportedSourceName" is required')
@@ -352,8 +352,39 @@ And('I send the following supported source values I get the expected response', 
               expect(response.body.message).to.equal('"supportedSourceName" is not allowed')
             }
           }
-          })
         })
       })
     })
-  })  
+  })
+})
+
+And('I send the following properties with more than their maximum chars I am told what they should be', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const maximum = row[2]
+    const fixtureName = `standard.${ruleset}.transaction`
+
+    function getString (length) {
+      const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+      let result = ''
+      for (let i = 0; i < length; i++) {
+        result += randomChars.charAt(Math.floor(Math.random() * randomChars.length))
+      }
+      return result
+    }
+
+    cy.log(`Testing '${ruleset}' number property '${property}' is less than or equal to a maximum of ${maximum}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture[property] = getString(maximum) + 1
+
+      cy.get('@billRun').then((billRun) => {
+        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+          expect(response.status).to.equal(422)
+          expect(response.body.message).to.equal(`"${property}" length must be less than or equal to ${maximum} characters long`)
+        })
+      })
+    })
+  })
+})
