@@ -121,4 +121,31 @@ Feature: Create Transaction Validation
     When I request a valid new presroc bill run
      And I send the following properties as decimals creates the transaction without error    
       | presroc | section126Factor    | number  |
-      | presroc | volume              | number  |    
+      | presroc | volume              | number  |
+
+  Scenario: Checks data values are not below the minimum expected (SROC)
+    When I request a valid new sroc bill run
+     And I send the following properties at less than their minimum I am told what they should be
+      | sroc    | authorisedDays   | 0 | = |
+      | sroc    | billableDays     | 0 | = |
+      | sroc    | authorisedVolume | 0 | > |
+      | sroc    | actualVolume     | 0 | > |
+
+  Scenario: Checks data values are not below the minimum expected (PRESROC)
+    When I request a valid new presroc bill run
+     And I send the following properties at less than their minimum I am told what they should be  
+      | presroc | authorisedDays   | 0 | = |
+      | presroc | billableDays     | 0 | = |
+      | presroc | volume           | 0 | = |
+
+  Scenario: Checks data values are not above the maximum expected (SROC)
+    When I request a valid new sroc bill run
+     And I send the following properties at more than their maximum I am told what they should be
+      | sroc    | authorisedDays   | 366 |
+      | sroc    | billableDays     | 366 |
+
+  Scenario: Checks data values are not above the maximum expected (PRESROC)
+    When I request a valid new presroc bill run
+     And I send the following properties at more than their maximum I am told what they should be    
+      | presroc | authorisedDays   | 366 |
+      | presroc | billableDays     | 366 |    
