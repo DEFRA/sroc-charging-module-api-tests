@@ -148,4 +148,36 @@ Feature: Create Transaction Validation
     When I request a valid new presroc bill run
      And I send the following properties at more than their maximum I am told what they should be    
       | presroc | authorisedDays   | 366 |
-      | presroc | billableDays     | 366 |    
+      | presroc | billableDays     | 366 |
+  
+  Scenario: Check period start and end dates fall in the same financial year (SROC)
+    When I request a valid new sroc bill run
+     And I send the following period start and end dates I am told what financial year periodEnd must be
+      | sroc    | 01-APR-2022 | 01-APR-2023 | 2022 |
+      | sroc    | 31-MAR-2023 | 01-APR-2023 | 2022 |
+
+  Scenario: Check period start and end dates fall in the same financial year (PRESROC)
+    When I request a valid new presroc bill run
+     And I send the following period start and end dates I am told what financial year periodEnd must be    
+      | presroc | 01-APR-2020 | 01-APR-2021 | 2020 |
+      | presroc | 31-MAR-2021 | 01-APR-2021 | 2020 |
+
+  Scenario: Checks that periodStart is less than or equal to periodEnd (SROC)
+    When I request a valid new sroc bill run
+     And I send the following period dates I am told that periodStart must be less than or equal to periodEnd
+      | sroc    | 01-APR-2022 | 31-MAR-2022 |
+
+  Scenario: Checks that periodStart is less than or equal to periodEnd (PRESROC)
+    When I request a valid new presroc bill run
+     And I send the following period dates I am told that periodStart must be less than or equal to periodEnd   
+      | presroc | 01-APR-2019 | 31-MAR-2019 |
+
+  Scenario: Checks that periodStart is greater than or equal to the ruleset start date (SROC)
+    When I request a valid new sroc bill run
+     And I send the following period dates I am told that periodStart is before the ruleset start date
+      | sroc    | 01-APR-2020 | 31-MAR-2021 | 2021-04-01 |
+
+  Scenario: Checks that periodStart is greater than or equal to the ruleset start date (PRESROC)
+    When I request a valid new presroc bill run
+     And I send the following period dates I am told that periodStart is before the ruleset start date    
+      | presroc | 01-APR-2013 | 31-MAR-2014 | 2014-04-01 |

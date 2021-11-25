@@ -1,5 +1,5 @@
-import { Then, When } from 'cypress-cucumber-preprocessor/steps'
-import BillRunEndpoints from '../../../endpoints/bill_run_endpoints'
+import { Then, When, And } from 'cypress-cucumber-preprocessor/steps'
+// import BillRunEndpoints from '../../../endpoints/bill_run_endpoints'
 import TransactionEndpoints from '../../../endpoints/transaction_endpoints'
 
 When('I do not send the following values I get the expected response', (dataTable) => {
@@ -158,6 +158,80 @@ And('I send the following properties at more than their maximum I am told what t
         TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
           expect(response.status).to.equal(422)
           expect(response.body.message).to.equal(`"${property}" must be less than or equal to ${maximum}`)
+        })
+      })
+    })
+  })
+})
+
+And('I send the following period start and end dates I am told what financial year periodEnd must be', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const periodStart = row[1]
+    const periodEnd = row[2]
+    const financialYear = row[3]
+    const fixtureName = `standard.${ruleset}.transaction`
+
+    cy.log(`Testing '${ruleset}' when period is ${periodStart}-${periodEnd} periodEnd year should be ${financialYear}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.periodStart = periodStart
+      fixture.periodEnd = periodEnd
+
+      cy.get('@billRun').then((billRun) => {
+        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+          expect(response.status).to.equal(422)
+          expect(response.body.message).to.equal(`"periodEndFinancialYear" must be [${financialYear}]`)
+        })
+      })
+    })
+  })
+})
+
+And('I send the following period dates I am told that periodStart must be less than or equal to periodEnd',
+  (dataTable) => {
+    cy.wrap(dataTable.rawTable).each(row => {
+      const ruleset = row[0]
+      const periodStart = row[1]
+      const periodEnd = row[2]
+      const fixtureName = `standard.${ruleset}.transaction`
+
+      cy.log(`Testing '${ruleset}' when period is ${periodStart}-${periodEnd} periodStart is invalid`)
+
+      cy.fixture(fixtureName).then((fixture) => {
+        fixture.periodStart = periodStart
+        fixture.periodEnd = periodEnd
+
+        cy.get('@billRun').then((billRun) => {
+          TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+            expect(response.status).to.equal(422)
+            expect(response.body.message).to.equal('"periodStart" must be less than or equal to "ref:periodEnd"')
+          })
+        })
+      })
+    })
+  })
+
+And('I send the following period dates I am told that periodStart is before the ruleset start date', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const periodStart = row[1]
+    const periodEnd = row[2]
+    const startDate = row[3]
+    const fixtureName = `standard.${ruleset}.transaction`
+
+    cy.log(`Testing '${ruleset}' when period is ${periodStart}-${periodEnd} it's before ruleset start of ${startDate}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.periodStart = periodStart
+      fixture.periodEnd = periodEnd
+
+      cy.get('@billRun').then((billRun) => {
+        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+          expect(response.status).to.equal(422)
+          expect(response.body.message)
+            .to
+            .equal(`"periodStart" must be greater than or equal to "${startDate}T00:00:00.000Z"`)
         })
       })
     })
