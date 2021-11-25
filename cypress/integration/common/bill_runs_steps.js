@@ -107,7 +107,7 @@ Then('the bill run does not contain any transactions', () => {
 })
 
 And('I add {int} {word} transactions to it', (numberToAdd, transactionType) => {
-  cy.fixture(`${transactionType}.transaction`).then((transaction) => {
+  cy.fixture(`${transactionType}.presroc.transaction`).then((transaction) => {
     transaction.customerReference = 'C000000001'
     transaction.licenceNumber = 'LIC/00000/01'
 
