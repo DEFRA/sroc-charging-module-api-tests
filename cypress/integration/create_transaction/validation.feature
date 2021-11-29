@@ -366,18 +366,18 @@ Feature: Create Transaction Validation
       | sroc | chargeCategoryDescription | test£ |
       | sroc | lineDescription           | test£ |
       | sroc | chargePeriod              | test£ |
-      | sroc | customerReference         | test> |
-      | sroc | licenceNumber             | test> |
-      | sroc | areaCode                  | test> |
-      | sroc | chargeCategoryDescription | test> |
-      | sroc | lineDescription           | test> |
+      | sroc | customerReference         | test≥ |
+      | sroc | licenceNumber             | test≥ |
+      | sroc | areaCode                  | test≥ |
+      | sroc | chargeCategoryDescription | test≥ |
+      | sroc | lineDescription           | test≥ |
       | sroc | chargePeriod              | test> |
-      | sroc | customerReference         | test< |
-      | sroc | licenceNumber             | test< |
-      | sroc | areaCode                  | test< |
-      | sroc | chargeCategoryDescription | test< |
-      | sroc | lineDescription           | test< |
-      | sroc | chargePeriod              | test< |
+      | sroc | customerReference         | test≤ |
+      | sroc | licenceNumber             | test≤ |
+      | sroc | areaCode                  | test≤ |
+      | sroc | chargeCategoryDescription | test≤ |
+      | sroc | lineDescription           | test≤ |
+      | sroc | chargePeriod              | test≤ |
       | sroc | customerReference         | test— |
       | sroc | licenceNumber             | test— |
       | sroc | areaCode                  | test— |
