@@ -371,7 +371,7 @@ Feature: Create Transaction Validation
       | sroc | areaCode                  | test≥ |
       | sroc | chargeCategoryDescription | test≥ |
       | sroc | lineDescription           | test≥ |
-      | sroc | chargePeriod              | test> |
+      | sroc | chargePeriod              | test≥ |
       | sroc | customerReference         | test≤ |
       | sroc | licenceNumber             | test≤ |
       | sroc | areaCode                  | test≤ |
