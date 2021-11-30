@@ -37,3 +37,8 @@ Feature: Create Transaction General
     When I request a valid new sroc bill run
      And I add 2 standard sroc transactions to it with the same client IDs 
     Then I am told that the client ID must be unique
+
+  Scenario: A client ID can only be used once (PRESROC)
+    When I request a valid new presroc bill run
+     And I add 2 standard presroc transactions to it with the same client IDs 
+    Then I am told that the client ID must be unique
