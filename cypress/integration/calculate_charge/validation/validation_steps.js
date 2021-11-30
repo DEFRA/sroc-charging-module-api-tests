@@ -208,6 +208,21 @@ When('I send the following properties at more than their maximum I am told what 
   })
 })
 
+When('I send a section126Factor value with more than 3 decimal places I am told there are too many', () => {
+  cy.log("Testing 'presroc' property 'section126Factor' rejects 1.2345 (more than 3 decimal places)")
+
+  cy.fixture('calculate.presroc.charge').then((fixture) => {
+    fixture.section126Factor = 1.2345
+
+    CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+      expect(response.status).to.equal(422)
+      expect(response.body.message).to.equal('"section126Factor" must have no more than 3 decimal places')
+    })
+  })
+})
+
+
+
 When('I send the following period start and end dates I am told they must have a valid date format', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const ruleset = row[0]

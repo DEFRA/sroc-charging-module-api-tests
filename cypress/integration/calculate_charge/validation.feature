@@ -118,6 +118,11 @@ Feature: Calculate Charge Validation
       | presroc | authorisedDays   | 366 |
       | presroc | billableDays     | 366 |
 
+  # section126Factor only applies to presroc bill runs and has a limit on the number of decimal places. The rules
+  # service has the limitation and errors if a value with too many decimal places is sent through.
+  Scenario: Checks presroc section126Factor does not accept numbers with more than 3 decimal places
+    When I send a section126Factor value with more than 3 decimal places I am told there are too many
+
   Scenario: Checks period start and end dates are valid dates
     When I send the following period start and end dates I am told they must have a valid date format
       | sroc    | periodStart | -APR-2021   |
