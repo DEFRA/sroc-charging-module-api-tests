@@ -3,7 +3,9 @@ import TransactionEndpoints from '../../../endpoints/transaction_endpoints'
 
 And('I add 2 standard {word} transactions to it with the same client IDs', (ruleset) => {
   const fixtureName = `standard.${ruleset}.transaction`
-  const clientID = crypto.randomUUID()
+  const uuid = require('uuid')
+
+  const clientID = uuid.v4()
 
   cy.log(`Sending invalid '${ruleset}' transaction request`)
 

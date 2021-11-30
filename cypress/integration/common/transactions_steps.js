@@ -23,7 +23,9 @@ And('I add {int} {word} transactions to it', (numberToAdd, transactionType) => {
 
 And('I add a {word} {word} transaction to it', (transactionType, ruleset) => {
   const fixtureName = `${transactionType}.${ruleset}.transaction`
-  const clientID = crypto.randomUUID()
+  const uuid = require('uuid')
+
+  const clientID = uuid.v4()
 
   cy.fixture(fixtureName).then((fixture) => {
     fixture.clientId = clientID
