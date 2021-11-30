@@ -126,12 +126,23 @@ Feature: Calculate Charge Validation
       | sroc    | periodEnd   | -03-2022    |
       | sroc    | periodEnd   | 31--2022    |
       | sroc    | periodEnd   | 31-MAR-20-- |
-      | presroc | periodEnd   | 31-MAR-20-- |
       | presroc | periodStart | -APR-2020   |
       | presroc | periodStart | 01--2020    |
       | presroc | periodStart | 01-APR-20-- |
       | presroc | periodEnd   | -03-2021    |
       | presroc | periodEnd   | 31--2021    |
+      | presroc | periodEnd   | 31-MAR-20-- |
+
+  Scenario: Allows period start and end dates in various formats
+    When I send the following period start and end dates it calculates the charge without error
+      | sroc    | periodStart | 01-APR-2021 |
+      | sroc    | periodStart | 01-04-2021  |
+      | sroc    | periodEnd   | 31-MAR-2022 |
+      | sroc    | periodEnd   | 31-03-2022  |
+      | presroc | periodStart | 01-APR-2018 |
+      | presroc | periodStart | 01-04-2018  |
+      | presroc | periodEnd   | 31-MAR-2019 |
+      | presroc | periodEnd   | 31-03-2019  |
 
   Scenario: Check period start and end dates fall in the same financial year
     When I send the following period start and end dates I am told what financial year periodEnd must be

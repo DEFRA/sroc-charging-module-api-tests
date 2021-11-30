@@ -233,6 +233,27 @@ When('I send the following period start and end dates I am told they must have a
   })
 })
 
+When('I send the following period start and end dates it calculates the charge without error', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const value = row[2]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' ${value} is a valid date format for ${property}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture[property] = value
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(200)
+        expect(response.body).to.have.property('calculation')
+      })
+    })
+  })
+})
+
 When('I send the following period start and end dates I am told what financial year periodEnd must be', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const ruleset = row[0]
