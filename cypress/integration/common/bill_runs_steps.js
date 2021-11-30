@@ -5,15 +5,15 @@ import { And, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import BillRunEndpoints from '../../endpoints/bill_run_endpoints'
 import TransactionEndpoints from '../../endpoints/transaction_endpoints'
 
-When('I request a valid new bill run', () => {
-  BillRunEndpoints.create({ region: 'A' }).then((response) => {
+When('I request a valid new {word} bill run', (ruleset) => {
+  BillRunEndpoints.create({ region: 'A', ruleset: ruleset }).then((response) => {
     expect(response.status).to.equal(201)
     cy.wrap(response.body.billRun).as('billRun')
   })
 })
 
-And('I request another valid new bill run', () => {
-  BillRunEndpoints.create({ region: 'A' }).then((response) => {
+And('I request another valid new {word} bill run', (ruleset) => {
+  BillRunEndpoints.create({ region: 'A', ruleset: ruleset }).then((response) => {
     expect(response.status).to.equal(201)
     cy.wrap(response.body.billRun).as('billRun1')
   })
@@ -107,7 +107,7 @@ Then('the bill run does not contain any transactions', () => {
 })
 
 And('I add {int} {word} transactions to it', (numberToAdd, transactionType) => {
-  cy.fixture(`${transactionType}.transaction`).then((transaction) => {
+  cy.fixture(`${transactionType}.presroc.transaction`).then((transaction) => {
     transaction.customerReference = 'C000000001'
     transaction.licenceNumber = 'LIC/00000/01'
 
