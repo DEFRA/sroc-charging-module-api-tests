@@ -208,6 +208,31 @@ When('I send the following properties at more than their maximum I am told what 
   })
 })
 
+When('I send the following period start and end dates I am told they must have a valid date format', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const value = row[2]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' ${property} must be a valid date ${value}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture[property] = value
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(422)
+        if (property === 'periodStart') {
+          expect(response.body.message).to.equal(`"${property}" must be in [DD-MMM-YYYY, DD-MM-YYYY, YYYY-MM-DD, DD/MM/YYYY, YYYY/MM/DD] format`)
+        } else {
+          expect(response.body.message).to.equal(`"${property}" must be in [DD-MMM-YYYY, DD-MM-YYYY, YYYY-MM-DD, DD/MM/YYYY, YYYY/MM/DD] format. "periodStart" date references "ref:periodEnd" which must have a valid date format`)
+        }
+      })
+    })
+  })
+})
+
 When('I send the following period start and end dates I am told what financial year periodEnd must be', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const ruleset = row[0]

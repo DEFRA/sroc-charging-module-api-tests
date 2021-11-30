@@ -118,6 +118,21 @@ Feature: Calculate Charge Validation
       | presroc | authorisedDays   | 366 |
       | presroc | billableDays     | 366 |
 
+  Scenario: Checks period start and end dates are valid dates
+    When I send the following period start and end dates I am told they must have a valid date format
+      | sroc    | periodStart | -APR-2021   |
+      | sroc    | periodStart | 01--2021    |
+      | sroc    | periodStart | 01-APR-20-- |
+      | sroc    | periodEnd   | -03-2022    |
+      | sroc    | periodEnd   | 31--2022    |
+      | sroc    | periodEnd   | 31-MAR-20-- |
+      | presroc | periodEnd   | 31-MAR-20-- |
+      | presroc | periodStart | -APR-2020   |
+      | presroc | periodStart | 01--2020    |
+      | presroc | periodStart | 01-APR-20-- |
+      | presroc | periodEnd   | -03-2021    |
+      | presroc | periodEnd   | 31--2021    |
+
   Scenario: Check period start and end dates fall in the same financial year
     When I send the following period start and end dates I am told what financial year periodEnd must be
       | sroc    | 01-APR-2022 | 01-APR-2023 | 2022 |
