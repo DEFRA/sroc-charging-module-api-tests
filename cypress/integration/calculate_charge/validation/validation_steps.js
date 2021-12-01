@@ -221,8 +221,6 @@ When('I send a section126Factor value with more than 3 decimal places I am told 
   })
 })
 
-
-
 When('I send the following period start and end dates I am told they must have a valid date format', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const ruleset = row[0]
