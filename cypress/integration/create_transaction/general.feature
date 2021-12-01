@@ -6,7 +6,7 @@ Feature: Create Transaction General
   Scenario: Making a valid request (SROC)
     When I request a valid new sroc bill run
      And I add a standard sroc transaction to it
-    Then I get a successful response
+    Then I get a successful response from the POST /transactions endpoint
 
   Scenario: Making an invalid request (SROC)
     When I request a valid new sroc bill run
@@ -16,7 +16,7 @@ Feature: Create Transaction General
   Scenario: Making a valid request (PRESROC)
     When I request a valid new presroc bill run
      And I add a standard presroc transaction to it
-    Then I get a successful response
+    Then I get a successful response from the POST /transactions endpoint
 
   Scenario: Making an invalid request (PRESROC)
     When I request a valid new presroc bill run

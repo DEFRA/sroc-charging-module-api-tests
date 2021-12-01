@@ -52,7 +52,7 @@ And('I add an invalid {word} transaction to it', (ruleset) => {
   })
 })
 
-Then('I get a successful response', () => {
+Then('I get a successful response from the POST /transactions endpoint', () => {
   cy.log('Testing valid transaction')
 
   cy.get('@transaction').then((response) => {
