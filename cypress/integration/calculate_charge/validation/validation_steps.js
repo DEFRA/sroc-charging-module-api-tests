@@ -458,3 +458,23 @@ When('I send the following supported source values I get the expected response',
     })
   })
 })
+
+When('I send the following invalid characters it rejects', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const character = row[0]
+    const characterName = row[1]
+
+    cy.log(`Testing calculate-charge rejects invalid character ${character} (${characterName})`)
+
+    cy.fixture('calculate.sroc.charge').then((fixture) => {
+      fixture.supportedSourceName = `D${character}ee`
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(422)
+        expect(response.body.message)
+          .to
+          .equal('We cannot accept any request that contains the following characters: ? £ ^ — ≤ ≥ “ ”')
+      })
+    })
+  })
+})

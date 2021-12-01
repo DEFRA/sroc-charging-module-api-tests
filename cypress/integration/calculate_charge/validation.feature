@@ -234,3 +234,13 @@ Feature: Calculate Charge Validation
       | sroc | false | Dee | 422 |
       | sroc | true  |     | 422 |
       | sroc | true  | Dee | 200 |
+
+  Scenario: Rejects any requests that contains invalid characters
+    When I send the following invalid characters it rejects
+      | £ | Pound sign                  |
+      | ? | Question mark               |
+      | — | Em dash                     |
+      | ≤ | Less-Than or Equal To       |
+      | ≥ | Greater-Than or Equal To    |
+      | “ | Left Double Quotation Mark  |
+      | ” | Right Double Quotation Mark |
