@@ -73,3 +73,23 @@ Then('I get a failed response', () => {
     expect(response.body).to.have.property('error')
   })
 })
+
+When('I make a valid presroc request with section127Agreement set to true', (ruleset) => {
+  const fixtureName = 'calculate.presroc.charge'
+
+  cy.fixture(fixtureName).then((calculateCharge) => {
+    calculateCharge.section127Agreement = true
+
+    CalculateChargeEndpoints.calculate(calculateCharge).then((response) => {
+      cy.wrap(response).as('calculateChargeResponse')
+    })
+  })
+})
+
+Then('I get a successful response that includes chargeElementAgreement populated', () => {
+  cy.get('@calculateChargeResponse').then((response) => {
+    expect(response.status).to.equal(200)
+    expect(response.body).to.have.property('calculation')
+    expect(response.body.calculation.chargeElementAgreement).to.equal('S127 x 0.5')
+  })
+})

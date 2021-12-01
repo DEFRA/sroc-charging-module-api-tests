@@ -14,3 +14,7 @@ Feature: Calculate Charge General
   Scenario: Making an invalid SROC request
     When I make an invalid sroc request
     Then I get a failed response
+
+  Scenario: Check that PRESROC section127Agreement is correctly returned
+    When I make a valid presroc request with section127Agreement set to true
+    Then I get a successful response that includes chargeElementAgreement populated
