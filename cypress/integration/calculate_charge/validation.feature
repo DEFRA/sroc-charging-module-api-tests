@@ -235,6 +235,15 @@ Feature: Calculate Charge Validation
       | sroc | true  |     | 422 |
       | sroc | true  | Dee | 200 |
 
+  # In PostgreSQL an integer is any value between -2147483648 to +2147483647. We had issues in the early days with
+  # results that were greater than this value (though it applied to bill runs overall). So, to be on the safe side we
+  # check that the API can handle returning charge values greater than this without error
+  # TODO: Can't seem to generate a value greater than 9700 for SROC
+  Scenario: Checks the CM can handle big integers
+    When I send a request that results in a big integer it calculates the charge without error
+      | sroc    |
+      | presroc |
+
   Scenario: Rejects any requests that contains invalid characters
     When I send the following invalid characters it rejects
       | £ | Pound sign                  |

@@ -459,6 +459,34 @@ When('I send the following supported source values I get the expected response',
   })
 })
 
+When('I send a request that results in a big integer it calculates the charge without error', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' can handle big integers`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture.billableDays = 366
+      fixture.authorisedDays = 366
+
+      if (ruleset === 'sroc') {
+        fixture.actualVolume = 588545
+        fixture.authorisedVolume = 588545
+      } else {
+        fixture.volume = 588545
+      }
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(200)
+        expect(response.body).to.have.property('calculation')
+        cy.log(`Returned a charge value of ${response.body.calculation.chargeValue} `)
+      })
+    })
+  })
+})
+
 When('I send the following invalid characters it rejects', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const character = row[0]
