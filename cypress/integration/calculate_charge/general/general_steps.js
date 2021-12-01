@@ -1,20 +1,23 @@
 import { When, Then } from 'cypress-cucumber-preprocessor/steps'
 import CalculateChargeEndpoints from '../../../endpoints/calculate_charge_endpoints'
 
-When('I make a valid {word} request', (ruleset) => {
+When('I make a valid {word} {word} request', (ruleset, type) => {
   const fixtureName = `calculate.${ruleset}.charge`
 
   cy.fixture(fixtureName).then((calculateCharge) => {
+    calculateCharge.credit = (type === 'credit')
+
     CalculateChargeEndpoints.calculate(calculateCharge).then((response) => {
       cy.wrap(response).as('calculateChargeResponse')
     })
   })
 })
 
-Then('I get a successful presroc response', () => {
+Then('I get a successful presroc {word} response', (type) => {
+  const chargeValue = (type === 'credit') ? -2093 : 2093
   const expectedResult = {
     calculation: {
-      chargeValue: 2093,
+      chargeValue,
       sourceFactor: 3,
       seasonFactor: 1.6,
       lossFactor: 0.03,
@@ -34,10 +37,11 @@ Then('I get a successful presroc response', () => {
   })
 })
 
-Then('I get a successful sroc response', () => {
+Then('I get a successful sroc {word} response', (type) => {
+  const chargeValue = (type === 'credit') ? -9481 : 9481
   const expectedResult = {
     calculation: {
-      chargeValue: 9481,
+      chargeValue,
       baseCharge: 9700,
       waterCompanyChargeValue: 0,
       supportedSourceValue: 0,
