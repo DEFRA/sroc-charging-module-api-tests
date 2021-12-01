@@ -508,7 +508,7 @@ And('I send the following properties with special characters I am told the reque
       cy.get('@billRun').then((billRun) => {
         TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
           expect(response.status).to.equal(422)
-          expect(response.body.message).to.equal('We cannot accept any request that contains the following characters: ? £ — ≤ ≥ “ ”')
+          expect(response.body.message).to.equal('We cannot accept any request that contains the following characters: ? £ ^ — ≤ ≥ “ ”')
         })
       })
     })

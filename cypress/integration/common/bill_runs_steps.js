@@ -3,7 +3,6 @@
 
 import { And, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import BillRunEndpoints from '../../endpoints/bill_run_endpoints'
-import TransactionEndpoints from '../../endpoints/transaction_endpoints'
 
 When('I request a valid new {word} bill run', (ruleset) => {
   BillRunEndpoints.create({ region: 'A', ruleset: ruleset }).then((response) => {
@@ -102,26 +101,6 @@ Then('the bill run does not contain any transactions', () => {
       expect(response.status).to.equal(200)
 
       expect(response.body.billRun.invoices).to.be.empty
-    })
-  })
-})
-
-And('I add {int} {word} transactions to it', (numberToAdd, transactionType) => {
-  cy.fixture(`${transactionType}.presroc.transaction`).then((transaction) => {
-    transaction.customerReference = 'C000000001'
-    transaction.licenceNumber = 'LIC/00000/01'
-
-    cy.get('@billRun').then((billRun) => {
-      // Due to the async nature of Cypress a classic `for` or `while` loop will not work because it will result in a
-      // non-deterministic execution order. So, we generate an array from our param using `Array.from`. For example,
-      // 5 would become [1, 2, 3, 4, 5]. We then use Cypress `each()` function to give us an async iterator!
-      //
-      // > Cypress each() - Iterate through an array like structure (arrays or objects with a length property).
-      // - solution provided by https://stackoverflow.com/a/53487016/6117745
-      const genArr = Array.from({ length: numberToAdd }, (v) => v)
-      cy.wrap(genArr).each(() => {
-        TransactionEndpoints.create(billRun.id, transaction)
-      })
     })
   })
 })
