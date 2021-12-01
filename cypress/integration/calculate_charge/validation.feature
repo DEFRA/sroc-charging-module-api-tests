@@ -11,24 +11,24 @@ Feature: Calculate Charge Validation
 
   Scenario: Checks for mandatory values (required in all requests)
     When I do not send the following values I get the expected response
-      | sroc     | chargeCategoryCode  |
-      | sroc     | periodStart         |
-      | sroc     | authorisedDays      |
-      | sroc     | billableDays        |
-      | sroc     | winterOnly          |
-      | sroc     | section130Agreement |
-      | sroc     | section127Agreement |
-      | sroc     | twoPartTariff       |
-      | sroc     | compensationCharge  |
-      | sroc     | waterCompanyCharge  |
-      | sroc     | supportedSource     |
-      | sroc     | loss                |
-      | sroc     | authorisedVolume    |
-      | sroc     | credit              |
-      | sroc     | ruleset             |
-      | sroc     | periodStart         |
-      | sroc     | periodEnd           |
-      | presroc  | periodEnd           |
+      | sroc    | chargeCategoryCode  |
+      | sroc    | periodStart         |
+      | sroc    | authorisedDays      |
+      | sroc    | billableDays        |
+      | sroc    | winterOnly          |
+      | sroc    | section130Agreement |
+      | sroc    | section127Agreement |
+      | sroc    | twoPartTariff       |
+      | sroc    | compensationCharge  |
+      | sroc    | waterCompanyCharge  |
+      | sroc    | supportedSource     |
+      | sroc    | loss                |
+      | sroc    | authorisedVolume    |
+      | sroc    | credit              |
+      | sroc    | ruleset             |
+      | sroc    | periodStart         |
+      | sroc    | periodEnd           |
+      | presroc | periodEnd           |
 
   Scenario: Checks for mandatory values when compensationCharge is true (SROC)
     When I send a sroc request where compensationCharge is true
@@ -39,8 +39,8 @@ Feature: Calculate Charge Validation
   Scenario: Checks for mandatory values when compensationCharge is true (PRESROC)
     When I send a presroc request where compensationCharge is true
     Then If I do not send the following values I get the expected response
-      | eiucSource           |
-      | waterUndertaker      |
+      | eiucSource      |
+      | waterUndertaker |
 
   Scenario: Checks for mandatory values when twoPartTariff is true
     When I send a sroc request where twoPartTariff is true
@@ -94,12 +94,12 @@ Feature: Calculate Charge Validation
 
   Scenario: Allows decimal values in number data properties
     When I send the following properties as decimals calculates the charge without error
-      | sroc    | abatementFactor     | number  |
-      | sroc    | aggregateProportion | number  |
-      | sroc    | authorisedVolume    | number  |
-      | sroc    | actualVolume        | number  |
-      | presroc | section126Factor    | number  |
-      | presroc | volume              | number  |
+      | sroc    | abatementFactor     | number |
+      | sroc    | aggregateProportion | number |
+      | sroc    | authorisedVolume    | number |
+      | sroc    | actualVolume        | number |
+      | presroc | section126Factor    | number |
+      | presroc | volume              | number |
 
   Scenario: Checks data values are not below the minimum expected
     When I send the following properties at less than their minimum I am told what they should be
@@ -113,10 +113,10 @@ Feature: Calculate Charge Validation
 
   Scenario: Checks data values are not above the maximum expected
     When I send the following properties at more than their maximum I am told what they should be
-      | sroc    | authorisedDays   | 366 |
-      | sroc    | billableDays     | 366 |
-      | presroc | authorisedDays   | 366 |
-      | presroc | billableDays     | 366 |
+      | sroc    | authorisedDays | 366 |
+      | sroc    | billableDays   | 366 |
+      | presroc | authorisedDays | 366 |
+      | presroc | billableDays   | 366 |
 
   # section126Factor only applies to presroc bill runs and has a limit on the number of decimal places. The rules
   # service has the limitation and errors if a value with too many decimal places is sent through.
@@ -171,10 +171,10 @@ Feature: Calculate Charge Validation
   # | ruleset | twoPartTariff | compensationCharge | section127Agreement | invalid property | should be |
   Scenario: Checks for invalid combinations
     When I send the following invalid combinations I am told what value a property should be
-      | sroc | true  | false | false  | section127Agreement | true  |
-      | sroc | false | true  | true   | section127Agreement | false |
-      | sroc | true  | true  | false  | twoPartTariff | false |
-      | sroc | true  | true  | true   | twoPartTariff | false |
+      | sroc | true  | false | false | section127Agreement | true  |
+      | sroc | false | true  | true  | section127Agreement | false |
+      | sroc | true  | true  | false | twoPartTariff       | false |
+      | sroc | true  | true  | true  | twoPartTariff       | false |
 
   # The values in the table relate to what will be sent in the request for
   # | ruleset | twoPartTariff | compensationCharge | section127Agreement |
