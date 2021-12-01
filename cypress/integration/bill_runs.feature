@@ -2,7 +2,7 @@ Feature: Bill runs
 
   Background: Authenticate
     Given I am the "system" user
-    When I request a valid new bill run
+    When I request a valid new presroc bill run
 
   Scenario: Creating a new bill run
     Then the bill run ID and number are returned

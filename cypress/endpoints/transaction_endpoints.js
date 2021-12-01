@@ -1,9 +1,10 @@
 class TransactionEndpoints {
-  static create (billRunId, body) {
+  static create (billRunId, body, failOnStatusCode = true) {
     return cy
       .api({
         method: 'POST',
-        url: `/v2/wrls/bill-runs/${billRunId}/transactions`,
+        url: `/v3/wrls/bill-runs/${billRunId}/transactions`,
+        failOnStatusCode,
         headers: {
           'content-type': 'application/json',
           accept: 'application/json',
