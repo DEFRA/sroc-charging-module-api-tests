@@ -208,6 +208,65 @@ When('I send the following properties at more than their maximum I am told what 
   })
 })
 
+When('I send a section126Factor value with more than 3 decimal places I am told there are too many', () => {
+  cy.log("Testing 'presroc' property 'section126Factor' rejects 1.2345 (more than 3 decimal places)")
+
+  cy.fixture('calculate.presroc.charge').then((fixture) => {
+    fixture.section126Factor = 1.2345
+
+    CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+      expect(response.status).to.equal(422)
+      expect(response.body.message).to.equal('"section126Factor" must have no more than 3 decimal places')
+    })
+  })
+})
+
+When('I send the following period start and end dates I am told they must have a valid date format', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const value = row[2]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' ${property} must be a valid date ${value}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture[property] = value
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(422)
+        if (property === 'periodStart') {
+          expect(response.body.message).to.equal(`"${property}" must be in [DD-MMM-YYYY, DD-MM-YYYY, YYYY-MM-DD, DD/MM/YYYY, YYYY/MM/DD] format`)
+        } else {
+          expect(response.body.message).to.equal(`"${property}" must be in [DD-MMM-YYYY, DD-MM-YYYY, YYYY-MM-DD, DD/MM/YYYY, YYYY/MM/DD] format. "periodStart" date references "ref:periodEnd" which must have a valid date format`)
+        }
+      })
+    })
+  })
+})
+
+When('I send the following period start and end dates it calculates the charge without error', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const property = row[1]
+    const value = row[2]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' ${value} is a valid date format for ${property}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture[property] = value
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(200)
+        expect(response.body).to.have.property('calculation')
+      })
+    })
+  })
+})
+
 When('I send the following period start and end dates I am told what financial year periodEnd must be', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const ruleset = row[0]
@@ -393,6 +452,54 @@ When('I send the following supported source values I get the expected response',
             expect(response.body.message).to.equal('"supportedSourceName" is not allowed')
           }
         }
+      })
+    })
+  })
+})
+
+When('I send a request that results in a big integer it calculates the charge without error', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' can handle big integers`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture.billableDays = 366
+      fixture.authorisedDays = 366
+
+      if (ruleset === 'sroc') {
+        fixture.actualVolume = 588545
+        fixture.authorisedVolume = 588545
+      } else {
+        fixture.volume = 588545
+      }
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(200)
+        expect(response.body).to.have.property('calculation')
+        cy.log(`Returned a charge value of ${response.body.calculation.chargeValue} `)
+      })
+    })
+  })
+})
+
+When('I send the following invalid characters it rejects', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const character = row[0]
+    const characterName = row[1]
+
+    cy.log(`Testing calculate-charge rejects invalid character ${character} (${characterName})`)
+
+    cy.fixture('calculate.sroc.charge').then((fixture) => {
+      fixture.supportedSourceName = `D${character}ee`
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(422)
+        expect(response.body.message)
+          .to
+          .equal('We cannot accept any request that contains the following characters: ? £ ^ — ≤ ≥ “ ”')
       })
     })
   })
