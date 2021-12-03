@@ -1,5 +1,8 @@
 {
   "cucumberautocomplete.steps": [
       "cypress/integration/**/*.js"
+  ],
+  "cSpell.words": [
+    "Deminimus"
   ]
 }

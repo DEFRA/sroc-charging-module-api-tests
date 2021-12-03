@@ -28,11 +28,12 @@ class BillRunEndpoints {
       })
   }
 
-  static view (id) {
+  static view (id, failOnStatusCode = true) {
     return cy
       .api({
         method: 'GET',
-        url: `/v2/wrls/bill-runs/${id}`,
+        url: `/v3/wrls/bill-runs/${id}`,
+        failOnStatusCode,
         headers: {
           'content-type': 'application/json',
           accept: 'application/json',
@@ -55,11 +56,12 @@ class BillRunEndpoints {
       })
   }
 
-  static generate (id) {
+  static generate (id, failOnStatusCode = true) {
     return cy
       .api({
         method: 'PATCH',
-        url: `/v2/wrls/bill-runs/${id}/generate`,
+        url: `/v3/wrls/bill-runs/${id}/generate`,
+        failOnStatusCode,
         headers: {
           'content-type': 'application/json',
           accept: 'application/json',
