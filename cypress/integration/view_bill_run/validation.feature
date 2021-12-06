@@ -5,15 +5,13 @@ Feature: View Bill Run Validation
 
   Scenario: Making a view bill run request with an unknown Bill run ID
     When I request a valid new sroc bill run
-     And I add a successful transaction with the following details
-      | standard  | sroc | CM00000001 |
+     And I add a successful sroc standard transaction for customer CM00000001
      And I request to generate the bill run
     Then I request to view the bill run with an unknown bill run id I am told that bill run id is unknown
 
-  Scenario: Making a generate bill run request with an unknown Bill Run ID
+  Scenario: Generating a bill run request with an unknown Bill Run ID
     When I request a valid new sroc bill run
-     And I add a successful transaction with the following details
-      | standard  | sroc | CM00000001 |
+     And I add a successful sroc standard transaction for customer CM00000001
     Then I request to generate the bill run with an unknown bill run id I am told that bill run id is unknown
 
   Scenario: Generating a bill run without transactions

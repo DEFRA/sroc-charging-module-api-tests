@@ -63,27 +63,29 @@ Then('the invoice summary includes the expected items', (dataTable) => {
   })
 })
 
-And('I add a successful {word} {word} transaction with {word} as {word} for customer {word}', (ruleset, transactionType, property, value, customerRef) => {
-  const fixtureName = `${transactionType}.${ruleset}.transaction`
+And('the count of invoices in the bill run are {int}', (expInvoiceCount) => {
+    cy.log('Testing count of invoices in bill run')
 
-  const uuid = require('uuid')
-  const clientID = uuid.v4()
+      cy.get('@viewBillRun').then((billRun) => {
+        const jsonObject = billRun.invoices
+        const invoiceCount  = Object.keys(jsonObject).length;
 
-  cy.fixture(fixtureName).then((fixture) => {
-    fixture.clientId = clientID
-    fixture.customerReference = customerRef
-    fixture[property] = value
-    cy.wrap(fixture).as('fixture')
-    cy.get('@billRun').then((billRun) => {
-      TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
-        expect(response.status).to.equal(201)
-        expect(response.body).to.have.property('transaction')
-        expect(response.body.transaction.id).not.to.equal(null)
-        expect(response.body.transaction.clientId).not.to.equal(null)
+        expect(invoiceCount).to.equal(expInvoiceCount)
       })
     })
-  })
-})
+
+And('the count of licences in the invoice for {word} are {int}', (customerRef, expLicenceCount) => {
+      cy.log('Testing count of invoices in bill run')
+
+        cy.get('@viewBillRun').then((billRun) => {
+          const invoice = billRun.invoices.find(element => element.customerReference === customerRef)
+          
+          const jsonObject = invoice.licences
+          const licenceCount  = Object.keys(jsonObject).length;
+  
+          expect(licenceCount).to.equal(expLicenceCount)
+        })
+      })
 
 Then('the invoice summary does not count this as a minimum charge invoice', () => {
   cy.log('Testing invoice summary does not include Minimum Charge invoice')
