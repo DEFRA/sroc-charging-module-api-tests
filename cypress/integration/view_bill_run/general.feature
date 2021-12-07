@@ -17,6 +17,7 @@ Feature: View Bill Run General
      And I request to view the bill run
     Then the bill run summary items are correct 
 
+# Check invoice summary
 # The values in the table relate to what will be sent in the request for
 # | transactionType | ruleset | customerReference | 
 # The second set of values in the table relate to what values should be for
@@ -85,6 +86,7 @@ Feature: View Bill Run General
      And I request to view the bill run
     Then the invoice summary counts this as a minimum charge invoice    
 
+# Check Bill run summary
 # The values in the table relate to what will be sent in the request for
 # | transactionType | ruleset | customerReference | 
 # The second set of values in the table relate to what values should be for
@@ -139,6 +141,7 @@ Feature: View Bill Run General
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |    
 
+# Check grouping by invoice
   Scenario: New invoice not created if customer ref, financial year and licence numbers are the same
     When I request a valid new sroc bill run
      And I add a successful transaction with the following details
@@ -160,7 +163,7 @@ Feature: View Bill Run General
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 3988 | 3988 |
      And the count of invoices in the bill run are 1 
-@ignore 
+
 #new ruleset not available yet
   Scenario: New invoice created for same customer ref and different financial years
     When I request a valid new sroc bill run
@@ -184,7 +187,7 @@ Feature: View Bill Run General
       | generated | 0 | 0 | 2 | 3988 | 3988 |
      And the count of invoices in the bill run are 2 
 
-#licence grouping
+# Check grouping by licence
   Scenario: New licence is not created if customer ref, financial year and licence numbers are the same
     When I request a valid new sroc bill run
      And I add a successful transaction with the following details
@@ -207,4 +210,4 @@ Feature: View Bill Run General
      And I request to view the bill run
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
-     And the count of licences in the invoice for CM00000001 are 3    
+     And the count of licences in the invoice for CM00000001 are 3

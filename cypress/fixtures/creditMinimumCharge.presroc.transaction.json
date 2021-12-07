@@ -1,7 +1,7 @@
 {
     "periodStart": "01-APR-2018",
     "periodEnd": "31-MAR-2019",
-    "credit": false,
+    "credit": true,
     "billableDays": 310,
     "authorisedDays": 365,
     "volume": "3.5",
