@@ -3,33 +3,56 @@ Feature: Create Transaction Validation
   Background: Authenticate
     Given I am the "system" user
 
-  Scenario: Checks for mandatory values (required in all requests)
+  Scenario: Checks for mandatory values (required in all requests) (SROC)
     When I request a valid new sroc bill run
      And I do not send the following values I get the expected response
-      | sroc     | chargeCategoryCode        |
-      | sroc     | periodStart               |
-      | sroc     | authorisedDays            |
-      | sroc     | billableDays              |
-      | sroc     | winterOnly                |
-      | sroc     | section130Agreement       |
-      | sroc     | section127Agreement       |
-      | sroc     | twoPartTariff             |
-      | sroc     | compensationCharge        |
-      | sroc     | waterCompanyCharge        |
-      | sroc     | supportedSource           |
-      | sroc     | loss                      |
-      | sroc     | authorisedVolume          |
-      | sroc     | credit                    |
-      | sroc     | periodStart               |
-      | sroc     | periodEnd                 |
-      | sroc     | region                    |
-      | sroc     | customerReference         |
-      | sroc     | licenceNumber             |
-      | sroc     | chargePeriod              |
-      | sroc     | areaCode                  |
-      | sroc     | lineDescription           |
-      | sroc     | chargeCategoryDescription |
+      | sroc | chargeCategoryCode        |
+      | sroc | authorisedDays            |
+      | sroc | billableDays              |
+      | sroc | winterOnly                |
+      | sroc | section130Agreement       |
+      | sroc | section127Agreement       |
+      | sroc | twoPartTariff             |
+      | sroc | compensationCharge        |
+      | sroc | waterCompanyCharge        |
+      | sroc | supportedSource           |
+      | sroc | loss                      |
+      | sroc | authorisedVolume          |
+      | sroc | credit                    |
+      | sroc | periodStart               |
+      | sroc | periodEnd                 |
+      | sroc | region                    |
+      | sroc | customerReference         |
+      | sroc | licenceNumber             |
+      | sroc | chargePeriod              |
+      | sroc | areaCode                  |
+      | sroc | lineDescription           |
+      | sroc | chargeCategoryDescription |
 
+  Scenario: Checks for mandatory values (required in all requests) (PRESROC)
+    When I request a valid new presroc bill run
+     And I do not send the following values I get the expected response
+      | presroc | authorisedDays       |
+      | presroc | billableDays         |
+      | presroc | section130Agreement  |
+      | presroc | section127Agreement  |
+      | presroc | twoPartTariff        |
+      | presroc | compensationCharge   |
+      | presroc | loss                 |
+      | presroc | season               |
+      | presroc | volume               |
+      | presroc | credit               |
+      | presroc | periodStart          |
+      | presroc | periodEnd            |
+      | presroc | region               |
+      | presroc | customerReference    |
+      | presroc | licenceNumber        |
+      | presroc | chargePeriod         |
+      | presroc | areaCode             |
+      | presroc | lineDescription      |
+      | presroc | source               |
+      | presroc | regionalChargingArea |
+      
   Scenario: Checks for mandatory values when compensationCharge is true (SROC)
     When I request a valid new sroc bill run
      And I send a sroc request where compensationCharge is true
@@ -185,7 +208,7 @@ Feature: Create Transaction Validation
 # The values in the table relate to what will be sent in the request plus what the CM will report as invalid and what
 # it should actually be
 # | ruleset | twoPartTariff | compensationCharge | section127Agreement | invalid property | should be |
-  Scenario: Checks for invalid combinations
+  Scenario: Checks for invalid combinations (SROC)
     When I request a valid new sroc bill run
      And I send the following invalid combinations I am told what value a property should be
       | sroc | true  | false | false  | section127Agreement | true  |
@@ -193,9 +216,20 @@ Feature: Create Transaction Validation
       | sroc | true  | true  | false  | twoPartTariff       | false |
       | sroc | true  | true  | true   | twoPartTariff       | false |
 
-  # The values in the table relate to what will be sent in the request for
-  # | ruleset | twoPartTariff | compensationCharge | section127Agreement |
-  Scenario: Allows valid combinations
+# The values in the table relate to what will be sent in the request plus what the CM will report as invalid and what
+# it should actually be
+# | ruleset | twoPartTariff | compensationCharge | section127Agreement | invalid property | should be |
+  Scenario: Checks for invalid combinations (PRESROC)
+     When I request a valid new presroc bill run
+     And I send the following invalid combinations I am told what value a property should be
+      | presroc | true  | false | false  | section127Agreement | true  |
+      #| presroc | false | true  | true   | section127Agreement | false |
+      | presroc | true  | true  | false  | twoPartTariff       | false |
+      | presroc | true  | true  | true   | twoPartTariff       | false |
+
+# The values in the table relate to what will be sent in the request for
+# | ruleset | twoPartTariff | compensationCharge | section127Agreement |
+  Scenario: Allows valid combinations (SROC)
     When I request a valid new sroc bill run
      And I send the following valid combinations it creates the transaction without error
       | sroc | true  | false | true  |
@@ -204,7 +238,18 @@ Feature: Create Transaction Validation
       | sroc | true  | false | true  |
       | sroc | false | false | false |
 
-  Scenario: Correctly handles case sensitive data items
+# The values in the table relate to what will be sent in the request for
+# | ruleset | twoPartTariff | compensationCharge | section127Agreement |
+  Scenario: Allows valid combinations (PRESROC)
+    When I request a valid new presroc bill run
+     And I send the following valid combinations it creates the transaction without error
+      | presroc | true  | false | true  |
+      | presroc | false | false | true  |
+      | presroc | false | true  | false |
+      | presroc | true  | false | true  |
+      | presroc | false | false | false |     
+
+  Scenario: Correctly handles case sensitive data items (SROC)
     When I request a valid new sroc bill run
      And I send the following properties it corrects the case and creates the transaction without error
       | sroc | loss                 | low                                |
@@ -248,7 +293,37 @@ Feature: Create Transaction Validation
       | sroc | regionalChargingArea | wye                                |
       | sroc | regionalChargingArea | wales                              |
 
-  Scenario: Checks that supportedSourceName is set correctly according to how supportedSource is set
+ Scenario: Correctly handles case sensitive data items (PRESROC)
+    When I request a valid new presroc bill run
+     And I send the following properties it corrects the case and creates the transaction without error
+      | presroc | loss                 | low                             |
+      | presroc | loss                 | mediuM                          |
+      | presroc | loss                 | hIgh                            |
+      | presroc | loss                 | very Low                        |
+      | presroc | season               | summer                          |
+      | presroc | season               | winter                          |
+      | presroc | season               | all year                        |
+      | presroc | source               | supported                       |
+      | presroc | source               | unsupported                     |
+      | presroc | source               | kielder                         |
+      | presroc | source               | tidal                           |
+      | presroc | eiucSource           | kielder                         |
+      | presroc | eiucSource           | tidal                           |
+      | presroc | regionalChargingArea | anglian                         |
+      | presroc | regionalChargingArea | midlands                        |
+      | presroc | regionalChargingArea | northumbria                     |
+      | presroc | regionalChargingArea | north west                      |
+      | presroc | regionalChargingArea | southern                        |
+      | presroc | regionalChargingArea | south west (incl wessex)        |
+      | presroc | regionalChargingArea | devon and cornwall (south west) |
+      | presroc | regionalChargingArea | north and south wessex          |
+      | presroc | regionalChargingArea | thames                          |
+      | presroc | regionalChargingArea | yorkshire                       |
+      | presroc | regionalChargingArea | dee                             |
+      | presroc | regionalChargingArea | wye                             |
+      | presroc | regionalChargingArea | wales                           |
+
+ Scenario: Checks that supportedSourceName is set correctly according to how supportedSource is set
     When I request a valid new sroc bill run
      And I send the following supported source values I get the expected response
       | sroc | false | Dee | 422 |
@@ -264,10 +339,23 @@ Feature: Create Transaction Validation
       | sroc | lineDescription           | 240 |
       | sroc | chargePeriod              | 150 |
 
+  Scenario: Checks data strings are not above the maximum expected (PRESROC)
+    When I request a valid new presroc bill run
+     And I send the following properties with more than their maximum chars I am told what they should be
+      | presroc | customerReference | 12  |
+      | presroc | licenceNumber     | 150 |
+      | presroc | lineDescription   | 240 |
+      | presroc | chargePeriod      | 150 |
+
    Scenario: Checks that areaCode rejects unexpected values (SROC)
     When I request a valid new sroc bill run
      And I send invalid areaCode I am told what it should be
       | sroc | areaCode | 1 |
+
+   Scenario: Checks that areaCode rejects unexpected values (PRESROC)
+    When I request a valid new presroc bill run
+     And I send invalid areaCode I am told what it should be
+      | presroc | areaCode | 1 |   
 
   Scenario: Checks that areaCode allows expected values (SROC)
     When I request a valid new sroc bill run
@@ -309,6 +397,46 @@ Feature: Create Transaction Validation
       | sroc | areaCode | DEFAULT |
       | sroc | areaCode | MULTI   |
 
+  Scenario: Checks that areaCode allows expected values (PRESROC)
+    When I request a valid new presroc bill run
+     And I send the following values it creates the transaction without error
+      | presroc | areaCode | ArCA    |
+      | presroc | areaCode | AREA    |
+      | presroc | areaCode | ARNA    | 
+      | presroc | areaCode | CASc    |
+      | presroc | areaCode | MIDLS   |
+      | presroc | areaCode | MIDLT   |
+      | presroc | areaCode | MIDUS   |
+      | presroc | areaCode | MIDUT   |
+      | presroc | areaCode | AACOR   |
+      | presroc | areaCode | AaDEV   |
+      | presroc | areaCode | AANWX   | 
+      | presroc | areaCode | AASWX   |
+      | presroc | areaCode | NWCEN   | 
+      | presroc | areaCode | NWNTH   |
+      | presroc | areaCode | NWSTH   |
+      | presroc | areaCode | HAAR    |
+      | presroc | areaCode | KAEA    |
+      | presroc | areaCode | SAAR    |
+      | presroc | areaCode | AGY2N   |
+      | presroc | areaCode | AGY2S   |
+      | presroc | areaCode | AGY3    | 
+      | presroc | areaCode | AGY3N   |
+      | presroc | areaCode | AGY3S   | 
+      | presroc | areaCode | AgY4N   |
+      | presroc | areaCode | AGY4S   |
+      | presroc | areaCode | N       |
+      | presroc | areaCode | SE      |
+      | presroc | areaCode | SE1     |
+      | presroc | areaCode | SE2     |
+      | presroc | areaCode | SW      |
+      | presroc | areaCode | ABNRTH  |
+      | presroc | areaCode | DALES   | 
+      | presroc | areaCode | NAREA   |
+      | presroc | areaCode | RIDIN   | 
+      | presroc | areaCode | DEFAULT |
+      | presroc | areaCode | MULTI   |     
+
   Scenario: Checks that region rejects unexpected values (SROC)
     When I request a valid new sroc bill run
      And I send the following invalid combinations I am told Billrun and transaction regions do not match
@@ -321,6 +449,18 @@ Feature: Create Transaction Validation
       | sroc | W | region | B |
       | sroc | Y | region | A |
 
+  Scenario: Checks that region rejects unexpected values (PRESROC)
+    When I request a valid new presroc bill run
+     And I send the following invalid combinations I am told Billrun and transaction regions do not match
+      | presroc | A | region | Y |
+      | presroc | B | region | W |
+      | presroc | E | region | T |
+      | presroc | N | region | S |
+      | presroc | S | region | N |
+      | presroc | T | region | E |
+      | presroc | W | region | B |
+      | presroc | Y | region | A |    
+
    Scenario: Checks that region allows expected values (SROC) 
     When I request a valid new sroc bill run
      And I send the following valid Billrun and transaction combinations it creates the transaction without error
@@ -332,6 +472,18 @@ Feature: Create Transaction Validation
       | sroc | T | region | T |
       | sroc | W | region | W |
       | sroc | Y | region | Y |
+
+  Scenario: Checks that region allows expected values (PRESROC) 
+    When I request a valid new presroc bill run
+     And I send the following valid Billrun and transaction combinations it creates the transaction without error
+      | presroc | A | region | A |
+      | presroc | B | region | B |
+      | presroc | E | region | E |
+      | presroc | N | region | N |
+      | presroc | S | region | S |
+      | presroc | T | region | T |
+      | presroc | W | region | W |
+      | presroc | Y | region | Y |    
 
   Scenario: Checks special characters are rejected (SROC)
     When I request a valid new sroc bill run
@@ -384,3 +536,55 @@ Feature: Create Transaction Validation
       | sroc | chargeCategoryDescription | test— |
       | sroc | lineDescription           | test— |
       | sroc | chargePeriod              | test— |
+
+ Scenario: Checks special characters are rejected (PRESROC)
+    When I request a valid new presroc bill run
+     And I send the following properties with special characters I am told the request cannot be accepted
+      | presroc | customerReference         | test“ |
+      | presroc | licenceNumber             | test“ |
+      | presroc | areaCode                  | test“ |
+      | presroc | chargeCategoryDescription | test“ |
+      | presroc | lineDescription           | test“ |
+      | presroc | chargePeriod              | test“ |
+      | presroc | customerReference         | test” |
+      | presroc | licenceNumber             | test” |
+      | presroc | areaCode                  | test” |
+      | presroc | chargeCategoryDescription | test” |
+      | presroc | lineDescription           | test” |
+      | presroc | chargePeriod              | test” |
+      | presroc | customerReference         | test? |
+      | presroc | licenceNumber             | test? |
+      | presroc | areaCode                  | test? |
+      | presroc | chargeCategoryDescription | test? |
+      | presroc | lineDescription           | test? |
+      | presroc | chargePeriod              | test? |
+      | presroc | customerReference         | test^ |
+      | presroc | licenceNumber             | test^ |
+      | presroc | areaCode                  | test^ |
+      | presroc | chargeCategoryDescription | test^ |
+      | presroc | lineDescription           | test^ |
+      | presroc | chargePeriod              | test^ |
+      | presroc | customerReference         | test£ |
+      | presroc | licenceNumber             | test£ |
+      | presroc | areaCode                  | test£ |
+      | presroc | chargeCategoryDescription | test£ |
+      | presroc | lineDescription           | test£ |
+      | presroc | chargePeriod              | test£ |
+      | presroc | customerReference         | test≥ |
+      | presroc | licenceNumber             | test≥ |
+      | presroc | areaCode                  | test≥ |
+      | presroc | chargeCategoryDescription | test≥ |
+      | presroc | lineDescription           | test≥ |
+      | presroc | chargePeriod              | test≥ |
+      | presroc | customerReference         | test≤ |
+      | presroc | licenceNumber             | test≤ |
+      | presroc | areaCode                  | test≤ |
+      | presroc | chargeCategoryDescription | test≤ |
+      | presroc | lineDescription           | test≤ |
+      | presroc | chargePeriod              | test≤ |
+      | presroc | customerReference         | test— |
+      | presroc | licenceNumber             | test— |
+      | presroc | areaCode                  | test— |
+      | presroc | chargeCategoryDescription | test— |
+      | presroc | lineDescription           | test— |
+      | presroc | chargePeriod              | test— |     
