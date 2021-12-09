@@ -1,10 +1,10 @@
 {
     "periodStart": "01-APR-2018",
     "periodEnd": "31-MAR-2019",
-    "credit": false,
+    "credit": true,
     "billableDays": 310,
     "authorisedDays": 365,
-    "volume": "5",
+    "volume": "3.5",
     "source": "Supported",
     "season": "Summer",
     "loss": "Low",
@@ -23,5 +23,5 @@
     "batchNumber": "TEST10",
     "region": "A",
     "areaCode": "ARCA",
-    "subjectToMinimumCharge": false
+    "subjectToMinimumCharge": true
   }

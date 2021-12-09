@@ -4,7 +4,7 @@
     "credit": false,
     "billableDays": 310,
     "authorisedDays": 365,
-    "volume": "5",
+    "volume": "3.5",
     "source": "Supported",
     "season": "Summer",
     "loss": "Low",
@@ -23,5 +23,5 @@
     "batchNumber": "TEST10",
     "region": "A",
     "areaCode": "ARCA",
-    "subjectToMinimumCharge": false
+    "subjectToMinimumCharge": true
   }

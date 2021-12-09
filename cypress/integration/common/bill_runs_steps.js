@@ -32,6 +32,15 @@ When('I request a valid new {word} bill run for {word}', (rulesetType, regionCod
   })
 })
 
+When('I request a valid new {word} bill run for region {word}', (rulesetType, regionCode) => {
+  BillRunEndpoints.create({ region: `${regionCode}`, ruleset: `${rulesetType}` }).then((response) => {
+    expect(response.status).to.equal(201)
+    cy.wrap(`${regionCode}`).as('billRunRegion')
+    cy.wrap(`${rulesetType}`).as('rulesetType')
+    cy.wrap(response.body.billRun).as('billRun')
+  })
+})
+
 When('I request an invalid new {word} bill run for {word}', (rulesetType, regionCode) => {
   BillRunEndpoints.createInvalid({ region: `${regionCode}`, ruleset: `${rulesetType}` }).then((response) => {
     expect(response.status).to.equal(422)
@@ -72,10 +81,12 @@ Then('the bill run numbers are issued in ascending order', () => {
   })
 })
 
-When('I request to view a bill run', () => {
-  BillRunEndpoints.create({ region: 'A' }).then((response) => {
-    expect(response.status).to.equal(201)
-    cy.wrap(response.body.billRun).as('billRun')
+When('I request to view the bill run', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.view(billRun.id).then((response) => {
+      expect(response.status).to.be.equal(200)
+      cy.wrap(response.body.billRun).as('viewBillRun')
+    })
   })
 })
 
@@ -107,7 +118,7 @@ Then('the bill run does not contain any transactions', () => {
 
 And('I request to generate the bill run', () => {
   cy.get('@billRun').then((billRun) => {
-    BillRunEndpoints.generate(billRun.id).then((response) => {
+    BillRunEndpoints.generate(billRun.id, false).then((response) => {
       expect(response.status).to.be.equal(204)
     })
   })
