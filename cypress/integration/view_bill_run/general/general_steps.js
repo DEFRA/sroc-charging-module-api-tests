@@ -1,5 +1,4 @@
 import { And, Then } from 'cypress-cucumber-preprocessor/steps'
-import TransactionEndpoints from '../../../endpoints/transaction_endpoints'
 
 Then('the bill run summary items are correct', () => {
   cy.log('Testing Bill run summary items')
@@ -64,28 +63,28 @@ Then('the invoice summary includes the expected items', (dataTable) => {
 })
 
 And('the count of invoices in the bill run are {int}', (expInvoiceCount) => {
-    cy.log('Testing count of invoices in bill run')
+  cy.log('Testing count of invoices in bill run')
 
-      cy.get('@viewBillRun').then((billRun) => {
-        const jsonObject = billRun.invoices
-        const invoiceCount  = Object.keys(jsonObject).length;
+  cy.get('@viewBillRun').then((billRun) => {
+    const jsonObject = billRun.invoices
+    const invoiceCount = Object.keys(jsonObject).length
 
-        expect(invoiceCount).to.equal(expInvoiceCount)
-      })
-    })
+    expect(invoiceCount).to.equal(expInvoiceCount)
+  })
+})
 
 And('the count of licences in the invoice for {word} are {int}', (customerRef, expLicenceCount) => {
-      cy.log('Testing count of invoices in bill run')
+  cy.log('Testing count of invoices in bill run')
 
-        cy.get('@viewBillRun').then((billRun) => {
-          const invoice = billRun.invoices.find(element => element.customerReference === customerRef)
-          
-          const jsonObject = invoice.licences
-          const licenceCount  = Object.keys(jsonObject).length;
-  
-          expect(licenceCount).to.equal(expLicenceCount)
-        })
-      })
+  cy.get('@viewBillRun').then((billRun) => {
+    const invoice = billRun.invoices.find(element => element.customerReference === customerRef)
+
+    const jsonObject = invoice.licences
+    const licenceCount = Object.keys(jsonObject).length
+
+    expect(licenceCount).to.equal(expLicenceCount)
+  })
+})
 
 Then('the invoice summary does not count this as a minimum charge invoice', () => {
   cy.log('Testing invoice summary does not include Minimum Charge invoice')
