@@ -8,4 +8,4 @@ Feature: View Invoice General
      And I add a successful sroc standard transaction for customer CM00000001
      And I request to generate the bill run
      And bill run status is updated to "generated" 
-     #And I request to view the invoice for CM00000001
+     And I request to view the invoice for CM00000001
