@@ -6,14 +6,16 @@ Feature: View Bill Run General
   Scenario: Viewing the bill run summary (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful sroc standard transaction for customer CM00000001
-     And I request to generate the bill run 
+     And I request to generate the bill run
+     And bill run status is updated to "generated" 
      And I request to view the bill run
     Then the bill run summary items are correct
 
   Scenario: Viewing the bill run summary (PRESROC)
     When I request a valid new presroc bill run for region A
      And I add a successful presroc standard transaction for customer CM00000001
-     And I request to generate the bill run 
+     And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary items are correct 
 
@@ -26,6 +28,7 @@ Feature: View Bill Run General
     When I request a valid new sroc bill run
      And I add a successful sroc standard transaction for customer CM00000001 
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
       | false | false |
@@ -34,6 +37,7 @@ Feature: View Bill Run General
     When I request a valid new sroc bill run
      And I add a successful sroc deminimis transaction for customer CM00000001
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
       | true | false |    
@@ -43,6 +47,7 @@ Feature: View Bill Run General
      And I add a successful sroc standard transaction for customer CM00000001 
      And I add a successful sroc credit transaction for customer CM00000001 
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
       | false | true |
@@ -51,6 +56,7 @@ Feature: View Bill Run General
     When I request a valid new presroc bill run
      And I add a successful presroc standard transaction for customer CM00000001
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
       | false | false |
@@ -59,6 +65,7 @@ Feature: View Bill Run General
     When I request a valid new presroc bill run
      And I add a successful presroc deminimis transaction for customer CM00000001
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
       | true | false |    
@@ -68,6 +75,7 @@ Feature: View Bill Run General
      And I add a successful presroc standard transaction for customer CM00000001 
      And I add a successful presroc credit transaction for customer CM00000001
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
       | false | true |    
@@ -76,6 +84,7 @@ Feature: View Bill Run General
     When I request a valid new sroc bill run
      And I add a successful sroc minimumCharge transaction for customer CM00000001
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary does not count this as a minimum charge invoice
 
@@ -83,6 +92,7 @@ Feature: View Bill Run General
     When I request a valid new presroc bill run
      And I add a successful presroc minimumCharge transaction for customer CM00000001
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary counts this as a minimum charge invoice    
 
@@ -95,6 +105,7 @@ Feature: View Bill Run General
     When I request a valid new sroc bill run
      And I add a successful sroc standard transaction for customer CM00000001
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 1994 | 1994 |
@@ -103,6 +114,7 @@ Feature: View Bill Run General
     When I request a valid new sroc bill run
      And I add a successful sroc credit transaction for customer CM00000001
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
       | generated | 1 | 1994 | 0 | 0 | -1994 |
@@ -111,6 +123,7 @@ Feature: View Bill Run General
     When I request a valid new sroc bill run
      And I add a successful sroc deminimis transaction for customer CM00000001
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
@@ -120,6 +133,7 @@ Feature: View Bill Run General
      And I add a successful sroc standard transaction for customer CM00000001 
      And I add a successful sroc credit transaction for customer CM00000001
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
@@ -128,6 +142,7 @@ Feature: View Bill Run General
     When I request a valid new presroc bill run
      And I add a successful presroc deminimis transaction for customer CM00000001
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
@@ -137,6 +152,7 @@ Feature: View Bill Run General
      And I add a successful presroc standard transaction for customer CM00000001 
      And I add a successful presroc credit transaction for customer CM00000001
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |    
@@ -148,6 +164,7 @@ Feature: View Bill Run General
       | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
       | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 3988 | 3988 |
@@ -159,6 +176,7 @@ Feature: View Bill Run General
       | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
       | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM02 |
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 3988 | 3988 |
@@ -171,6 +189,7 @@ Feature: View Bill Run General
       | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
       | standard | sroc | CM00000001 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM01 |
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 2 | 3988 | 3988 |
@@ -182,6 +201,7 @@ Feature: View Bill Run General
       | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
       | standard | sroc | CM00000002 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 2 | 3988 | 3988 |
@@ -195,6 +215,7 @@ Feature: View Bill Run General
       | zeroValue | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
       | credit    | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
@@ -207,6 +228,7 @@ Feature: View Bill Run General
       | zeroValue | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM02 |
       | credit    | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM03 |
      And I request to generate the bill run
+     And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
