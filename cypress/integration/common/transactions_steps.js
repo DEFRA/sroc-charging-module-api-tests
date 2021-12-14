@@ -63,21 +63,26 @@ And('I add a successful transaction with the following details', (dataTable) => 
     const transactionType = row[0]
     const ruleset = row[1]
     const customerRef = row[2]
-    const periodStart = row[3]
-    const periodEnd = row[4]
-    const licenceNumber = row[5]
+    const licenceNumber = row[3]
+    const chargeValue = row[4]
 
     const fixtureName = `${transactionType}.${ruleset}.transaction`
 
     const uuid = require('uuid')
     const clientID = uuid.v4()
 
+    const chargeAdjustment = chargeValue / 10
+
     cy.fixture(fixtureName).then((fixture) => {
       fixture.clientId = clientID
       fixture.customerReference = customerRef
-      fixture.periodStart = periodStart
-      fixture.periodEnd = periodEnd
       fixture.licenceNumber = licenceNumber
+
+      if (ruleset === 'presroc') {
+        fixture.section126Factor = chargeAdjustment
+      } else {
+        fixture.abatementFactor = chargeAdjustment
+      }
       cy.wrap(fixture).as('fixture')
       cy.get('@billRun').then((billRun) => {
         TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
