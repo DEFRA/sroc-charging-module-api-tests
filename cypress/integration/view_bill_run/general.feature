@@ -108,7 +108,7 @@ Feature: View Bill Run General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
-      | generated | 0 | 0 | 1 | 1994 | 1994 |
+      | generated | 0 | 0 | 1 | 1000 | 1000 |
   
   Scenario: Bill run summary correctly shows credit invoices (SROC)
     When I request a valid new sroc bill run
@@ -117,7 +117,7 @@ Feature: View Bill Run General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
-      | generated | 1 | 1994 | 0 | 0 | -1994 |
+      | generated | 1 | 1000 | 0 | 0 | -1000 |
  
   Scenario: Bill run summary excludes de-minimus invoices (SROC)
     When I request a valid new sroc bill run
@@ -167,7 +167,7 @@ Feature: View Bill Run General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
-      | generated | 0 | 0 | 1 | 3988 | 3988 |
+      | generated | 0 | 0 | 1 | 2000 | 2000 |
      And the count of invoices in the bill run are 1  
 
   Scenario: New invoice not created if customer ref, financial year and licence numbers are different
@@ -179,9 +179,9 @@ Feature: View Bill Run General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
-      | generated | 0 | 0 | 1 | 3988 | 3988 |
+      | generated | 0 | 0 | 1 | 2000 | 2000 |
      And the count of invoices in the bill run are 1 
-
+@ignore
 #new ruleset not available yet
   Scenario: New invoice created for same customer ref and different financial years
     When I request a valid new sroc bill run
@@ -192,7 +192,7 @@ Feature: View Bill Run General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
-      | generated | 0 | 0 | 2 | 3988 | 3988 |
+      | generated | 0 | 0 | 2 | 2000 | 2000 |
      And the count of invoices in the bill run are 2
 
   Scenario: New invoice created for same financial year and different customer ref
@@ -204,7 +204,7 @@ Feature: View Bill Run General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the bill run summary includes the expected items
-      | generated | 0 | 0 | 2 | 3988 | 3988 |
+      | generated | 0 | 0 | 2 | 2000 | 2000 |
      And the count of invoices in the bill run are 2 
 
 # Check grouping by licence
