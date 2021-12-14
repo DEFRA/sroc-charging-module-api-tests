@@ -58,39 +58,6 @@ And('I add a successful {word} {word} transaction for customer {word}', (ruleset
   })
 })
 
-And('I add a successful transaction with the following details', (dataTable) => {
-  cy.wrap(dataTable.rawTable).each(row => {
-    const transactionType = row[0]
-    const ruleset = row[1]
-    const customerRef = row[2]
-    const periodStart = row[3]
-    const periodEnd = row[4]
-    const licenceNumber = row[5]
-
-    const fixtureName = `${transactionType}.${ruleset}.transaction`
-
-    const uuid = require('uuid')
-    const clientID = uuid.v4()
-
-    cy.fixture(fixtureName).then((fixture) => {
-      fixture.clientId = clientID
-      fixture.customerReference = customerRef
-      fixture.periodStart = periodStart
-      fixture.periodEnd = periodEnd
-      fixture.licenceNumber = licenceNumber
-      cy.wrap(fixture).as('fixture')
-      cy.get('@billRun').then((billRun) => {
-        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
-          expect(response.status).to.equal(201)
-          expect(response.body).to.have.property('transaction')
-          expect(response.body.transaction.id).not.to.equal(null)
-          expect(response.body.transaction.clientId).not.to.equal(null)
-        })
-      })
-    })
-  })
-})
-
 And('I add an invalid {word} transaction to it', (ruleset) => {
   const fixtureName = `standard.${ruleset}.transaction`
 
