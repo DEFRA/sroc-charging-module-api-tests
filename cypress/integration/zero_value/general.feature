@@ -3,6 +3,8 @@ Feature: Zero Value General
   Background: Authenticate
     Given I am the "system" user 
 
+#Negative scenarios covered as part of the deminimis tests 
+
   Scenario: Invoice net total of £0 is zero value invoice (SROC)
     When I request a valid new sroc bill run
      And I add a successful transaction with the following details
