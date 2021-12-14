@@ -3,7 +3,6 @@
 
 import { And, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import BillRunEndpoints from '../../endpoints/bill_run_endpoints'
-import InvoiceEndpoints from '../../endpoints/invoice_endpoints'
 import LicenceEndpoints from '../../endpoints/licence_endpoints'
 
 When('I request a valid new {word} bill run', (ruleset) => {
