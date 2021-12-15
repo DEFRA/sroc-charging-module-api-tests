@@ -24,5 +24,5 @@
     "batchNumber": "TEST10",
     "region": "A",
     "areaCode": "ARCA",
-    "subjectToMinimumCharge": true
+    "subjectToMinimumCharge": false
   }
