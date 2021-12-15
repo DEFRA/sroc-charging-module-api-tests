@@ -1,5 +1,5 @@
 import { Then } from 'cypress-cucumber-preprocessor/steps'
-import InvoiceEndpoints from '../../../endpoints/invoice_endpoints'
+import InvoiceEndpoints from '../../../../endpoints/invoice_endpoints'
 
 Then('the invoice level items are correct for a {word} invoice', (invoiceType) => {
     cy.log('Checking View invoice level items')
