@@ -60,3 +60,17 @@ And('I request to delete the invoice for {word}', (customerRef) => {
     })
   })
 })
+
+And('I try to view the invoice for {word} I am told it no longer exists', (customerRef) => {
+  cy.get('@billRun').then((billRun) => {
+    const billRunId = billRun.id
+    cy.get('@viewBillRun').then((viewBillRun) => {
+      const invoice = viewBillRun.invoices.find(element => element.customerReference === customerRef)
+      const invoiceId = invoice.id
+      InvoiceEndpoints.view(billRunId, invoiceId, false).then((response) => {
+        expect(response.status).to.be.equal(404)
+        expect(response.body.message).to.be.equal(`Invoice ${invoiceId} is unknown.`)
+      })
+    })
+  })
+})

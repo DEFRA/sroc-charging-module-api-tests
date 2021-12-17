@@ -117,6 +117,16 @@ Then('the bill run does not contain any transactions', () => {
   })
 })
 
+Then('the bill run does contain transactions', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.view(billRun.id).then((response) => {
+      expect(response.status).to.equal(200)
+
+      expect(response.body.billRun.invoices).to.not.be.empty
+    })
+  })
+})
+
 Then('the bill run summary items are correct', () => {
   cy.log('Testing Bill run summary items')
 
