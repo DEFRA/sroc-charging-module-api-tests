@@ -1,4 +1,4 @@
-Feature: Delete Invoice General
+Feature: Delete Invoice Validation
 
   Background: Authenticate
     Given I am the "system" user
