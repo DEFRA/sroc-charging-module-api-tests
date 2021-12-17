@@ -1,5 +1,5 @@
 import { Given, Then } from 'cypress-cucumber-preprocessor/steps'
-import StatusEndpoints from '../../endpoints/status_endpoints'
+import StatusEndpoints from '../../../endpoints/status_endpoints'
 
 Given('I request the /status endpoint', () => {
   StatusEndpoints.view().as('response')
