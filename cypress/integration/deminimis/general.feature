@@ -12,8 +12,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | true             | false            |  
+     #| demin | zeroV | cred | deb | net |
+      | true  | false | 0    | 1   | 1   | 
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -26,8 +26,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | true             | false            |  
+     #| demin | zeroV | cred | deb | net |
+      | true  | false | 0    | 999 | 999 | 
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -40,8 +40,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | false            | false            |  
+     #| demin | zeroV | cred | deb  | net  |
+      | false | false | 0    | 1000 | 1000 |  
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 1000 | 1000 |
 
@@ -54,8 +54,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | false            | false            |  
+     #| demin | zeroV | cred | deb | net |
+      | false | false | 1    | 0   | -1  |  
      And the bill run summary includes the expected items
       | generated | 1 | 1 | 0 | 0 | -1 |
 
@@ -74,8 +74,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | true             | false            |  
+     #| demin | zeroV | cred | deb | net |
+      | true  | false | 100  | 900 | 800 |  
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -94,8 +94,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | true             | false            |  
+     #| demin | zeroV | cred | deb | net |
+      | true  | false | 0    | 800 | 800 |  
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -114,8 +114,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | false            | false            |  
+     #| demin | zeroV | cred | deb | net  |
+      | false | false | 800  | 0   | -800 |  
      And the bill run summary includes the expected items
       | generated | 1 | 800 | 0 | 0 | -800 |   
 
@@ -128,8 +128,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
      And the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | true             | false            |
+     #| demin | zeroV | cred | deb | net |
+      | true  | false | 0    | 500 | 500 |
      And I add a successful transaction with the following details
      #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
       | standard        | sroc    | CM00000001  | LIC/NUM/CM02 | 120.00      |
@@ -138,8 +138,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | false            | false            |  
+     #| demin | zeroV | cred | deb   | net   |
+      | false | false | 1000 | 12500 | 11500 |  
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 11500 | 11500 |
 
@@ -172,8 +172,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | true             | false            |  
+     #| demin | zeroV | cred | deb | net |
+      | true  | false | 0    | 1   | 1   |  
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -186,8 +186,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | true             | false            |  
+     #| demin | zeroV | cred | deb | net |
+      | true  | false | 0    | 499 | 499 |  
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -200,8 +200,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | false            | false            |  
+     #| demin | zeroV | cred | deb | net |
+      | false | false | 0    | 500 | 500 |  
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 500 | 500 |
 
@@ -214,8 +214,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | false            | false            |  
+     #| demin | zeroV | cred | deb | net |
+      | false | false | 1    | 0   | -1  |  
      And the bill run summary includes the expected items
       | generated | 1 | 1 | 0 | 0 | -1 |
 
@@ -234,8 +234,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | true             | false            |  
+     #| demin | zeroV | cred | deb | net |
+      | true  | false | 100  | 500 | 400 |  
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -254,8 +254,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | true             | false            |  
+     #| demin | zeroV | cred | deb | net |
+      | true  | false | 0    | 200 | 200 |  
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -274,8 +274,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | false            | false            |  
+     #| demin | zeroV | cred | deb | net  |
+      | false | false | 400  | 0   | -400 |  
      And the bill run summary includes the expected items
       | generated | 1 | 400 | 0 | 0 | -400 |   
 
@@ -288,8 +288,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
      And the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | true             | false            |
+     #| demin | zeroV | cred | deb | net |
+      | true  | false | 0    | 300 | 300 |
      And I add a successful transaction with the following details
      #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
       | standard        | presroc | CM00000001  | LIC/NUM/CM02 | 120.00      |
@@ -298,8 +298,8 @@ Feature: Deminimis General
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| deminimisInvoice | zeroValueInvoice | 
-      | false            | false            |  
+     #| demin | zeroV | cred | deb   | net   |
+      | false | false | 1000 | 12300 | 11300 |  
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 11300 | 11300 |
 

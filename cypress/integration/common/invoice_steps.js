@@ -6,6 +6,9 @@ Then('the invoice summary includes the expected items', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const expectedDeminimis = row[0]
     const expectedZeroValue = row[1]
+    const expectedCreditLineValue = Number(row[2])
+    const expectedDebitLineValue = Number(row[3])
+    const expectedNetTotal = Number(row[4])
     cy.log('Testing invoice summary items')
 
     cy.get('@fixture').then((fixture) => {
@@ -15,6 +18,9 @@ Then('the invoice summary includes the expected items', (dataTable) => {
 
         expect(JSON.stringify(invoice.deminimisInvoice)).to.equal(expectedDeminimis)
         expect(JSON.stringify(invoice.zeroValueInvoice)).to.equal(expectedZeroValue)
+        expect(invoice.creditLineValue).to.equal(expectedCreditLineValue)
+        expect(invoice.debitLineValue).to.equal(expectedDebitLineValue)
+        expect(invoice.netTotal).to.equal(expectedNetTotal)
       })
     })
   })
