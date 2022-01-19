@@ -67,11 +67,11 @@ And('the licence level items are correct', () => {
   cy.get('@viewInvoice').then((viewInvoice) => {
     const licence = viewInvoice.invoice.licences[0]
 
-      cy.get('@fixture').then((fixture) => {
-        expect(licence.licenceNumber).to.equal(fixture.licenceNumber)
-      })
+    cy.get('@fixture').then((fixture) => {
+      expect(licence.licenceNumber).to.equal(fixture.licenceNumber)
     })
-  })  
+  })
+})
 
 And('the transaction level items are correct', () => {
   cy.log('Checking transaction level items')
