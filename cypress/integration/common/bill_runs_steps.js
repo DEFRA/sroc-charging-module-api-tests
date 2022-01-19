@@ -3,8 +3,6 @@
 
 import { And, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import BillRunEndpoints from '../../endpoints/bill_run_endpoints'
-import InvoiceEndpoints from '../../endpoints/invoice_endpoints'
-import LicenceEndpoints from '../../endpoints/licence_endpoints'
 
 When('I request a valid new {word} bill run', (ruleset) => {
   BillRunEndpoints.create({ region: 'A', ruleset: ruleset }).then((response) => {
@@ -118,6 +116,16 @@ Then('the bill run does not contain any transactions', () => {
   })
 })
 
+Then('the bill run does contain transactions', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.view(billRun.id).then((response) => {
+      expect(response.status).to.equal(200)
+
+      expect(response.body.billRun.invoices).to.not.be.empty
+    })
+  })
+})
+
 Then('the bill run summary items are correct', () => {
   cy.log('Testing Bill run summary items')
 
@@ -162,24 +170,6 @@ Then('the bill run summary includes the expected items', (dataTable) => {
   })
 })
 
-Then('the invoice summary includes the expected items', (dataTable) => {
-  cy.wrap(dataTable.rawTable).each(row => {
-    const expectedDeminimis = row[0]
-    const expectedZeroValue = row[1]
-    cy.log('Testing invoice summary items')
-
-    cy.get('@fixture').then((fixture) => {
-      const customerRef = fixture.customerReference
-      cy.get('@viewBillRun').then((billRun) => {
-        const invoice = billRun.invoices.find(element => element.customerReference === customerRef)
-
-        expect(JSON.stringify(invoice.deminimisInvoice)).to.equal(expectedDeminimis)
-        expect(JSON.stringify(invoice.zeroValueInvoice)).to.equal(expectedZeroValue)
-      })
-    })
-  })
-})
-
 And('I request to generate the bill run', () => {
   cy.get('@billRun').then((billRun) => {
     BillRunEndpoints.generate(billRun.id, false).then((response) => {
@@ -212,47 +202,6 @@ And('I request to delete the bill run', () => {
   })
 })
 
-And('I request to delete the invoice for {word}', (customerRef) => {
-  cy.get('@billRun').then((billRun) => {
-    const billRunId = billRun.id
-
-    BillRunEndpoints.view(billRunId).then((response) => {
-      expect(response.status).to.be.equal(200)
-      cy.wrap(response.body.billRun).as('viewBillRun')
-
-      cy.get('@viewBillRun').then((viewBillRun) => {
-        const invoice = viewBillRun.invoices.find(element => element.customerReference === customerRef)
-        const invoiceId = invoice.id
-
-        InvoiceEndpoints.delete(billRunId, invoiceId).then((response) => {
-          expect(response.status).to.be.equal(204)
-        })
-      })
-    })
-  })
-})
-
-And('I request to delete the licence {word} for {word}', (licenceNum, customerRef) => {
-  cy.get('@billRun').then((billRun) => {
-    const billRunId = billRun.id
-
-    BillRunEndpoints.view(billRunId).then((response) => {
-      expect(response.status).to.be.equal(200)
-      cy.wrap(response.body.billRun).as('viewBillRun')
-
-      cy.get('@viewBillRun').then((viewBillRun) => {
-        const invoice = viewBillRun.invoices.find(element => element.customerReference === customerRef)
-        const licence = invoice.licences.find(element => element.licenceNumber === licenceNum)
-        const licenceId = licence.id
-
-        LicenceEndpoints.delete(billRunId, licenceId).then((response) => {
-          expect(response.status).to.be.equal(204)
-        })
-      })
-    })
-  })
-})
-
 Then('bill run is not found', () => {
   cy.get('@billRun').then((billRun) => {
     BillRunEndpoints.viewDeleted(billRun.id).then((response) => {
@@ -269,5 +218,52 @@ Then('bill run status is updated to {string}', (status) => {
       expect(response.status).to.equal(200)
       expect(response.body.status).to.equal(status)
     })
+  })
+})
+
+Then('I am told the bill run status must be {string}', (status) => {
+  cy.get('@billRun').then((billRun) => {
+    const billRunId = billRun.id
+    cy.get('@response').then((response) => {
+      expect(response.body.error).to.equal('Conflict')
+      expect(response.body.message).to.equal(`Bill run ${billRunId} does not have a status of '${status}'.`)
+    })
+  })
+})
+
+And('I attempt to request to approve the bill run', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.approve(billRun.id, false).then((response) => {
+      expect(response.status).to.be.equal(409)
+      cy.wrap(response).as('response')
+    })
+  })
+})
+
+And('I request to send an unapproved bill run I am told the bill run does not have status of approved', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.send(billRun.id, false).then((response) => {
+      expect(response.status).to.be.equal(409)
+      expect(response.body.error).to.equal('Conflict')
+      expect(response.body.message).to.equal(`Bill run ${billRun.id} does not have a status of 'approved'.`)
+    })
+  })
+})
+
+And('I request to send the bill run and I am told it cannot be updated because its billed', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.send(billRun.id, false).then((response) => {
+      expect(response.status).to.be.equal(409)
+      expect(response.body.error).to.equal('Conflict')
+      expect(response.body.message).to.equal(`Bill run ${billRun.id} cannot be patched because its status is billed.`)
+    })
+  })
+})
+
+Then('a transaction reference is not generated for {word}', (customerRef) => {
+  cy.log('Checking transaction reference is NOT generated')
+  cy.get('@viewBillRun').then((billRun) => {
+    const invoice = billRun.invoices.find(element => element.customerReference === customerRef)
+    expect(invoice.transactionReference).to.equal(null)
   })
 })

@@ -51,7 +51,6 @@ Feature: Create Transaction Validation
       | presroc | areaCode             |
       | presroc | lineDescription      |
       | presroc | source               |
-      | presroc | regionalChargingArea |
       
   Scenario: Checks for mandatory values when compensationCharge is true (SROC)
     When I request a valid new sroc bill run
@@ -64,6 +63,7 @@ Feature: Create Transaction Validation
     When I request a valid new presroc bill run
      And I send a presroc request where compensationCharge is true
     Then If I do not send the following values I get the expected response
+      | regionalChargingArea |
       | eiucSource           |
       | waterUndertaker      |
 
@@ -212,7 +212,6 @@ Feature: Create Transaction Validation
     When I request a valid new sroc bill run
      And I send the following invalid combinations I am told what value a property should be
       | sroc | true  | false | false  | section127Agreement | true  |
-      | sroc | false | true  | true   | section127Agreement | false |
       | sroc | true  | true  | false  | twoPartTariff       | false |
       | sroc | true  | true  | true   | twoPartTariff       | false |
 
@@ -223,7 +222,6 @@ Feature: Create Transaction Validation
      When I request a valid new presroc bill run
      And I send the following invalid combinations I am told what value a property should be
       | presroc | true  | false | false  | section127Agreement | true  |
-      #| presroc | false | true  | true   | section127Agreement | false |
       | presroc | true  | true  | false  | twoPartTariff       | false |
       | presroc | true  | true  | true   | twoPartTariff       | false |
 
@@ -234,6 +232,7 @@ Feature: Create Transaction Validation
      And I send the following valid combinations it creates the transaction without error
       | sroc | true  | false | true  |
       | sroc | false | false | true  |
+      | sroc | false | true  | true  |
       | sroc | false | true  | false |
       | sroc | true  | false | true  |
       | sroc | false | false | false |
@@ -246,6 +245,7 @@ Feature: Create Transaction Validation
       | presroc | true  | false | true  |
       | presroc | false | false | true  |
       | presroc | false | true  | false |
+      | presroc | false | true  | true  |
       | presroc | true  | false | true  |
       | presroc | false | false | false |     
 

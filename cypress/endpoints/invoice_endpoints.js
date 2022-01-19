@@ -17,7 +17,7 @@ class InvoiceEndpoints {
     return cy
       .api({
         method: 'DELETE',
-        url: `/v2/wrls/bill-runs/${id}/invoices/${invoiceId}`,
+        url: `/v3/wrls/bill-runs/${id}/invoices/${invoiceId}`,
         failOnStatusCode,
         headers: {
           'content-type': 'application/json',

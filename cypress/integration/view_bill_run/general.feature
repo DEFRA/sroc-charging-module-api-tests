@@ -24,64 +24,106 @@ Feature: View Bill Run General
 # | transactionType | ruleset | customerReference | 
 # The second set of values in the table relate to what values should be for
 # | deminimisInvoice | zeroValueInvoice |
-  Scenario: Invoice summary shows expected items for standard transaction (SROC)
-    When I request a valid new sroc bill run
-     And I add a successful sroc standard transaction for customer CM00000001 
+  Scenario: Invoice summary shows expected items for debit invoice (SROC)
+    When I request a valid new sroc bill run for region A
+     And I add a successful transaction with the following details
+     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
+      | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 180.00      | 
      And I request to generate the bill run
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-      | false | false |
+     #| demin | zeroV | cred | deb   | net   | customerRef |
+      | false | false | 0    | 18000 | 18000 | CM00000001  |
+
+  Scenario: Invoice summary shows expected items for credit invoice (SROC)
+    When I request a valid new sroc bill run for region A
+     And I add a successful transaction with the following details
+     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
+      | credit          | sroc    | CM00000001  | LIC/NUM/CM01 | 180.00      | 
+     And I request to generate the bill run
+     And bill run status is updated to "generated"
+     And I request to view the bill run
+    Then the invoice summary includes the expected items
+     #| demin | zeroV | cred  | deb | net    | customerRef |
+      | false | false | 18000 | 0   | -18000 | CM00000001  |    
 
   Scenario: Invoice summary shows expected items for deminimis invoice (SROC)
-    When I request a valid new sroc bill run
-     And I add a successful sroc deminimis transaction for customer CM00000001
+    When I request a valid new sroc bill run for region A
+     And I add a successful transaction with the following details
+     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
+      | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 9.00        |
      And I request to generate the bill run
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-      | true | false |    
+     #| demin | zeroV | cred | deb | net | customerRef |
+      | true  | false | 0    | 900 | 900 | CM00000001  |  
 
   Scenario: Invoice summary shows expected items for zero value invoice (SROC)
-    When I request a valid new sroc bill run
-     And I add a successful sroc standard transaction for customer CM00000001 
-     And I add a successful sroc credit transaction for customer CM00000001 
+    When I request a valid new sroc bill run for region A
+     And I add a successful transaction with the following details
+     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
+      | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 90.00       |
+      | credit          | sroc    | CM00000001  | LIC/NUM/CM01 | 90.00       |
      And I request to generate the bill run
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-      | false | true |
+     #| demin | zeroV | cred | deb  | net | customerRef |
+      | false | true  | 9000 | 9000 | 0   | CM00000001  |
 
-  Scenario: Invoice summary shows expected items for standard transaction (PRESROC)
-    When I request a valid new presroc bill run
-     And I add a successful presroc standard transaction for customer CM00000001
+  Scenario: Invoice summary shows expected items for debit invoice (PRESROC)
+    When I request a valid new presroc bill run for region A
+     And I add a successful transaction with the following details
+     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
+      | standard        | presroc | CM00000001  | LIC/NUM/CM01 | 180.00      | 
      And I request to generate the bill run
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-      | false | false |
+     #| demin | zeroV | cred | deb   | net   | customerRef |
+      | false | false | 0    | 18000 | 18000 | CM00000001  |
+
+  Scenario: Invoice summary shows expected items for credit invoice (PRESROC)
+    When I request a valid new presroc bill run for region A
+     And I add a successful transaction with the following details
+     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
+      | credit          | presroc | CM00000001  | LIC/NUM/CM01 | 180.00      | 
+     And I request to generate the bill run
+     And bill run status is updated to "generated"
+     And I request to view the bill run
+    Then the invoice summary includes the expected items
+     #| demin | zeroV | cred  | deb | net    | customerRef |
+      | false | false | 18000 | 0   | -18000 | CM00000001  |    
 
   Scenario: Invoice summary shows expected items for deminimis invoice (PRESROC)
-    When I request a valid new presroc bill run
-     And I add a successful presroc deminimis transaction for customer CM00000001
+    When I request a valid new presroc bill run for region A
+     And I add a successful transaction with the following details
+     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
+      | standard        | presroc | CM00000001  | LIC/NUM/CM01 | 4.00        |
      And I request to generate the bill run
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-      | true | false |    
+     #| demin | zeroV | cred | deb | net | customerRef |
+      | true  | false | 0    | 400 | 400 | CM00000001  |  
 
   Scenario: Invoice summary shows expected items for zero value invoice (PRESROC)
-    When I request a valid new presroc bill run
-     And I add a successful presroc standard transaction for customer CM00000001 
-     And I add a successful presroc credit transaction for customer CM00000001
+    When I request a valid new presroc bill run for region A
+     And I add a successful transaction with the following details
+     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
+      | standard        | presroc | CM00000001  | LIC/NUM/CM01 | 90.00       |
+      | credit          | presroc | CM00000001  | LIC/NUM/CM01 | 90.00       |
      And I request to generate the bill run
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-      | false | true |    
+     #| demin | zeroV | cred | deb  | net | customerRef |
+      | false | true  | 9000 | 9000 | 0   | CM00000001  |    
 
   Scenario: Invoice summary does not include minimum charge flag (SROC)
-    When I request a valid new sroc bill run
+    When I request a valid new sroc bill run for region A
      And I add a successful sroc minimumCharge transaction for customer CM00000001
      And I request to generate the bill run
      And bill run status is updated to "generated"
@@ -89,7 +131,7 @@ Feature: View Bill Run General
     Then the invoice summary does not count this as a minimum charge invoice
 
   Scenario: Invoice summary includes minimum charge flag (PRESROC)
-    When I request a valid new presroc bill run
+    When I request a valid new presroc bill run for region A
      And I add a successful presroc minimumCharge transaction for customer CM00000001
      And I request to generate the bill run
      And bill run status is updated to "generated"
@@ -102,7 +144,7 @@ Feature: View Bill Run General
 # The second set of values in the table relate to what values should be for
 # | status | creditNoteCount | creditNoteValue | invoiceCount | invoiceValue |
   Scenario: Bill run summary correctly shows debit invoices (SROC)
-    When I request a valid new sroc bill run
+    When I request a valid new sroc bill run for region A
      And I add a successful sroc standard transaction for customer CM00000001
      And I request to generate the bill run
      And bill run status is updated to "generated"
@@ -111,7 +153,7 @@ Feature: View Bill Run General
       | generated | 0 | 0 | 1 | 1000 | 1000 |
   
   Scenario: Bill run summary correctly shows credit invoices (SROC)
-    When I request a valid new sroc bill run
+    When I request a valid new sroc bill run for region A
      And I add a successful sroc credit transaction for customer CM00000001
      And I request to generate the bill run
      And bill run status is updated to "generated"
@@ -120,7 +162,7 @@ Feature: View Bill Run General
       | generated | 1 | 1000 | 0 | 0 | -1000 |
  
   Scenario: Bill run summary excludes de-minimus invoices (SROC)
-    When I request a valid new sroc bill run
+    When I request a valid new sroc bill run for region A
      And I add a successful sroc deminimis transaction for customer CM00000001
      And I request to generate the bill run
      And bill run status is updated to "generated"
@@ -129,7 +171,7 @@ Feature: View Bill Run General
       | generated | 0 | 0 | 0 | 0 | 0 |
 
   Scenario: Bill run summary excludes zero value invoices (SROC)
-    When I request a valid new sroc bill run
+    When I request a valid new sroc bill run for region A
      And I add a successful sroc standard transaction for customer CM00000001 
      And I add a successful sroc credit transaction for customer CM00000001
      And I request to generate the bill run
@@ -139,7 +181,7 @@ Feature: View Bill Run General
       | generated | 0 | 0 | 0 | 0 | 0 |
 
   Scenario: Bill run summary excludes de-minimus invoices (PRESROC)
-    When I request a valid new presroc bill run
+    When I request a valid new presroc bill run for region A
      And I add a successful presroc deminimis transaction for customer CM00000001
      And I request to generate the bill run
      And bill run status is updated to "generated"
@@ -148,7 +190,7 @@ Feature: View Bill Run General
       | generated | 0 | 0 | 0 | 0 | 0 |
 
   Scenario: Bill run summary excludes zero value invoices (PRESROC)
-    When I request a valid new presroc bill run
+    When I request a valid new presroc bill run for region A
      And I add a successful presroc standard transaction for customer CM00000001 
      And I add a successful presroc credit transaction for customer CM00000001
      And I request to generate the bill run
@@ -159,8 +201,8 @@ Feature: View Bill Run General
 
 # Check grouping by invoice
   Scenario: New invoice not created if customer ref, financial year and licence numbers are the same
-    When I request a valid new sroc bill run
-     And I add a successful transaction with the following details
+    When I request a valid new sroc bill run for region A
+     And I add a successful transaction with the following FY details
       | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
       | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
      And I request to generate the bill run
@@ -172,7 +214,7 @@ Feature: View Bill Run General
 
   Scenario: New invoice not created if customer ref, financial year and licence numbers are different
     When I request a valid new sroc bill run
-     And I add a successful transaction with the following details
+     And I add a successful transaction with the following FY details
       | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
       | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM02 |
      And I request to generate the bill run
@@ -185,7 +227,7 @@ Feature: View Bill Run General
 #new ruleset not available yet
   Scenario: New invoice created for same customer ref and different financial years
     When I request a valid new sroc bill run
-     And I add a successful transaction with the following details
+     And I add a successful transaction with the following FY details
       | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
       | standard | sroc | CM00000001 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM01 |
      And I request to generate the bill run
@@ -197,7 +239,7 @@ Feature: View Bill Run General
 
   Scenario: New invoice created for same financial year and different customer ref
     When I request a valid new sroc bill run
-     And I add a successful transaction with the following details
+     And I add a successful transaction with the following FY details
       | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
       | standard | sroc | CM00000002 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
      And I request to generate the bill run
@@ -210,7 +252,7 @@ Feature: View Bill Run General
 # Check grouping by licence
   Scenario: New licence is not created if customer ref, financial year and licence numbers are the same
     When I request a valid new sroc bill run
-     And I add a successful transaction with the following details
+     And I add a successful transaction with the following FY details
       | standard  | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
       | zeroValue | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
       | credit    | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
@@ -223,7 +265,7 @@ Feature: View Bill Run General
 
   Scenario: New licence is created if customer ref, financial year and licence numbers are different
     When I request a valid new sroc bill run
-     And I add a successful transaction with the following details
+     And I add a successful transaction with the following FY details
       | standard  | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
       | zeroValue | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM02 |
       | credit    | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM03 |

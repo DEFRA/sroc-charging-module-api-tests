@@ -6,7 +6,7 @@
   "compensationCharge": false,
   "chargeCategoryCode": "2.1.1",
   "waterUndertaker": false,
-  "regionalChargingArea": "",
+  "regionalChargingArea": "Dee",
   "supportedSource": false,
   "supportedSourceName": "",
   "abatementFactor": 1.0,

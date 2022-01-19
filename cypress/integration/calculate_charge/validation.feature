@@ -39,8 +39,9 @@ Feature: Calculate Charge Validation
   Scenario: Checks for mandatory values when compensationCharge is true (PRESROC)
     When I send a presroc request where compensationCharge is true
     Then If I do not send the following values I get the expected response
-      | eiucSource      |
-      | waterUndertaker |
+      | regionalChargingArea |
+      | eiucSource           |
+      | waterUndertaker      |
 
   Scenario: Checks for mandatory values when twoPartTariff is true
     When I send a sroc request where twoPartTariff is true
@@ -171,63 +172,98 @@ Feature: Calculate Charge Validation
   # | ruleset | twoPartTariff | compensationCharge | section127Agreement | invalid property | should be |
   Scenario: Checks for invalid combinations
     When I send the following invalid combinations I am told what value a property should be
-      | sroc | true  | false | false | section127Agreement | true  |
-      | sroc | false | true  | true  | section127Agreement | false |
-      | sroc | true  | true  | false | twoPartTariff       | false |
-      | sroc | true  | true  | true  | twoPartTariff       | false |
+      | sroc    | true  | false | false | section127Agreement | true  |
+      | sroc    | true  | true  | false | twoPartTariff       | false |
+      | sroc    | true  | true  | true  | twoPartTariff       | false |
+      | presroc | true  | false | false | section127Agreement | true  |
+      | presroc | true  | true  | false | twoPartTariff       | false |
+      | presroc | true  | true  | true  | twoPartTariff       | false |
 
   # The values in the table relate to what will be sent in the request for
   # | ruleset | twoPartTariff | compensationCharge | section127Agreement |
   Scenario: Allows valid combinations
     When I send the following valid combinations it calculates the charge without error
-      | sroc | true  | false | true  |
-      | sroc | false | false | true  |
-      | sroc | false | true  | false |
-      | sroc | true  | false | true  |
-      | sroc | false | false | false |
+      | sroc    | true  | false | true  |
+      | sroc    | false | false | true  |
+      | sroc    | false | true  | true  |
+      | sroc    | false | true  | false |
+      | sroc    | true  | false | true  |
+      | sroc    | false | false | false |
+      | presroc | true  | false | true  |
+      | presroc | false | false | true  |
+      | presroc | false | true  | true  |
+      | presroc | false | true  | false |
+      | presroc | true  | false | true  |
+      | presroc | false | false | false |
 
   Scenario: Correctly handles case sensitive data items
     When I send the following properties it corrects the case and calculates the charge without error
-      | sroc | loss                 | low                                |
-      | sroc | loss                 | mediuM                             |
-      | sroc | loss                 | hIgh                               |
-      | sroc | supportedSourceName  | candover                           |
-      | sroc | supportedSourceName  | dee                                |
-      | sroc | supportedSourceName  | earl soham - Deben                 |
-      | sroc | supportedSourceName  | glen groundwater                   |
-      | sroc | supportedSourceName  | great east anglian groundwater     |
-      | sroc | supportedSourceName  | great eAst anglian surface water   |
-      | sroc | supportedSourceName  | kielder                            |
-      | sroc | supportedSourceName  | lodes granta groundwater           |
-      | sroc | supportedSourceName  | lower yorkshire derwent            |
-      | sroc | supportedSourceName  | medway - allington                 |
-      | sroc | supportedSourceName  | nene – northampton                 |
-      | sroc | supportedSourceName  | nene – water newton                |
-      | sroc | supportedSourceName  | ouse – eaton socon                 |
-      | sroc | supportedSourceName  | ouse – hermitage                   |
-      | sroc | supportedSourceName  | ouse - oFford                      |
-      | sroc | supportedSourceName  | rhee groundwateR                   |
-      | sroc | supportedSourceName  | severn                             |
-      | sroc | supportedSourceName  | thames                             |
-      | sroc | supportedSourceName  | thet and little ouse surface water |
-      | sroc | supportedSourceName  | waveney groundwater                |
-      | sroc | supportedSourceName  | waveney surface water              |
-      | sroc | supportedSourceName  | welland – tinwell sluices          |
-      | sroc | supportedSourceName  | witham and ancholme                |
-      | sroc | supportedSourceName  | wye                                |
-      | sroc | regionalChargingArea | anglian                            |
-      | sroc | regionalChargingArea | midlands                           |
-      | sroc | regionalChargingArea | northumbria                        |
-      | sroc | regionalChargingArea | north west                         |
-      | sroc | regionalChargingArea | southern                           |
-      | sroc | regionalChargingArea | south west (incl wessex)           |
-      | sroc | regionalChargingArea | devon and cornwall (south west)    |
-      | sroc | regionalChargingArea | north and south wessex             |
-      | sroc | regionalChargingArea | thames                             |
-      | sroc | regionalChargingArea | yorkshire                          |
-      | sroc | regionalChargingArea | dee                                |
-      | sroc | regionalChargingArea | wye                                |
-      | sroc | regionalChargingArea | wales                              |
+      | sroc    | loss                 | low                                |
+      | sroc    | loss                 | mediuM                             |
+      | sroc    | loss                 | hIgh                               |
+      | presroc | loss                 | very low                           |
+      | presroc | loss                 | low                                |
+      | presroc | loss                 | mediuM                             |
+      | presroc | loss                 | hIgh                               |
+      | presroc | season               | winter                             |
+      | presroc | season               | summer                             |
+      | presroc | season               | all year                           |
+      | sroc    | supportedSourceName  | candover                           |
+      | sroc    | supportedSourceName  | dee                                |
+      | sroc    | supportedSourceName  | earl soham - Deben                 |
+      | sroc    | supportedSourceName  | glen groundwater                   |
+      | sroc    | supportedSourceName  | great east anglian groundwater     |
+      | sroc    | supportedSourceName  | great eAst anglian surface water   |
+      | sroc    | supportedSourceName  | kielder                            |
+      | sroc    | supportedSourceName  | lodes granta groundwater           |
+      | sroc    | supportedSourceName  | lower yorkshire derwent            |
+      | sroc    | supportedSourceName  | medway - allington                 |
+      | sroc    | supportedSourceName  | nene – northampton                 |
+      | sroc    | supportedSourceName  | nene – water newton                |
+      | sroc    | supportedSourceName  | ouse – eaton socon                 |
+      | sroc    | supportedSourceName  | ouse – hermitage                   |
+      | sroc    | supportedSourceName  | ouse - oFford                      |
+      | sroc    | supportedSourceName  | rhee groundwateR                   |
+      | sroc    | supportedSourceName  | severn                             |
+      | sroc    | supportedSourceName  | thames                             |
+      | sroc    | supportedSourceName  | thet and little ouse surface water |
+      | sroc    | supportedSourceName  | waveney groundwater                |
+      | sroc    | supportedSourceName  | waveney surface water              |
+      | sroc    | supportedSourceName  | welland – tinwell sluices          |
+      | sroc    | supportedSourceName  | witham and ancholme                |
+      | sroc    | supportedSourceName  | wye                                |
+      | sroc    | regionalChargingArea | anglian                            |
+      | sroc    | regionalChargingArea | midlands                           |
+      | sroc    | regionalChargingArea | northumbria                        |
+      | sroc    | regionalChargingArea | north west                         |
+      | sroc    | regionalChargingArea | southern                           |
+      | sroc    | regionalChargingArea | south west (incl wessex)           |
+      | sroc    | regionalChargingArea | devon and cornwall (south west)    |
+      | sroc    | regionalChargingArea | north and south wessex             |
+      | sroc    | regionalChargingArea | thames                             |
+      | sroc    | regionalChargingArea | yorkshire                          |
+      | sroc    | regionalChargingArea | dee                                |
+      | sroc    | regionalChargingArea | wye                                |
+      | sroc    | regionalChargingArea | wales                              |
+      | presroc | source               | supported                          |
+      | presroc | source               | unsupported                        |
+      | presroc | source               | kielder                            |
+      | presroc | source               | tidal                              |
+      | presroc | eiucSource           | kielder                            |
+      | presroc | eiucSource           | tidal                              |
+      | presroc | regionalChargingArea | anglian                            |
+      | presroc | regionalChargingArea | midlands                           |
+      | presroc | regionalChargingArea | northumbria                        |
+      | presroc | regionalChargingArea | north west                         |
+      | presroc | regionalChargingArea | southern                           |
+      | presroc | regionalChargingArea | south west (incl wessex)           |
+      | presroc | regionalChargingArea | devon and cornwall (south west)    |
+      | presroc | regionalChargingArea | north and south wessex             |
+      | presroc | regionalChargingArea | thames                             |
+      | presroc | regionalChargingArea | yorkshire                          |
+      | presroc | regionalChargingArea | dee                                |
+      | presroc | regionalChargingArea | wye                                |
+      | presroc | regionalChargingArea | wales                              |
 
   Scenario: Checks that supportedSourceName is set correctly according to how supportedSource is set
     When I send the following supported source values I get the expected response
