@@ -1,4 +1,4 @@
-Feature: Zero Value General
+Feature: Zero Value
 
   Background: Authenticate
     Given I am the "system" user 

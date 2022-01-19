@@ -1,4 +1,4 @@
-Feature: Transaction File Reference General
+Feature: Transaction File Reference
 
   Background: Authenticate
     Given I am the "system" user
