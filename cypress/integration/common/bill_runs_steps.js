@@ -220,3 +220,50 @@ Then('bill run status is updated to {string}', (status) => {
     })
   })
 })
+
+Then('I am told the bill run status must be {string}', (status) => {
+  cy.get('@billRun').then((billRun) => {
+    const billRunId = billRun.id
+    cy.get('@response').then((response) => {
+      expect(response.body.error).to.equal('Conflict')
+      expect(response.body.message).to.equal(`Bill run ${billRunId} does not have a status of '${status}'.`)
+    })
+  })
+})
+
+And('I attempt to request to approve the bill run', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.approve(billRun.id, false).then((response) => {
+      expect(response.status).to.be.equal(409)
+      cy.wrap(response).as('response')
+    })
+  })
+})
+
+And('I request to send an unapproved bill run I am told the bill run does not have status of approved', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.send(billRun.id, false).then((response) => {
+      expect(response.status).to.be.equal(409)
+      expect(response.body.error).to.equal('Conflict')
+      expect(response.body.message).to.equal(`Bill run ${billRun.id} does not have a status of 'approved'.`)
+    })
+  })
+})
+
+And('I request to send the bill run and I am told it cannot be updated because its billed', () => {
+  cy.get('@billRun').then((billRun) => {
+    BillRunEndpoints.send(billRun.id, false).then((response) => {
+      expect(response.status).to.be.equal(409)
+      expect(response.body.error).to.equal('Conflict')
+      expect(response.body.message).to.equal(`Bill run ${billRun.id} cannot be patched because its status is billed.`)
+    })
+  })
+})
+
+Then('a transaction reference is not generated for {word}', (customerRef) => {
+  cy.log('Checking transaction reference is NOT generated')
+  cy.get('@viewBillRun').then((billRun) => {
+    const invoice = billRun.invoices.find(element => element.customerReference === customerRef)
+    expect(invoice.transactionReference).to.equal(null)
+  })
+})

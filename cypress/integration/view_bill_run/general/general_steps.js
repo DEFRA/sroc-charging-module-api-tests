@@ -1,7 +1,7 @@
 import { And, Then } from 'cypress-cucumber-preprocessor/steps'
 import TransactionEndpoints from '../../../endpoints/transaction_endpoints'
 
-And('I add a successful transaction with the following details', (dataTable) => {
+And('I add a successful transaction with the following FY details', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const transactionType = row[0]
     const ruleset = row[1]

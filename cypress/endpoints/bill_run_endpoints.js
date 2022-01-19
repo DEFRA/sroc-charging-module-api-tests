@@ -70,11 +70,12 @@ class BillRunEndpoints {
       })
   }
 
-  static approve (id) {
+  static approve (id, failOnStatusCode = true) {
     return cy
       .api({
         method: 'PATCH',
-        url: `/v2/wrls/bill-runs/${id}/approve`,
+        url: `/v3/wrls/bill-runs/${id}/approve`,
+        failOnStatusCode,
         headers: {
           'content-type': 'application/json',
           accept: 'application/json',
@@ -83,11 +84,12 @@ class BillRunEndpoints {
       })
   }
 
-  static send (id) {
+  static send (id, failOnStatusCode = true) {
     return cy
       .api({
         method: 'PATCH',
-        url: `/v2/wrls/bill-runs/${id}/send`,
+        url: `/v3/wrls/bill-runs/${id}/send`,
+        failOnStatusCode,
         headers: {
           'content-type': 'application/json',
           accept: 'application/json',
@@ -109,11 +111,12 @@ class BillRunEndpoints {
       })
   }
 
-  static status (id) {
+  static status (id, failOnStatusCode = true) {
     return cy
       .api({
         method: 'GET',
-        url: `/v2/wrls/bill-runs/${id}/status`,
+        url: `/v3/wrls/bill-runs/${id}/status`,
+        failOnStatusCode,
         headers: {
           'content-type': 'application/json',
           accept: 'application/json',

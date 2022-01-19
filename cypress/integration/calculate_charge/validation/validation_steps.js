@@ -364,7 +364,9 @@ When('I send the following invalid combinations I am told what value a property 
 
       CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
         expect(response.status).to.equal(422)
-        expect(response.body.message).to.equal(`"${incorrectProperty}" must be [${correctValue}]`)
+        if (fixture.twoPartTariff === true && fixture.compensationCharge === true && fixture.section127Agreement === false) {
+          expect(response.body.message).to.equal('"twoPartTariff" must be [false]. "section127Agreement" must be [true]')
+        } else { expect(response.body.message).to.equal(`"${incorrectProperty}" must be [${correctValue}]`) }
       })
     })
   })
