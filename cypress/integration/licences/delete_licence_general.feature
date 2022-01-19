@@ -28,8 +28,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb   | net   |
-      | false | false | 0    | 10000 | 10000 |
+     #| demin | zeroV | cred | deb   | net   | customerRef |
+      | false | false | 0    | 10000 | 10000 | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 10000 | 10000 |
 
@@ -46,8 +46,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred  | deb | net    |
-      | false | false | 10000 | 0   | -10000 |
+     #| demin | zeroV | cred  | deb | net    | customerRef |
+      | false | false | 10000 | 0   | -10000 | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 1 | 10000 | 0 | 0 | -10000 |
 
@@ -64,8 +64,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb   | net | 
-      | true  | false | 0    | 700   | 700 |
+     #| demin | zeroV | cred | deb   | net | customerRef | 
+      | true  | false | 0    | 700   | 700 | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -83,8 +83,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred  | deb   | net |
-      | false | true  | 10000 | 10000 | 0   |
+     #| demin | zeroV | cred  | deb   | net | customerRef |
+      | false | true  | 10000 | 10000 | 0   | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -101,8 +101,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred  | deb | net    |
-      | false | false | 10000 | 0   | -10000 |
+     #| demin | zeroV | cred  | deb | net    | customerRef |
+      | false | false | 10000 | 0   | -10000 | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 1 | 10000 | 0 | 0 | -10000 |
 
@@ -119,8 +119,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb   | net   |
-      | false | false | 0    | 10000 | 10000 |
+     #| demin | zeroV | cred | deb   | net   | customerRef |
+      | false | false | 0    | 10000 | 10000 | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 10000 | 10000 |
 
@@ -137,8 +137,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb   | net | 
-      | true  | false | 0    | 700   | 700 |
+     #| demin | zeroV | cred | deb   | net | customerRef | 
+      | true  | false | 0    | 700   | 700 | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -156,8 +156,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred  | deb   | net |
-      | false | true  | 10000 | 10000 | 0   |
+     #| demin | zeroV | cred  | deb   | net | customerRef |
+      | false | true  | 10000 | 10000 | 0   | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -174,8 +174,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb | net |
-      | false | true  | 0    | 0   | 0   |
+     #| demin | zeroV | cred | deb | net | customerRef |
+      | false | true  | 0    | 0   | 0   | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -192,8 +192,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb | net |
-      | false | true  | 0    | 0   | 0   |
+     #| demin | zeroV | cred | deb | net | customerRef |
+      | false | true  | 0    | 0   | 0   | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -210,8 +210,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then invoice CM00000001 is no longer listed under the bill run
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred  | deb   | net   |
-      | false | false | 0     | 10000 | 10000 |
+     #| demin | zeroV | cred  | deb   | net   | customerRef |
+      | false | false | 0     | 10000 | 10000 | CM00000002  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 10000 | 10000 |    
 
@@ -228,8 +228,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then invoice CM00000001 is no longer listed under the bill run
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred  | deb | net    |
-      | false | false | 10000 | 0   | -10000 |
+     #| demin | zeroV | cred  | deb | net    | customerRef |
+      | false | false | 10000 | 0   | -10000 | CM00000002  |
      And the bill run summary includes the expected items
       | generated | 1 | 10000 | 0 | 0 | -10000 |
 
@@ -246,8 +246,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then invoice CM00000001 is no longer listed under the bill run
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb | net |
-      | true  | false | 0    | 899 | 899 |
+     #| demin | zeroV | cred | deb | net | customerRef |
+      | true  | false | 0    | 899 | 899 | CM00000002  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -264,8 +264,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then invoice CM00000001 is no longer listed under the bill run
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb | net |
-      | false | true  | 0    | 0   | 0   |
+     #| demin | zeroV | cred | deb | net | customerRef |
+      | false | true  | 0    | 0   | 0   | CM00000002  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |    
 
@@ -295,8 +295,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb   | net   |
-      | false | false | 0    | 10000 | 10000 |
+     #| demin | zeroV | cred | deb   | net   | customerRef |
+      | false | false | 0    | 10000 | 10000 | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 10000 | 10000 |
 
@@ -313,8 +313,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred  | deb | net    |
-      | false | false | 10000 | 0   | -10000 |
+     #| demin | zeroV | cred  | deb | net    | customerRef |
+      | false | false | 10000 | 0   | -10000 | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 1 | 10000 | 0 | 0 | -10000 |
 
@@ -331,8 +331,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb   | net | 
-      | true  | false | 0    | 400   | 400 |
+     #| demin | zeroV | cred | deb   | net | customerRef | 
+      | true  | false | 0    | 400   | 400 | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -350,8 +350,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred  | deb   | net |
-      | false | true  | 10000 | 10000 | 0   |
+     #| demin | zeroV | cred  | deb   | net | customerRef |
+      | false | true  | 10000 | 10000 | 0   | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -368,8 +368,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred  | deb | net    |
-      | false | false | 10000 | 0   | -10000 |
+     #| demin | zeroV | cred  | deb | net    | customerRef |
+      | false | false | 10000 | 0   | -10000 | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 1 | 10000 | 0 | 0 | -10000 |
 
@@ -386,8 +386,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb   | net   |
-      | false | false | 0    | 10000 | 10000 |
+     #| demin | zeroV | cred | deb   | net   | customerRef |
+      | false | false | 0    | 10000 | 10000 | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 10000 | 10000 |
 
@@ -404,8 +404,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb   | net | 
-      | true  | false | 0    | 499   | 499 |
+     #| demin | zeroV | cred | deb   | net | customerRef | 
+      | true  | false | 0    | 499   | 499 | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -423,8 +423,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred  | deb   | net |
-      | false | true  | 10000 | 10000 | 0   |
+     #| demin | zeroV | cred  | deb   | net | customerRef |
+      | false | true  | 10000 | 10000 | 0   | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -441,8 +441,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb | net |
-      | false | true  | 0    | 0   | 0   |
+     #| demin | zeroV | cred | deb | net | customerRef |
+      | false | true  | 0    | 0   | 0   | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -459,8 +459,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb | net |
-      | false | true  | 0    | 0   | 0   |
+     #| demin | zeroV | cred | deb | net | customerRef |
+      | false | true  | 0    | 0   | 0   | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -477,8 +477,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then invoice CM00000001 is no longer listed under the bill run
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred  | deb   | net   |
-      | false | false | 0     | 10000 | 10000 |
+     #| demin | zeroV | cred  | deb   | net   | customerRef |
+      | false | false | 0     | 10000 | 10000 | CM00000002  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 10000 | 10000 |    
 
@@ -495,8 +495,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then invoice CM00000001 is no longer listed under the bill run
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred  | deb | net    |
-      | false | false | 10000 | 0   | -10000 |
+     #| demin | zeroV | cred  | deb | net    | customerRef |
+      | false | false | 10000 | 0   | -10000 | CM00000002  |
      And the bill run summary includes the expected items
       | generated | 1 | 10000 | 0 | 0 | -10000 |
 
@@ -513,8 +513,8 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then invoice CM00000001 is no longer listed under the bill run
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb | net |
-      | true  | false | 0    | 100 | 100 |
+     #| demin | zeroV | cred | deb | net | customerRef |
+      | true  | false | 0    | 100 | 100 | CM00000002  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
@@ -531,7 +531,7 @@ Feature: Delete Licence General
      And I request to view the bill run
     Then invoice CM00000001 is no longer listed under the bill run
      And the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb | net |
-      | false | true  | 0    | 0   | 0   |
+     #| demin | zeroV | cred | deb | net | customerRef |
+      | false | true  | 0    | 0   | 0   | CM00000002  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 | 
