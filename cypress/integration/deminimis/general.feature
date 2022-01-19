@@ -12,8 +12,8 @@ Feature: Deminimis
      And bill run status is updated to "generated"
      And I request to view the bill run
     Then the invoice summary includes the expected items
-     #| demin | zeroV | cred | deb | net |
-      | true  | false | 0    | 1   | 1   | 
+     #| demin | zeroV | cred | deb | net | customerRef |
+      | true  | false | 0    | 1   | 1   | CM00000001  | 
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
