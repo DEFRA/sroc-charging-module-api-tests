@@ -1,4 +1,4 @@
-import { Then } from 'cypress-cucumber-preprocessor/steps'
+import { Then, And } from 'cypress-cucumber-preprocessor/steps'
 import InvoiceEndpoints from '../../../../endpoints/invoice_endpoints'
 import BillRunEndpoints from '../../../../endpoints/bill_run_endpoints'
 

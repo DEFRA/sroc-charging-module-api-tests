@@ -67,22 +67,11 @@ And('the licence level items are correct', () => {
   cy.get('@viewInvoice').then((viewInvoice) => {
     const licence = viewInvoice.invoice.licences[0]
 
-    cy.get('@rulesetType').then((rulesetType) => {
-      const ruleset = rulesetType
       cy.get('@fixture').then((fixture) => {
         expect(licence.licenceNumber).to.equal(fixture.licenceNumber)
-
-        /* if (ruleset === 'presroc') {
-            const charge = fixture.section126Factor * 1000
-            expect(licence.netTotal).to.equal(charge)
-        } else {
-            const charge = fixture.abatementFactor * 1000
-            expect(licence.netTotal).to.equal(charge)
-        } */
       })
     })
-  })
-})
+  })  
 
 And('the transaction level items are correct', () => {
   cy.log('Checking transaction level items')
