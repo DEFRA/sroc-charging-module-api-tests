@@ -51,6 +51,7 @@ Feature: Create Transaction Validation
       | presroc | areaCode             |
       | presroc | lineDescription      |
       | presroc | source               |
+      | presroc | regionalChargingArea |
       
   Scenario: Checks for mandatory values when compensationCharge is true (SROC)
     When I request a valid new sroc bill run
@@ -63,7 +64,6 @@ Feature: Create Transaction Validation
     When I request a valid new presroc bill run
      And I send a presroc request where compensationCharge is true
     Then If I do not send the following values I get the expected response
-      | regionalChargingArea |
       | eiucSource           |
       | waterUndertaker      |
 
