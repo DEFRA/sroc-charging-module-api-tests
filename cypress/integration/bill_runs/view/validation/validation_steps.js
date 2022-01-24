@@ -1,5 +1,5 @@
 import { Then } from 'cypress-cucumber-preprocessor/steps'
-import BillRunEndpoints from '../../../endpoints/bill_run_endpoints'
+import BillRunEndpoints from '../../../../endpoints/bill_run_endpoints'
 
 Then('I request to view the bill run with an unknown bill run id I am told that bill run id is unknown', () => {
   const uuid = require('uuid')
