@@ -1,4 +1,4 @@
-Feature: Calculate Charge General
+Feature: Customer Changes General
 
   Background: Authenticate
     Given I am the "system" user
