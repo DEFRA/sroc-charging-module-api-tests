@@ -102,7 +102,7 @@ class BillRunEndpoints {
     return cy
       .api({
         method: 'DELETE',
-        url: `/v2/wrls/bill-runs/${id}`,
+        url: `/v3/wrls/bill-runs/${id}`,
         headers: {
           'content-type': 'application/json',
           accept: 'application/json',
