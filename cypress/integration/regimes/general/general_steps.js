@@ -1,5 +1,5 @@
 import { When, Then } from 'cypress-cucumber-preprocessor/steps'
-import RegimeEndpoints from '../../endpoints/regime_endpoints'
+import RegimeEndpoints from '../../../endpoints/regime_endpoints'
 
 When('I request a list of all regimes', () => {
   RegimeEndpoints.list().as('response')
