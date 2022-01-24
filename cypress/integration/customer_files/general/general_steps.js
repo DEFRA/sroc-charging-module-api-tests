@@ -16,11 +16,11 @@ Then('I get a successful customer files response', (type) => {
     } else {
       const firstEntry = response.body[0]
 
-      expect(firstEntry.id).to.exist()
-      expect(firstEntry.fileReference).to.exist()
-      expect(firstEntry.status).to.exist()
-      expect(firstEntry.exportedAt).to.exist()
-      expect(firstEntry.exportedCustomers).to.exist()
+      expect(firstEntry).to.have.property('id')
+      expect(firstEntry).to.have.property('fileReference')
+      expect(firstEntry).to.have.property('status')
+      expect(firstEntry).to.have.property('exportedAt')
+      expect(firstEntry).to.have.property('exportedCustomers')
     }
   })
 })
