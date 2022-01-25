@@ -218,10 +218,10 @@ Feature: Calculate Charge Validation
       | sroc    | supportedSourceName  | lodes granta groundwater           |
       | sroc    | supportedSourceName  | lower yorkshire derwent            |
       | sroc    | supportedSourceName  | medway - allington                 |
-      | sroc    | supportedSourceName  | nene – northampton                 |
-      | sroc    | supportedSourceName  | nene – water newton                |
-      | sroc    | supportedSourceName  | ouse – eaton socon                 |
-      | sroc    | supportedSourceName  | ouse – hermitage                   |
+      | sroc    | supportedSourceName  | nene - northampton                 |
+      | sroc    | supportedSourceName  | nene - water newton                |
+      | sroc    | supportedSourceName  | ouse - eaton socon                 |
+      | sroc    | supportedSourceName  | ouse - hermitage                   |
       | sroc    | supportedSourceName  | ouse - oFford                      |
       | sroc    | supportedSourceName  | rhee groundwateR                   |
       | sroc    | supportedSourceName  | severn                             |
@@ -229,7 +229,7 @@ Feature: Calculate Charge Validation
       | sroc    | supportedSourceName  | thet and little ouse surface water |
       | sroc    | supportedSourceName  | waveney groundwater                |
       | sroc    | supportedSourceName  | waveney surface water              |
-      | sroc    | supportedSourceName  | welland – tinwell sluices          |
+      | sroc    | supportedSourceName  | welland - tinwell sluices          |
       | sroc    | supportedSourceName  | witham and ancholme                |
       | sroc    | supportedSourceName  | wye                                |
       | sroc    | regionalChargingArea | anglian                            |

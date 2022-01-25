@@ -52,7 +52,7 @@ Feature: Create Transaction Validation
       | presroc | lineDescription      |
       | presroc | source               |
       | presroc | regionalChargingArea |
-      
+
   Scenario: Checks for mandatory values when compensationCharge is true (SROC)
     When I request a valid new sroc bill run
      And I send a sroc request where compensationCharge is true
@@ -128,7 +128,7 @@ Feature: Create Transaction Validation
 
   Scenario: Checks integer data properties are not sent as decimals (PRESROC)
     When I request a valid new presroc bill run
-     And I send the following properties as decimals I am told they should be integers    
+     And I send the following properties as decimals I am told they should be integers
       | presroc | authorisedDays |
       | presroc | billableDays   |
 
@@ -142,7 +142,7 @@ Feature: Create Transaction Validation
 
   Scenario: Allows decimal values in number data properties (PRESROC)
     When I request a valid new presroc bill run
-     And I send the following properties as decimals creates the transaction without error    
+     And I send the following properties as decimals creates the transaction without error
       | presroc | section126Factor    | number  |
       | presroc | volume              | number  |
 
@@ -156,7 +156,7 @@ Feature: Create Transaction Validation
 
   Scenario: Checks data values are not below the minimum expected (PRESROC)
     When I request a valid new presroc bill run
-     And I send the following properties at less than their minimum I am told what they should be  
+     And I send the following properties at less than their minimum I am told what they should be
       | presroc | authorisedDays   | 0 | = |
       | presroc | billableDays     | 0 | = |
       | presroc | volume           | 0 | = |
@@ -169,10 +169,10 @@ Feature: Create Transaction Validation
 
   Scenario: Checks data values are not above the maximum expected (PRESROC)
     When I request a valid new presroc bill run
-     And I send the following properties at more than their maximum I am told what they should be    
+     And I send the following properties at more than their maximum I am told what they should be
       | presroc | authorisedDays   | 366 |
       | presroc | billableDays     | 366 |
-  
+
   Scenario: Check period start and end dates fall in the same financial year (SROC)
     When I request a valid new sroc bill run
      And I send the following period start and end dates I am told what financial year periodEnd must be
@@ -181,7 +181,7 @@ Feature: Create Transaction Validation
 
   Scenario: Check period start and end dates fall in the same financial year (PRESROC)
     When I request a valid new presroc bill run
-     And I send the following period start and end dates I am told what financial year periodEnd must be    
+     And I send the following period start and end dates I am told what financial year periodEnd must be
       | presroc | 01-APR-2020 | 01-APR-2021 | 2020 |
       | presroc | 31-MAR-2021 | 01-APR-2021 | 2020 |
 
@@ -192,7 +192,7 @@ Feature: Create Transaction Validation
 
   Scenario: Checks that periodStart is less than or equal to periodEnd (PRESROC)
     When I request a valid new presroc bill run
-     And I send the following period dates I am told that periodStart must be less than or equal to periodEnd   
+     And I send the following period dates I am told that periodStart must be less than or equal to periodEnd
       | presroc | 01-APR-2019 | 31-MAR-2019 |
 
   Scenario: Checks that periodStart is greater than or equal to the ruleset start date (SROC)
@@ -202,7 +202,7 @@ Feature: Create Transaction Validation
 
   Scenario: Checks that periodStart is greater than or equal to the ruleset start date (PRESROC)
     When I request a valid new presroc bill run
-     And I send the following period dates I am told that periodStart is before the ruleset start date    
+     And I send the following period dates I am told that periodStart is before the ruleset start date
       | presroc | 01-APR-2013 | 31-MAR-2014 | 2014-04-01 |
 
 # The values in the table relate to what will be sent in the request plus what the CM will report as invalid and what
@@ -247,7 +247,7 @@ Feature: Create Transaction Validation
       | presroc | false | true  | false |
       | presroc | false | true  | true  |
       | presroc | true  | false | true  |
-      | presroc | false | false | false |     
+      | presroc | false | false | false |
 
   Scenario: Correctly handles case sensitive data items (SROC)
     When I request a valid new sroc bill run
@@ -265,10 +265,10 @@ Feature: Create Transaction Validation
       | sroc | supportedSourceName  | lodes granta groundwater           |
       | sroc | supportedSourceName  | lower yorkshire derwent            |
       | sroc | supportedSourceName  | medway - allington                 |
-      | sroc | supportedSourceName  | nene – northampton                 |
-      | sroc | supportedSourceName  | nene – water newton                |
-      | sroc | supportedSourceName  | ouse – eaton socon                 |
-      | sroc | supportedSourceName  | ouse – hermitage                   |
+      | sroc | supportedSourceName  | nene - northampton                 |
+      | sroc | supportedSourceName  | nene - water newton                |
+      | sroc | supportedSourceName  | ouse - eaton socon                 |
+      | sroc | supportedSourceName  | ouse - hermitage                   |
       | sroc | supportedSourceName  | ouse - oFford                      |
       | sroc | supportedSourceName  | rhee groundwateR                   |
       | sroc | supportedSourceName  | severn                             |
@@ -276,7 +276,7 @@ Feature: Create Transaction Validation
       | sroc | supportedSourceName  | thet and little ouse surface water |
       | sroc | supportedSourceName  | waveney groundwater                |
       | sroc | supportedSourceName  | waveney surface water              |
-      | sroc | supportedSourceName  | welland – tinwell sluices          |
+      | sroc | supportedSourceName  | welland - tinwell sluices          |
       | sroc | supportedSourceName  | witham and ancholme                |
       | sroc | supportedSourceName  | wye                                |
       | sroc | regionalChargingArea | anglian                            |
@@ -355,14 +355,14 @@ Feature: Create Transaction Validation
    Scenario: Checks that areaCode rejects unexpected values (PRESROC)
     When I request a valid new presroc bill run
      And I send invalid areaCode I am told what it should be
-      | presroc | areaCode | 1 |   
+      | presroc | areaCode | 1 |
 
   Scenario: Checks that areaCode allows expected values (SROC)
     When I request a valid new sroc bill run
      And I send the following values it creates the transaction without error
       | sroc | areaCode | ArCA    |
       | sroc | areaCode | AREA    |
-      | sroc | areaCode | ARNA    | 
+      | sroc | areaCode | ARNA    |
       | sroc | areaCode | CASc    |
       | sroc | areaCode | MIDLS   |
       | sroc | areaCode | MIDLT   |
@@ -370,9 +370,9 @@ Feature: Create Transaction Validation
       | sroc | areaCode | MIDUT   |
       | sroc | areaCode | AACOR   |
       | sroc | areaCode | AaDEV   |
-      | sroc | areaCode | AANWX   | 
+      | sroc | areaCode | AANWX   |
       | sroc | areaCode | AASWX   |
-      | sroc | areaCode | NWCEN   | 
+      | sroc | areaCode | NWCEN   |
       | sroc | areaCode | NWNTH   |
       | sroc | areaCode | NWSTH   |
       | sroc | areaCode | HAAR    |
@@ -380,9 +380,9 @@ Feature: Create Transaction Validation
       | sroc | areaCode | SAAR    |
       | sroc | areaCode | AGY2N   |
       | sroc | areaCode | AGY2S   |
-      | sroc | areaCode | AGY3    | 
+      | sroc | areaCode | AGY3    |
       | sroc | areaCode | AGY3N   |
-      | sroc | areaCode | AGY3S   | 
+      | sroc | areaCode | AGY3S   |
       | sroc | areaCode | AgY4N   |
       | sroc | areaCode | AGY4S   |
       | sroc | areaCode | N       |
@@ -391,9 +391,9 @@ Feature: Create Transaction Validation
       | sroc | areaCode | SE2     |
       | sroc | areaCode | SW      |
       | sroc | areaCode | ABNRTH  |
-      | sroc | areaCode | DALES   | 
+      | sroc | areaCode | DALES   |
       | sroc | areaCode | NAREA   |
-      | sroc | areaCode | RIDIN   | 
+      | sroc | areaCode | RIDIN   |
       | sroc | areaCode | DEFAULT |
       | sroc | areaCode | MULTI   |
 
@@ -402,7 +402,7 @@ Feature: Create Transaction Validation
      And I send the following values it creates the transaction without error
       | presroc | areaCode | ArCA    |
       | presroc | areaCode | AREA    |
-      | presroc | areaCode | ARNA    | 
+      | presroc | areaCode | ARNA    |
       | presroc | areaCode | CASc    |
       | presroc | areaCode | MIDLS   |
       | presroc | areaCode | MIDLT   |
@@ -410,9 +410,9 @@ Feature: Create Transaction Validation
       | presroc | areaCode | MIDUT   |
       | presroc | areaCode | AACOR   |
       | presroc | areaCode | AaDEV   |
-      | presroc | areaCode | AANWX   | 
+      | presroc | areaCode | AANWX   |
       | presroc | areaCode | AASWX   |
-      | presroc | areaCode | NWCEN   | 
+      | presroc | areaCode | NWCEN   |
       | presroc | areaCode | NWNTH   |
       | presroc | areaCode | NWSTH   |
       | presroc | areaCode | HAAR    |
@@ -420,9 +420,9 @@ Feature: Create Transaction Validation
       | presroc | areaCode | SAAR    |
       | presroc | areaCode | AGY2N   |
       | presroc | areaCode | AGY2S   |
-      | presroc | areaCode | AGY3    | 
+      | presroc | areaCode | AGY3    |
       | presroc | areaCode | AGY3N   |
-      | presroc | areaCode | AGY3S   | 
+      | presroc | areaCode | AGY3S   |
       | presroc | areaCode | AgY4N   |
       | presroc | areaCode | AGY4S   |
       | presroc | areaCode | N       |
@@ -431,11 +431,11 @@ Feature: Create Transaction Validation
       | presroc | areaCode | SE2     |
       | presroc | areaCode | SW      |
       | presroc | areaCode | ABNRTH  |
-      | presroc | areaCode | DALES   | 
+      | presroc | areaCode | DALES   |
       | presroc | areaCode | NAREA   |
-      | presroc | areaCode | RIDIN   | 
+      | presroc | areaCode | RIDIN   |
       | presroc | areaCode | DEFAULT |
-      | presroc | areaCode | MULTI   |     
+      | presroc | areaCode | MULTI   |
 
   Scenario: Checks that region rejects unexpected values (SROC)
     When I request a valid new sroc bill run
@@ -459,9 +459,9 @@ Feature: Create Transaction Validation
       | presroc | S | region | N |
       | presroc | T | region | E |
       | presroc | W | region | B |
-      | presroc | Y | region | A |    
+      | presroc | Y | region | A |
 
-   Scenario: Checks that region allows expected values (SROC) 
+   Scenario: Checks that region allows expected values (SROC)
     When I request a valid new sroc bill run
      And I send the following valid Billrun and transaction combinations it creates the transaction without error
       | sroc | A | region | A |
@@ -473,7 +473,7 @@ Feature: Create Transaction Validation
       | sroc | W | region | W |
       | sroc | Y | region | Y |
 
-  Scenario: Checks that region allows expected values (PRESROC) 
+  Scenario: Checks that region allows expected values (PRESROC)
     When I request a valid new presroc bill run
      And I send the following valid Billrun and transaction combinations it creates the transaction without error
       | presroc | A | region | A |
@@ -483,7 +483,7 @@ Feature: Create Transaction Validation
       | presroc | S | region | S |
       | presroc | T | region | T |
       | presroc | W | region | W |
-      | presroc | Y | region | Y |    
+      | presroc | Y | region | Y |
 
   Scenario: Checks special characters are rejected (SROC)
     When I request a valid new sroc bill run
@@ -587,4 +587,4 @@ Feature: Create Transaction Validation
       | presroc | areaCode                  | test— |
       | presroc | chargeCategoryDescription | test— |
       | presroc | lineDescription           | test— |
-      | presroc | chargePeriod              | test— |     
+      | presroc | chargePeriod              | test— |
