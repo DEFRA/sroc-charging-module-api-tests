@@ -26,6 +26,20 @@ class InvoiceEndpoints {
         }
       })
   }
+
+  static rebill (id, invoiceId, failOnStatusCode = true) {
+    return cy
+      .api({
+        method: 'PATCH',
+        url: `/v2/wrls/bill-runs/${id}/invoices/${invoiceId}/rebill`,
+        failOnStatusCode,
+        headers: {
+          'content-type': 'application/json',
+          accept: 'application/json',
+          Authorization: `Bearer ${Cypress.env('token')}`
+        }
+      })
+  }
 }
 
 export default InvoiceEndpoints
