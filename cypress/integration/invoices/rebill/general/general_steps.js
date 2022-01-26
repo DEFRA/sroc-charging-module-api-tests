@@ -254,6 +254,26 @@ When('I try to rebill the rebill invoice to a new {word} bill run', (ruleset) =>
   })
 })
 
+When('I try to rebill it to an initialised {word} bill run', (ruleset) => {
+  BillRunEndpoints.create({ ruleset, region: 'A' }).then((response) => {
+    const destinationBillRunId = response.body.billRun.id
+
+    cy.fixture(`standard.${ruleset}.transaction`).then((fixture) => {
+      TransactionEndpoints.create(destinationBillRunId, fixture, false).then(() => {
+        BillRunEndpoints.pollForStatus(destinationBillRunId, 'initialised').then(() => {
+          cy.get('@sourceBillRun').then((sourceBillRun) => {
+            const rebillInvoice = sourceBillRun.invoices[0]
+
+            InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
+              cy.wrap(response).as('rebillResponse')
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
 When('I try to rebill it to a generated {word} bill run', (ruleset) => {
   BillRunEndpoints.create({ ruleset, region: 'A' }).then((response) => {
     const destinationBillRunId = response.body.billRun.id
@@ -647,6 +667,28 @@ And('a new invoice is created', () => {
       expect(cancelLicence).to.not.equal('LIC/NUM/CM02')
       expect(rebillLicence).to.not.equal('LIC/NUM/CM02')
       expect(newLicence).to.equal('LIC/NUM/CM02')
+    })
+  })
+})
+
+And('I request to send the rebill bill run', () => {
+  cy.get('@destinationBillRun').then((billRun) => {
+    const destinationBillRun = billRun.body.billRun
+    const destinationBillRunId = destinationBillRun.id
+
+    BillRunEndpoints.generate(destinationBillRunId).then(() => {
+      BillRunEndpoints.pollForStatus(destinationBillRunId, 'generated').then(() => {
+        BillRunEndpoints.approve(destinationBillRunId).then(() => {
+          BillRunEndpoints.send(destinationBillRunId).then((response) => {
+            BillRunEndpoints.pollForStatus(destinationBillRunId, 'billed')
+            expect(response.status).to.be.equal(204)
+            BillRunEndpoints.view(destinationBillRunId).then((billRun) => {
+              const sentbillRun = billRun.body.billRun
+              expect(sentbillRun.transactionFileReference).to.not.be.equal(null)
+            })
+          })
+        })
+      })
     })
   })
 })
