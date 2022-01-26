@@ -89,6 +89,15 @@ Feature: Rebill Invoice General
     Then I get a conflict response
      And I am told the source invoice has already been rebilled
 @ignore
+  Scenario: Rebilled source invoice that has been deleted can be rebilled
+     And I have a billed sroc bill run
+    When I try to rebill it to a new sroc bill run
+    Then I get a successful response that includes details for the invoices created
+     And I request to delete the C rebill invoice
+     And I request to delete the R rebill invoice
+     And I try to rebill it again
+    Then I get a successful response that includes details for the invoices created 
+@ignore
   Scenario: Cancel (C) invoice cannot be rebilled
      And I have a billed sroc bill run
     When I try to rebill it to a new sroc bill run
@@ -104,9 +113,36 @@ Feature: Rebill Invoice General
      And I request the new destination bill run to be billed
      And I try to rebill the rebill invoice to a new sroc bill run
     Then I get a successful response that includes details for the invoices created
+@ignore
+  Scenario: All transactions are copied over into rebill C and R invoices
+     And I have a billed sroc bill run
+    When I try to rebill it to a new sroc bill run
+    Then I get a successful response that includes details for the invoices created
+     And the credit C invoice includes all transactions
+     And the rebill R invoice includes all transactions
+@ignore
+  Scenario: C and R invoices reference the source invoice ID
+     And I have a billed sroc bill run
+    When I try to rebill it to a new sroc bill run
+    Then I get a successful response that includes details for the invoices created
+     And the credit C invoice includes the source invoice ID
+     And the rebill R invoice includes the source invoice ID
+@ignore
+  Scenario: C and R transactions reference the source transaction ID
+     And I have a billed sroc bill run
+    When I try to rebill it to a new sroc bill run
+    Then I get a successful response that includes details for the invoices created
+     And the credit C transaction includes the source transaction ID
+     And the rebill R transaction includes the source transaction ID   
+
+  Scenario: Transactions cannot be added to rebill invoices
+     And I have a billed sroc bill run
+     And I try to rebill a debit invoice to a new sroc bill run
+     And I get a successful response that includes details for the invoices created
+    When I try to add a standard sroc transaction to rebill invoices
+    Then a new invoice is created
 
 
-  #Scenario Source Bill run must exist  
+  #Scenario Source Bill run must exist
   #Scenario Source invoice must exist  
   #Scenario Deminimis and Minimum Charge checks are not repeated
-  #Scenario: Rebilled invoice can be rebilled 
