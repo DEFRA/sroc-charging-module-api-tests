@@ -58,13 +58,12 @@ And('I have an initialised {word} bill run', (ruleset) => {
         BillRunEndpoints.pollForStatus(sourceBillRunId, 'initialised').then(() => {
           BillRunEndpoints.view(sourceBillRunId).then((response) => {
             cy.wrap(response.body.billRun).as('sourceBillRun')
-                                  })
-                                })
-                              })
-                            })
-                          })
-                        })
-
+          })
+        })
+      })
+    })
+  })
+})
 
 And('I have a generated {word} bill run', (ruleset) => {
   BillRunEndpoints.create({ ruleset, region: 'A' }).then((response) => {
@@ -75,15 +74,15 @@ And('I have a generated {word} bill run', (ruleset) => {
       TransactionEndpoints.create(sourceBillRunId, fixture, false).then(() => {
         BillRunEndpoints.generate(sourceBillRunId).then(() => {
           BillRunEndpoints.pollForStatus(sourceBillRunId, 'generated').then(() => {
-                BillRunEndpoints.view(sourceBillRunId).then((response) => {
-                  cy.wrap(response.body.billRun).as('sourceBillRun')
-                                  })
-                                })
-                              })
-                            })
-                          })
-                        })
-                      })
+            BillRunEndpoints.view(sourceBillRunId).then((response) => {
+              cy.wrap(response.body.billRun).as('sourceBillRun')
+            })
+          })
+        })
+      })
+    })
+  })
+})
 
 And('I have an approved {word} bill run', (ruleset) => {
   BillRunEndpoints.create({ ruleset, region: 'A' }).then((response) => {
@@ -98,15 +97,15 @@ And('I have an approved {word} bill run', (ruleset) => {
               BillRunEndpoints.pollForStatus(sourceBillRunId, 'approved').then(() => {
                 BillRunEndpoints.view(sourceBillRunId).then((response) => {
                   cy.wrap(response.body.billRun).as('sourceBillRun')
-                                  })
-                                })
-                              })
-                            })
-                          })
-                        })
-                      })
-                    })
-                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
 
 When('I try to rebill a {word} invoice to a new {word} bill run', (invoiceType, ruleset) => {
   BillRunEndpoints.create({ ruleset, region: 'A' }).then((response) => {
@@ -146,6 +145,7 @@ When('I try to rebill a {word} invoice to a new {word} bill run', (invoiceType, 
 
 When('I try to rebill it to a new {word} bill run', (ruleset) => {
   BillRunEndpoints.create({ ruleset, region: 'A' }).then((response) => {
+    cy.wrap(response).as('destinationBillRun')
     const destinationBillRunId = response.body.billRun.id
 
     cy.get('@sourceBillRun').then((sourceBillRun) => {
@@ -153,6 +153,25 @@ When('I try to rebill it to a new {word} bill run', (ruleset) => {
 
       InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
         cy.wrap(response).as('rebillResponse')
+      })
+    })
+  })
+})
+
+And('I request the new destination bill run to be billed', (ruleset) => {
+  cy.get('@destinationBillRun').then((destinationBillRun) => {
+    const sourceBillRunId = destinationBillRun.body.billRun.id
+    BillRunEndpoints.generate(sourceBillRunId).then(() => {
+      BillRunEndpoints.pollForStatus(sourceBillRunId, 'generated').then(() => {
+        BillRunEndpoints.approve(sourceBillRunId).then(() => {
+          BillRunEndpoints.send(sourceBillRunId).then(() => {
+            BillRunEndpoints.pollForStatus(sourceBillRunId, 'billed').then(() => {
+              BillRunEndpoints.view(sourceBillRunId).then((response) => {
+                cy.wrap(response.body.billRun).as('sourceBillRun')
+              })
+            })
+          })
+        })
       })
     })
   })
@@ -167,6 +186,67 @@ When('I try to rebill an invoice to a new {word} bill run for a different region
       const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000001')
 
       InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
+        cy.wrap(response).as('rebillResponse')
+      })
+    })
+  })
+})
+
+When('I try to rebill the same invoice to the same new {word} bill run', (ruleset) => {
+  cy.get('@destinationBillRun').then((destinationBillRun) => {
+    const destinationBillRunId = destinationBillRun.body.billRun.id
+
+    cy.get('@sourceBillRun').then((sourceBillRun) => {
+      const rebillInvoice = sourceBillRun.invoices[0]
+
+      InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
+        cy.wrap(response).as('rebillResponse')
+      })
+    })
+  })
+})
+
+When('I try to rebill the same invoice to a new {word} bill run', (ruleset) => {
+  BillRunEndpoints.create({ ruleset, region: 'A' }).then((response) => {
+    cy.wrap(response).as('destinationBillRun')
+    const destinationBillRunId = response.body.billRun.id
+
+    cy.get('@sourceBillRun').then((sourceBillRun) => {
+      const rebillInvoice = sourceBillRun.invoices[0]
+
+      InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
+        cy.wrap(response).as('rebillResponse')
+      })
+    })
+  })
+})
+
+When('I try to rebill the cancel invoice to a new {word} bill run', (ruleset) => {
+  BillRunEndpoints.create({ ruleset, region: 'A' }).then((response) => {
+    cy.wrap(response).as('destinationBillRun')
+    const destinationBillRunId = response.body.billRun.id
+
+    cy.get('@sourceBillRun').then((sourceBillRun) => {
+      const cancelInvoice = sourceBillRun.invoices[0]
+      expect(sourceBillRun.invoices[0].rebilledType).to.equal('C')
+
+      InvoiceEndpoints.rebill(destinationBillRunId, cancelInvoice.id, false).then((response) => {
+        cy.wrap(response).as('rebillResponse')
+      })
+    })
+  })
+})
+
+When('I try to rebill the rebill invoice to a new {word} bill run', (ruleset) => {
+  BillRunEndpoints.create({ ruleset, region: 'A' }).then((response) => {
+    cy.wrap(response).as('destinationBillRun')
+    const destinationBillRunId = response.body.billRun.id
+
+    cy.get('@sourceBillRun').then((sourceBillRun) => {
+      const rebillInvoice = sourceBillRun.invoices[1]
+      expect(sourceBillRun.invoices[1].rebilledType).to.equal('R')
+
+      InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id).then((response) => {
         cy.wrap(response).as('rebillResponse')
       })
     })
@@ -278,20 +358,39 @@ Then('I get a successful response that includes details for the invoices created
 And('I am told the source invoice region is different to the destination bill run region', () => {
   cy.get('@sourceBillRun').then((sourceBillRun) => {
     const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000001')
-  cy.get('@destinationBillRun').then((destinationBillRun) => {
-    const destinationBillRunId = destinationBillRun.body.billRun.id
-  cy.get('@rebillResponse').then((response) => {
-    expect(response.body.message).to.equal(`Invoice ${rebillInvoice.id} is for region A but bill run ${destinationBillRunId} is for region B.`)
+    cy.get('@destinationBillRun').then((destinationBillRun) => {
+      const destinationBillRunId = destinationBillRun.body.billRun.id
+      cy.get('@rebillResponse').then((response) => {
+        expect(response.body.message).to.equal(`Invoice ${rebillInvoice.id} is for region A but bill run ${destinationBillRunId} is for region B.`)
+      })
+    })
   })
-})
-})
 })
 
 And('I am told the source bill run region does not have a status of billed', () => {
   cy.get('@sourceBillRun').then((sourceBillRun) => {
     const sourceBillRunId = sourceBillRun.id
-  cy.get('@rebillResponse').then((response) => {
-    expect(response.body.message).to.equal(`Bill run ${sourceBillRunId} does not have a status of 'billed'.`)
+    cy.get('@rebillResponse').then((response) => {
+      expect(response.body.message).to.equal(`Bill run ${sourceBillRunId} does not have a status of 'billed'.`)
+    })
   })
 })
+
+And('I am told the source invoice has already been rebilled', () => {
+  cy.get('@sourceBillRun').then((sourceBillRun) => {
+    const rebillInvoice = sourceBillRun.invoices[0]
+    cy.get('@rebillResponse').then((response) => {
+      expect(response.body.message).to.equal(`Invoice ${rebillInvoice.id} has already been rebilled.`)
+    })
+  })
+})
+
+And('I am told a rebill cancel invoice cannot be rebilled', () => {
+  cy.get('@sourceBillRun').then((sourceBillRun) => {
+    const cancelInvoice = sourceBillRun.invoices[0]
+
+    cy.get('@rebillResponse').then((response) => {
+      expect(response.body.message).to.equal(`Invoice ${cancelInvoice.id} is a rebill cancel invoice and cannot be rebilled.`)
+    })
+  })
 })
