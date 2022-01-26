@@ -8,19 +8,79 @@ And('I have a billed {word} bill run', (ruleset) => {
     const sourceBillRunId = response.body.billRun.id
 
     cy.fixture(`standard.${ruleset}.transaction`).then((fixture) => {
+      fixture.customerReference = 'CM00000001'
       TransactionEndpoints.create(sourceBillRunId, fixture, false).then(() => {
-        BillRunEndpoints.generate(sourceBillRunId).then(() => {
-          BillRunEndpoints.approve(sourceBillRunId).then(() => {
-            BillRunEndpoints.send(sourceBillRunId).then(() => {
-              BillRunEndpoints.pollForStatus(sourceBillRunId, 'billed').then(() => {
-                BillRunEndpoints.view(sourceBillRunId).then((response) => {
-                  cy.wrap(response.body.billRun).as('sourceBillRun')
+        cy.fixture(`credit.${ruleset}.transaction`).then((fixture) => {
+          fixture.customerReference = 'CM00000002'
+          TransactionEndpoints.create(sourceBillRunId, fixture, false).then(() => {
+            cy.fixture(`minimumCharge.${ruleset}.transaction`).then((fixture) => {
+              fixture.customerReference = 'CM00000003'
+              TransactionEndpoints.create(sourceBillRunId, fixture, false).then(() => {
+                cy.fixture(`deminimis.${ruleset}.transaction`).then((fixture) => {
+                  fixture.customerReference = 'CM00000004'
+                  TransactionEndpoints.create(sourceBillRunId, fixture, false).then(() => {
+                    cy.fixture(`zeroValue.${ruleset}.transaction`).then((fixture) => {
+                      fixture.customerReference = 'CM00000005'
+                      TransactionEndpoints.create(sourceBillRunId, fixture, false).then(() => {
+                        BillRunEndpoints.generate(sourceBillRunId).then(() => {
+                          BillRunEndpoints.pollForStatus(sourceBillRunId, 'generated').then(() => {
+                            BillRunEndpoints.approve(sourceBillRunId).then(() => {
+                              BillRunEndpoints.send(sourceBillRunId).then(() => {
+                                BillRunEndpoints.pollForStatus(sourceBillRunId, 'billed').then(() => {
+                                  BillRunEndpoints.view(sourceBillRunId).then((response) => {
+                                    cy.wrap(response.body.billRun).as('sourceBillRun')
+                                  })
+                                })
+                              })
+                            })
+                          })
+                        })
+                      })
+                    })
+                  })
                 })
               })
             })
           })
         })
       })
+    })
+  })
+})
+
+When('I try to rebill a {word} invoice to a new {word} bill run', (invoiceType, ruleset) => {
+  BillRunEndpoints.create({ ruleset, region: 'A' }).then((response) => {
+    const destinationBillRunId = response.body.billRun.id
+    const invoice = invoiceType
+
+    cy.get('@sourceBillRun').then((sourceBillRun) => {
+      if (invoice === 'debit') {
+      const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000001')
+      InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
+        cy.wrap(response).as('rebillResponse')
+      }) 
+       } else if (invoice === 'credit') {
+      const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000002')
+      InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
+        cy.wrap(response).as('rebillResponse')
+      })
+       } else if (invoice === 'minimumCharge') {
+      const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000003')
+      InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
+        cy.wrap(response).as('rebillResponse')
+      })
+       } else if (invoice === 'deminimis') {
+      const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000004')
+      InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
+        cy.wrap(response).as('rebillResponse')
+      })
+       } else if (invoice === 'zeroValue') {
+      const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000005')
+      InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
+        cy.wrap(response).as('rebillResponse')
+      })   
+       }
+  
     })
   })
 })
