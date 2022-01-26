@@ -55,32 +55,31 @@ When('I try to rebill a {word} invoice to a new {word} bill run', (invoiceType, 
 
     cy.get('@sourceBillRun').then((sourceBillRun) => {
       if (invoice === 'debit') {
-      const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000001')
-      InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
-        cy.wrap(response).as('rebillResponse')
-      }) 
-       } else if (invoice === 'credit') {
-      const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000002')
-      InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
-        cy.wrap(response).as('rebillResponse')
-      })
-       } else if (invoice === 'minimumCharge') {
-      const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000003')
-      InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
-        cy.wrap(response).as('rebillResponse')
-      })
-       } else if (invoice === 'deminimis') {
-      const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000004')
-      InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
-        cy.wrap(response).as('rebillResponse')
-      })
-       } else if (invoice === 'zeroValue') {
-      const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000005')
-      InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
-        cy.wrap(response).as('rebillResponse')
-      })   
-       }
-  
+        const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000001')
+        InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
+          cy.wrap(response).as('rebillResponse')
+        })
+      } else if (invoice === 'credit') {
+        const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000002')
+        InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
+          cy.wrap(response).as('rebillResponse')
+        })
+      } else if (invoice === 'minimumCharge') {
+        const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000003')
+        InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
+          cy.wrap(response).as('rebillResponse')
+        })
+      } else if (invoice === 'deminimis') {
+        const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000004')
+        InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
+          cy.wrap(response).as('rebillResponse')
+        })
+      } else if (invoice === 'zeroValue') {
+        const rebillInvoice = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000005')
+        InvoiceEndpoints.rebill(destinationBillRunId, rebillInvoice.id, false).then((response) => {
+          cy.wrap(response).as('rebillResponse')
+        })
+      }
     })
   })
 })

@@ -2,16 +2,33 @@ Feature: Rebill Invoice General
 
   Background: Authenticate
     Given I am the "system" user
-    And I have a billed sroc bill run
-
 
   Scenario: Successfully rebill a debit invoice
+     And I have a billed sroc bill run
     When I try to rebill a debit invoice to a new sroc bill run
     Then I get a successful response that includes details for the invoices created
 
-  #Scenario: Successfully rebill a credit invoice 
+  Scenario: Successfully rebill a credit invoice 
+     And I have a billed sroc bill run
+    When I try to rebill a credit invoice to a new sroc bill run
+    Then I get a successful response that includes details for the invoices created
 
-  #Scenario: Successfully rebill a zero value invoice 
+  Scenario: Successfully rebill a zero value invoice
+     And I have a billed sroc bill run
+    When I try to rebill a zeroValue invoice to a new sroc bill run
+    Then I get a successful response that includes details for the invoices created
+
+  Scenario: Successfully rebill a deminimis invoice
+     And I have a billed sroc bill run
+    When I try to rebill a deminimis invoice to a new sroc bill run
+    Then I get a successful response that includes details for the invoices created  
+
+  Scenario: Successfully rebill a minimum charge invoice (PRESROC)
+     And I have a billed presroc bill run
+    When I try to rebill a minimumCharge invoice to a new presroc bill run
+    Then I get a successful response that includes details for the invoices created   
+  
+  #Scenario: source billrun and invoice must be same ruleset as destination billrun 
 
   #Scenario: Source invoice must be billed
 
