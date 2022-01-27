@@ -31,6 +31,12 @@ Feature: Rebill Invoice General
     Then I get a successful response that includes details for the invoices created   
      And I request to send the rebill bill run
 
+  Scenario: Rebilled invoices are not subject to deminimis checks
+     And I have a billed sroc bill run with a credit invoice of less than deminimis amount 
+    When I try to rebill it to a new sroc bill run
+    Then I get a successful response that includes details for the invoices created
+     And the deminimis flag for the rebilled invoices are false
+
   Scenario: Source invoice and destination bill run must be for the same region  
      And I have a billed sroc bill run
     When I try to rebill an invoice to a new sroc bill run for a different region
@@ -105,13 +111,13 @@ Feature: Rebill Invoice General
      And I try to rebill it again
     Then I get a successful response that includes details for the invoices created 
 
-  Scenario: Cancel (C) invoice cannot be rebilled
+  Scenario: Credit (C) invoice cannot be rebilled
      And I have a billed sroc bill run
     When I try to rebill it to a new sroc bill run
     Then I get a successful response that includes details for the invoices created
      And I request the new destination bill run to be billed
      And I try to rebill the cancel invoice to a new sroc bill run
-    Then I am told a rebill cancel invoice cannot be rebilled
+    Then I am told a rebill credit invoice cannot be rebilled
 
   Scenario: Rebill (R) invoice can be rebilled
      And I have a billed sroc bill run

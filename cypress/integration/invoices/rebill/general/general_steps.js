@@ -144,6 +144,34 @@ When('I try to rebill a {word} invoice to a new {word} bill run', (invoiceType, 
   })
 })
 
+And('I have a billed {word} bill run with a credit invoice of less than deminimis amount', (ruleset) => {
+  BillRunEndpoints.create({ ruleset, region: 'A' }).then((response) => {
+    const sourceBillRunId = response.body.billRun.id
+    cy.fixture(`credit.${ruleset}.transaction`).then((fixture) => {
+      if (ruleset === 'presroc') {
+        fixture.section126Factor = 0.4
+      } else if (ruleset === 'sroc') {
+        fixture.abatementFactor = 0.7
+      }
+      TransactionEndpoints.create(sourceBillRunId, fixture, false).then(() => {
+        BillRunEndpoints.generate(sourceBillRunId).then(() => {
+          BillRunEndpoints.pollForStatus(sourceBillRunId, 'generated').then(() => {
+            BillRunEndpoints.approve(sourceBillRunId).then(() => {
+              BillRunEndpoints.send(sourceBillRunId).then(() => {
+                BillRunEndpoints.pollForStatus(sourceBillRunId, 'billed').then(() => {
+                  BillRunEndpoints.view(sourceBillRunId).then((response) => {
+                    cy.wrap(response.body.billRun).as('sourceBillRun')
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
 When('I try to rebill it to a new {word} bill run', (ruleset) => {
   BillRunEndpoints.create({ ruleset, region: 'A' }).then((response) => {
     cy.wrap(response).as('destinationBillRun')
@@ -585,12 +613,12 @@ And('I am told the source invoice has already been rebilled', () => {
   })
 })
 
-And('I am told a rebill cancel invoice cannot be rebilled', () => {
+And('I am told a rebill credit invoice cannot be rebilled', () => {
   cy.get('@sourceBillRun').then((sourceBillRun) => {
-    const cancelInvoice = sourceBillRun.invoices[0]
+    const creditInvoice = sourceBillRun.invoices[0]
 
     cy.get('@rebillResponse').then((response) => {
-      expect(response.body.message).to.equal(`Invoice ${cancelInvoice.id} is a rebill cancel invoice and cannot be rebilled.`)
+      expect(response.body.message).to.equal(`Invoice ${creditInvoice.id} is a rebill cancel invoice and cannot be rebilled.`)
     })
   })
 })
@@ -599,8 +627,8 @@ And('I request to delete the C rebill invoice', () => {
   cy.get('@destinationBillRun').then((destinationBillRun) => {
     const destinationBillRun1 = destinationBillRun.body.billRun
     cy.get('@rebillResponse').then((response) => {
-      const cancelInvoice = response.body.invoices[0]
-      InvoiceEndpoints.delete(destinationBillRun1.id, cancelInvoice.id).then((response) => {
+      const creditInvoice = response.body.invoices[0]
+      InvoiceEndpoints.delete(destinationBillRun1.id, creditInvoice.id).then((response) => {
         expect(response.status).to.be.equal(204)
         BillRunEndpoints.view(destinationBillRun1.id)
       })
@@ -656,15 +684,15 @@ And('a new invoice is created', () => {
     BillRunEndpoints.view(destinationBillRun.id).then((response) => {
       const destinationBillRun1 = response.body.billRun
 
-      const cancelInvoice = destinationBillRun1.invoices.find(element => element.rebilledType === 'C')
+      const creditInvoice = destinationBillRun1.invoices.find(element => element.rebilledType === 'C')
       const rebillInvoice = destinationBillRun1.invoices.find(element => element.rebilledType === 'R')
       const newInvoice = destinationBillRun1.invoices.find(element => element.rebilledType === 'O')
 
-      const cancelLicence = cancelInvoice.licences[0].licenceNumber
+      const creditLicence = creditInvoice.licences[0].licenceNumber
       const rebillLicence = rebillInvoice.licences[0].licenceNumber
       const newLicence = newInvoice.licences[0].licenceNumber
 
-      expect(cancelLicence).to.not.equal('LIC/NUM/CM02')
+      expect(creditLicence).to.not.equal('LIC/NUM/CM02')
       expect(rebillLicence).to.not.equal('LIC/NUM/CM02')
       expect(newLicence).to.equal('LIC/NUM/CM02')
     })
@@ -689,6 +717,21 @@ And('I request to send the rebill bill run', () => {
           })
         })
       })
+    })
+  })
+})
+
+And('the deminimis flag for the rebilled invoices are false', () => {
+  cy.get('@destinationBillRun').then((destinationBillRun) => {
+    const destinationBillRunId = destinationBillRun.body.billRun.id
+    BillRunEndpoints.view(destinationBillRunId).then((response) => {
+      const destinationBillRun1 = response.body.billRun
+
+      const creditInvoice = destinationBillRun1.invoices.find(element => element.rebilledType === 'C')
+      const rebillInvoice = destinationBillRun1.invoices.find(element => element.rebilledType === 'R')
+
+      expect(creditInvoice.deminimisInvoice).to.equal(false)
+      expect(rebillInvoice.deminimisInvoice).to.equal(false)
     })
   })
 })
