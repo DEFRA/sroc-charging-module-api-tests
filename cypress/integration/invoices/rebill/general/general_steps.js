@@ -395,7 +395,7 @@ And('the credit C invoice includes all transactions', () => {
             const creditLicence = creditInvoice.licences[0]
             const creditTransactions = creditLicence.transactions[0]
 
-            function pos_to_neg (num) {
+            function posToNeg (num) {
               return -Math.abs(num)
             }
 
@@ -406,11 +406,11 @@ And('the credit C invoice includes all transactions', () => {
             expect(sourceInvoice.financialYear).to.equal(creditInvoice.financialYear)
             expect(sourceInvoice.deminimisInvoice).to.equal(creditInvoice.deminimisInvoice)
             expect(sourceInvoice.zeroValueInvoice).to.equal(creditInvoice.zeroValueInvoice)
-            expect(pos_to_neg(sourceInvoice.netTotal)).to.equal(creditInvoice.netTotal)
+            expect(posToNeg(sourceInvoice.netTotal)).to.equal(creditInvoice.netTotal)
 
             expect(sourceLicence.id).to.equal(creditLicence.id)
             expect(sourceLicence.licenceNumber).to.equal(creditLicence.licenceNumber)
-            expect(pos_to_neg(sourceLicence.netTotal)).to.equal(creditLicence.netTotal)
+            expect(posToNeg(sourceLicence.netTotal)).to.equal(creditLicence.netTotal)
 
             expect(sourceTransactions.clientId).to.equal(creditTransactions.clientId)
             expect(sourceTransactions.chargeValue).to.equal(creditTransactions.chargeValue)
