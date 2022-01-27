@@ -408,7 +408,7 @@ And('the credit C invoice includes all transactions', () => {
             expect(sourceInvoice.zeroValueInvoice).to.equal(creditInvoice.zeroValueInvoice)
             expect(posToNeg(sourceInvoice.netTotal)).to.equal(creditInvoice.netTotal)
 
-            expect(sourceLicence.id).to.equal(creditLicence.id)
+            //expect(sourceLicence.id).to.equal(creditLicence.id)
             expect(sourceLicence.licenceNumber).to.equal(creditLicence.licenceNumber)
             expect(posToNeg(sourceLicence.netTotal)).to.equal(creditLicence.netTotal)
 
@@ -455,7 +455,7 @@ And('the rebill R invoice includes all transactions', () => {
             expect(sourceInvoice.zeroValueInvoice).to.equal(rebillInvoice.zeroValueInvoice)
             expect(sourceInvoice.netTotal).to.equal(rebillInvoice.netTotal)
 
-            expect(sourceLicence.id).to.equal(rebillLicence.id)
+            //expect(sourceLicence.id).to.equal(rebillLicence.id)
             expect(sourceLicence.licenceNumber).to.equal(rebillLicence.licenceNumber)
             expect(sourceLicence.netTotal).to.equal(rebillLicence.netTotal)
 
