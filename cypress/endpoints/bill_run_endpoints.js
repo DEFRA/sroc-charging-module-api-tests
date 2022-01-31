@@ -84,11 +84,12 @@ class BillRunEndpoints {
       })
   }
 
-  static delete (id) {
+  static delete (id, failOnStatusCode = true) {
     return cy
       .api({
         method: 'DELETE',
         url: `/v3/wrls/bill-runs/${id}`,
+        failOnStatusCode,
         headers: {
           'content-type': 'application/json',
           accept: 'application/json',
