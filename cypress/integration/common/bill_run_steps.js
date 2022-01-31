@@ -211,8 +211,8 @@ And('I try to delete the bill run', () => {
 })
 
 Then('I am told the bill run cannot be deleted because its billed', () => {
-  cy.get('@billRun').then((billRun) => { 
-  cy.get('@response').then((response) => {
+  cy.get('@billRun').then((billRun) => {
+    cy.get('@response').then((response) => {
       expect(response.status).to.equal(409)
       expect(response.body).to.have.property('error')
       expect(response.body.message).to.equal(`Bill run ${billRun.id} cannot be edited because its status is billed.`)
@@ -221,8 +221,8 @@ Then('I am told the bill run cannot be deleted because its billed', () => {
 })
 
 Then('I am told the bill run cannot be deleted because its approved', () => {
-  cy.get('@billRun').then((billRun) => { 
-  cy.get('@response').then((response) => {
+  cy.get('@billRun').then((billRun) => {
+    cy.get('@response').then((response) => {
       expect(response.status).to.equal(409)
       expect(response.body).to.have.property('error')
       expect(response.body.message).to.equal(`Bill run ${billRun.id} cannot be edited because its status is approved.`)
@@ -231,8 +231,8 @@ Then('I am told the bill run cannot be deleted because its approved', () => {
 })
 
 Then('I am told the bill run cannot be deleted because its billing not required', () => {
-  cy.get('@billRun').then((billRun) => { 
-  cy.get('@response').then((response) => {
+  cy.get('@billRun').then((billRun) => {
+    cy.get('@response').then((response) => {
       expect(response.status).to.equal(409)
       expect(response.body).to.have.property('error')
       expect(response.body.message).to.equal(`Bill run ${billRun.id} cannot be edited because its status is billing_not_required.`)
