@@ -19,7 +19,7 @@ Feature: Rebill Invoice General
      And I have a billed sroc bill run
     When I try to rebill a zeroValue invoice to a new sroc bill run
     Then I get a successful response that includes details for the invoices created
-
+@ignore
   Scenario: Successfully rebill a deminimis invoice
      And I have a billed sroc bill run
     When I try to rebill a deminimis invoice to a new sroc bill run
@@ -30,7 +30,7 @@ Feature: Rebill Invoice General
     When I try to rebill a minimumCharge invoice to a new presroc bill run
     Then I get a successful response that includes details for the invoices created   
      And I request to send the rebill bill run
-
+@ignore
   Scenario: Rebilled invoices are not subject to deminimis checks
      And I have a billed sroc bill run with a credit invoice of less than deminimis amount 
     When I try to rebill it to a new sroc bill run

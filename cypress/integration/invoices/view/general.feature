@@ -26,7 +26,7 @@ Feature: View Invoice General
     Then the invoice level items are correct for a credit invoice
      And the licence level items are correct
      And the transaction level items are correct   
-
+@ignore
   Scenario: Deminimis invoice level items are correct (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following details

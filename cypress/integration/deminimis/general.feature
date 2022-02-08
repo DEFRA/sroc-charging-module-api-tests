@@ -166,6 +166,22 @@ Feature: Deminimis
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 2500 | 2500 |
 
+  Scenario: Low SROC debit invoice (previously demimimis) is billed (SROC)
+    And I request a valid new sroc bill run
+    And I add a successful transaction with the following details
+     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
+      | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 5.00        |
+      | standard        | sroc    | CM00000001  | LIC/NUM/CM02 | 4.00        |
+    And I request to generate the bill run
+    And bill run status is updated to "generated"
+    And I request to view the bill run 
+    And the bill run summary includes the expected items
+      | generated | 0 | 0 | 1 | 900 | 900 |
+    And I request to approve the bill run
+    And bill run status is updated to "approved"
+    And I request to send the bill run
+    And bill run status is updated to "billed" 
+
   Scenario: Invoice net total of £0.01 is deminimis (PRESROC)
     When I request a valid new presroc bill run
      And I add a successful transaction with the following details

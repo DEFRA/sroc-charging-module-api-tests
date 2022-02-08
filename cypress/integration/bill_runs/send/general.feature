@@ -23,7 +23,7 @@ Feature: Send Bill Run
      And the transaction reference is generated for CM00000001
      And the transaction reference is generated for CM00000002
      And the transaction reference is generated for CM00000003
-     And a transaction reference is not generated for CM00000004
+     And the transaction reference is generated for CM00000004
      And a transaction reference is not generated for CM00000005
 
   Scenario: Credit Bill run is sent successfully (SROC)
@@ -62,13 +62,28 @@ Feature: Send Bill Run
      And I request to send the bill run
      And bill run status is updated to "billed"
 
-  Scenario: Bill run made up of zero value or deminimis invoices is not sent (SROC)
+  Scenario: Bill run made up of deminimis invoices is sent (SROC)
+    When I request a valid new sroc bill run for region A
+     And I add a successful transaction with the following details
+     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
+      | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 9.00        |
+      | standard        | sroc    | CM00000002  | LIC/NUM/CM03 | 8.00        |
+     And I request to generate the bill run
+     And bill run status is updated to "generated" 
+     And I request to approve the bill run
+     And bill run status is updated to "approved"
+     And I request to send the bill run
+    Then bill run status is updated to "billed"
+     And I request to view the bill run
+     And the transaction reference is generated for CM00000001
+     And the transaction reference is generated for CM00000002
+
+  Scenario: Bill run made up of zero value invoices is not sent (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following details
      #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
       | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 180.00      |
       | credit          | sroc    | CM00000001  | LIC/NUM/CM02 | 180.00      |
-      | standard        | sroc    | CM00000002  | LIC/NUM/CM03 | 8.00        |
      And I request to generate the bill run
      And bill run status is updated to "generated" 
      And I request to approve the bill run
@@ -76,8 +91,7 @@ Feature: Send Bill Run
      And I request to send the bill run
     Then bill run status is updated to "billing_not_required"
      And I request to view the bill run
-     And a transaction reference is not generated for CM00000001
-     And a transaction reference is not generated for CM00000002
+     And a transaction reference is not generated for CM00000001 
 
   Scenario: A Bill run without approved status cannot be sent (SROC)
     When I request a valid new sroc bill run for region A
