@@ -47,7 +47,7 @@ Feature: View Bill Run General
     Then the invoice summary includes the expected items
      #| demin | zeroV | cred  | deb | net    | customerRef |
       | false | false | 18000 | 0   | -18000 | CM00000001  |    
-
+@ignore
   Scenario: Invoice summary shows expected items for deminimis invoice (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following details
@@ -160,8 +160,8 @@ Feature: View Bill Run General
      And I request to view the bill run
     Then the bill run summary includes the expected items
       | generated | 1 | 1000 | 0 | 0 | -1000 |
- 
-  Scenario: Bill run summary excludes de-minimus invoices (SROC)
+@ignore 
+  Scenario: Bill run summary excludes deminimus invoices (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful sroc deminimis transaction for customer CM00000001
      And I request to generate the bill run
@@ -180,7 +180,7 @@ Feature: View Bill Run General
     Then the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
 
-  Scenario: Bill run summary excludes de-minimus invoices (PRESROC)
+  Scenario: Bill run summary excludes deminimus invoices (PRESROC)
     When I request a valid new presroc bill run for region A
      And I add a successful presroc deminimis transaction for customer CM00000001
      And I request to generate the bill run

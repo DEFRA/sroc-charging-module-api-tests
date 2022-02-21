@@ -51,6 +51,25 @@ Feature: Delete Licence General
      And the bill run summary includes the expected items
       | generated | 1 | 10000 | 0 | 0 | -10000 |
 
+Scenario: Delete debit licence with small debit licence remaining (SROC)
+    When I request a valid new sroc bill run for region A
+     And I add a successful transaction with the following details
+     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
+      | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 100.00      |
+      | standard        | sroc    | CM00000001  | LIC/NUM/CM02 | 7.00        |
+     And I request to generate the bill run
+     And bill run status is updated to "generated" 
+     And I request to delete the licence LIC/NUM/CM01 for CM00000001
+     And bill run status is updated to "generated"
+     And I request to view the bill run
+    Then licence LIC/NUM/CM01 is no longer listed under invoice CM00000001
+     And the invoice summary includes the expected items
+     #| demin | zeroV | cred | deb   | net | customerRef | 
+      | false | false | 0    | 700   | 700 | CM00000001  |
+     And the bill run summary includes the expected items
+      | generated | 0 | 0 | 1 | 700 | 700 |
+
+@ignore
   Scenario: Delete debit licence with deminimis remaining (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following details
@@ -123,7 +142,7 @@ Feature: Delete Licence General
       | false | false | 0    | 10000 | 10000 | CM00000001  |
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 10000 | 10000 |
-
+@ignore
   Scenario: Delete credit licence with deminimis remaining (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following details
@@ -232,7 +251,7 @@ Feature: Delete Licence General
       | false | false | 10000 | 0   | -10000 | CM00000002  |
      And the bill run summary includes the expected items
       | generated | 1 | 10000 | 0 | 0 | -10000 |
-
+@ignore
   Scenario: Invoice is deleted when last remaining licence is deleted leaving a deminimis invoice in the bill run (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following details

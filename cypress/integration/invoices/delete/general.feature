@@ -31,6 +31,21 @@ Feature: Delete Invoice General
      And the bill run summary includes the expected items
       | generated | 1 | 10000 | 0 | 0 | -10000 |
 
+  Scenario: Delete debit invoice with small debit invoice remaining (SROC)
+    When I request a valid new sroc bill run for region A
+     And I add a successful transaction with the following details
+     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
+      | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 100.00      |
+      | standard        | sroc    | CM00000002  | LIC/NUM/CM02 | 8.00        |
+     And I request to generate the bill run
+     And bill run status is updated to "generated" 
+    Then I request to delete the invoice for CM00000001
+     And bill run status is updated to "generated"
+     And I try to view the invoice for CM00000001 I am told it no longer exists
+     And I request to view the bill run
+     And the bill run summary includes the expected items
+      | generated | 0 | 0 | 1 | 800 | 800 |    
+@ignore
   Scenario: Delete debit invoice with deminimis invoice remaining (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following details
@@ -78,7 +93,7 @@ Feature: Delete Invoice General
      And I request to view the bill run
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 10000 | 10000 |
-
+@ignore
   Scenario: Delete credit invoice with deminimis invoice remaining (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following details
@@ -111,7 +126,7 @@ Feature: Delete Invoice General
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 0 | 0 | 0 |
      And the bill run does contain transactions
-
+@ignore
   Scenario: Delete Deminimis invoice with debit invoice remaining (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following details
@@ -126,7 +141,7 @@ Feature: Delete Invoice General
      And I request to view the bill run
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 10000 | 10000 |
-
+@ignore
   Scenario: Delete Deminimis invoice with credit invoice remaining (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following details
@@ -141,7 +156,7 @@ Feature: Delete Invoice General
      And I request to view the bill run
      And the bill run summary includes the expected items
       | generated | 1 | 1000 | 0 | 0 | -1000 |
-
+@ignore
   Scenario: Delete Deminimis invoice with zero value invoice remaining (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following details
@@ -190,7 +205,7 @@ Feature: Delete Invoice General
      And I request to view the bill run
      And the bill run summary includes the expected items
       | generated | 1 | 10000 | 0 | 0 | -10000 |
-
+@ignore
   Scenario: Delete Zero value invoice with deminimis invoice remaining (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following details
@@ -460,40 +475,3 @@ Feature: Delete Invoice General
      And I request to view the bill run
      And the bill run summary includes the expected items
       | generated | 0 | 0 | 1 | 10000 | 10000 |   
-
-
-#Delete Invoice scenarios
-
-#Delete invoice succesfully
-    #Delete invoice
-    #View invoice to confirm its now unknown
-#Delete Debit Invoice
-    #Delete Debit invoice with Credit invoice remaining
-        #Check bill run summary values are updated correctly
-    #Delete Debit invoice with Deminimis invoice remaining
-        #Check bill run summary values are updated correctly
-    #Delete Debit invoice with Zero value invoice remaining
-        #Check bill run summary values are updated correctly  
-#Delete Credit Invoice
-    #Delete Credit invoice with Debit invoice remaining
-        #Check bill run summary values are updated correctly
-    #Delete Credit invoice with Deminimis invoice remaining
-        #Check bill run summary values are updated correctly
-    #Delete Credit invoice with Zero value invoice remaining
-#Delete Deminimis Invoice
-    #Delete Deminimis invoice with Debit invoice remaining
-        #Check bill run summary values are updated correctly
-    #Delete Deminimis invoice with Credit invoice remaining
-        #Check bill run summary values are updated correctly
-    #Delete Deminimis invoice with Zero value invoice remaining     
-#Delete Zero value Invoice
-    #Delete Zero value invoice with Debit invoice remaining
-        #Check bill run summary values are updated correctly
-    #Delete Zero value invoice with Credit invoice remaining
-        #Check bill run summary values are updated correctly
-    #Delete Zero value invoice with Deminimis invoice remaining 
-
-
-#Delete Min Charge invoice (PRESROC)
-#Delete last invoice on bill run and confirm bill run is not deleted
-

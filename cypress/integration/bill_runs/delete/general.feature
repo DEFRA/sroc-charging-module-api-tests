@@ -42,7 +42,7 @@ Feature: Bill runs
 
   Scenario: Billed bill with the status of billing_not_required cannot be deleted
     And I request a valid new sroc bill run
-    And I add a deminimis sroc transaction to it
+    And I add a zeroValue sroc transaction to it
     And I request to generate the bill run
     And bill run status is updated to "generated"
     And I request to approve the bill run

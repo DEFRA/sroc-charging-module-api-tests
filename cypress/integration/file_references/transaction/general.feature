@@ -56,7 +56,6 @@ Feature: Transaction File Reference
      #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
       | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 180.00      |
       | credit          | sroc    | CM00000001  | LIC/NUM/CM02 | 180.00      |
-      | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 8.00        |
      And I request to generate the bill run
      And bill run status is updated to "generated" 
      And I request to approve the bill run

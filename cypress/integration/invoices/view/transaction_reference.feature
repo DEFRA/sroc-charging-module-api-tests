@@ -46,7 +46,7 @@ Feature: Transaction Reference General
      And I request to view the bill run
      And I request to view the invoice for CM00000001
     Then the transaction reference is the correct format for CM00000001
-
+@ignore
   Scenario: Transaction Reference is correct format for a Deminimis invoice (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following details
