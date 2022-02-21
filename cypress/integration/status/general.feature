@@ -25,9 +25,7 @@ Feature: Status
      And I add a successful transaction with the following details
      #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
       | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 1.00        |
-      | credit          | sroc    | CM00000002  | LIC/NUM/CM01 | 1.00        |
-      | standard        | sroc    | CM00000002  | LIC/NUM/CM01 | 1.00        |
-      | standard        | sroc    | CM00000003  | LIC/NUM/CM01 | 1.00        |
+      | credit          | sroc    | CM00000001  | LIC/NUM/CM01 | 1.00        |
      And bill run status is updated to "initialised"
      And I request to generate the bill run
      And bill run status is updated to "generated"
