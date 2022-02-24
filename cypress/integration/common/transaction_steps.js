@@ -45,7 +45,7 @@ Then('I am told the bill run cannot be updated because its billed', () => {
       expect(response.body.message).to.equal(`Bill run ${billRun.id} cannot be edited because its status is billed.`)
     })
   })
-})  
+})
 
 And('I add a successful {word} {word} transaction for customer {word}', (ruleset, transactionType, customerRef) => {
   const fixtureName = `${transactionType}.${ruleset}.transaction`
