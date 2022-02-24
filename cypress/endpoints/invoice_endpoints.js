@@ -31,7 +31,7 @@ class InvoiceEndpoints {
     return cy
       .api({
         method: 'PATCH',
-        url: `/v2/wrls/bill-runs/${id}/invoices/${invoiceId}/rebill`,
+        url: `/v3/wrls/bill-runs/${id}/invoices/${invoiceId}/rebill`,
         failOnStatusCode,
         headers: {
           'content-type': 'application/json',
