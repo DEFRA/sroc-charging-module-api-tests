@@ -3,7 +3,7 @@ class LicenceEndpoints {
     return cy
       .api({
         method: 'DELETE',
-        url: `/v2/wrls/bill-runs/${id}/licences/${licenceId}`,
+        url: `/v3/wrls/bill-runs/${id}/licences/${licenceId}`,
         failOnStatusCode,
         headers: {
           'content-type': 'application/json',
