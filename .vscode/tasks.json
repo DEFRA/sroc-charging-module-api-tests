@@ -1,0 +1,52 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "✅ TEST",
+      "detail": "Run Cypress tests in docker",
+      "type": "shell",
+      "command": "docker run --env-file .env --interactive --tty cypress-test-image:1.0.0",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "🏗️ BUILD",
+      "detail": "Build docker image",
+      "type": "shell",
+      "command": "docker build --tag cypress-test-image:1.0.0 .",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "🏗️ BUILD (no cache)",
+      "detail": "Build docker image with no cache",
+      "type": "shell",
+      "command": "docker build --no-cache --tag cypress-test-image:1.0.0 .",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    }
+  ]
+}
