@@ -62,7 +62,7 @@ Feature: Send Bill Run
      And I request to send the bill run
      And bill run status is updated to "billed"
 
-  Scenario: Bill run made up of deminimis invoices is sent (SROC)
+  Scenario: Bill run made up of invoices under £10 is sent (SROC)
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following details
      #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
@@ -115,6 +115,20 @@ Feature: Send Bill Run
      And I request to send the bill run
      And bill run status is updated to "billed"
     Then I request to send the bill run and I am told it cannot be updated because its billed
+
+  Scenario: A sent Bill run cannot be edited (SROC)
+    When I request a valid new sroc bill run for region A
+     And I add a successful transaction with the following details
+     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
+      | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 180.00      |
+     And I request to generate the bill run
+     And bill run status is updated to "generated" 
+     And I request to approve the bill run
+     And bill run status is updated to "approved"
+     And I request to send the bill run
+     And bill run status is updated to "billed"
+     And I add a standard sroc transaction to it
+    Then I am told the bill run cannot be updated because its billed
 
   Scenario: Debit Bill run is sent successfully (PRESROC)
     When I request a valid new presroc bill run for region A

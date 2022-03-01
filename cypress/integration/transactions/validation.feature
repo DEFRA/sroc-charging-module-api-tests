@@ -28,6 +28,7 @@ Feature: Create Transaction Validation
       | sroc | areaCode                  |
       | sroc | lineDescription           |
       | sroc | chargeCategoryDescription |
+      | sroc | adjustmentFactor          |
 
   Scenario: Checks for mandatory values (required in all requests) (PRESROC)
     When I request a valid new presroc bill run

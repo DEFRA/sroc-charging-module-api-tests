@@ -37,6 +37,16 @@ And('I add a {word} {word} transaction to it', (transactionType, ruleset) => {
   })
 })
 
+Then('I am told the bill run cannot be updated because its billed', () => {
+  cy.get('@transaction').then((response) => {
+    cy.get('@billRun').then((billRun) => {
+      expect(response.status).to.be.equal(409)
+      expect(response.body.error).to.equal('Conflict')
+      expect(response.body.message).to.equal(`Bill run ${billRun.id} cannot be edited because its status is billed.`)
+    })
+  })
+})
+
 And('I add a successful {word} {word} transaction for customer {word}', (ruleset, transactionType, customerRef) => {
   const fixtureName = `${transactionType}.${ruleset}.transaction`
 
