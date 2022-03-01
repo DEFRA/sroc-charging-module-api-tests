@@ -46,3 +46,6 @@ cypress/reports/html/*.json
 /environments/*
 !/environments/.ci.env
 !/environments/.example.env
+
+# Ignore top-level .env file, used when running Cypress in Docker
+.env
