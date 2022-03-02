@@ -4,10 +4,10 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "✅ TEST",
+      "label": "✅ TEST (CMA-TEST)",
       "detail": "Run Cypress tests in docker",
       "type": "shell",
-      "command": "docker run --env-file .env --interactive --tty cypress-test-image:1.0.0",
+      "command": "docker run --env-file .env --interactive --tty sroc-charging-module-api-tests:latest",
       "group": "test",
       "presentation": {
         "echo": true,
@@ -19,10 +19,10 @@
       }
     },
     {
-      "label": "🏗️ BUILD",
+      "label": "🚧 BUILD (CMA-TEST)",
       "detail": "Build docker image",
       "type": "shell",
-      "command": "docker build --tag cypress-test-image:1.0.0 .",
+      "command": "docker build --tag sroc-charging-module-api-tests:latest .",
       "group": "test",
       "presentation": {
         "echo": true,
@@ -34,10 +34,25 @@
       }
     },
     {
-      "label": "🏗️ BUILD (no cache)",
+      "label": "🏗️ REBUILD (CMA-TEST)",
       "detail": "Build docker image with no cache",
       "type": "shell",
-      "command": "docker build --no-cache --tag cypress-test-image:1.0.0 .",
+      "command": "docker build --no-cache --tag sroc-charging-module-api-tests:latest .",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "⬇️ DOWN (CMA-TEST)",
+      "detail": "Drop any stopped containers",
+      "type": "shell",
+      "command": "docker rm $(docker stop $(docker ps -a -q --filter ancestor=sroc-charging-module-api-tests:latest --format='{{.ID}}'))",
       "group": "test",
       "presentation": {
         "echo": true,
