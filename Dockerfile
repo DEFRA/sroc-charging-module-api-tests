@@ -29,6 +29,7 @@ FROM node_base AS production
 
 # Install dependencies
 COPY . .
-RUN npm ci
+RUN npm ci && \
+  npx cypress verify
 
 CMD ["npm", "run", "cy:run:docker"]
