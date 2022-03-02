@@ -25,11 +25,10 @@ RUN npm i npm@latest -g
 # We have chosen /home/node as our working directory to be consistent with https://github.com/DEFRA/defra-docker-node
 # WORKDIR /home/node
 
-FROM node_base
+FROM node_base AS production
 
 # Install dependencies
 COPY . .
-RUN mkdir environments && \
-  npm ci
+RUN npm ci
 
 CMD ["npm", "run", "cy:run:docker"]
