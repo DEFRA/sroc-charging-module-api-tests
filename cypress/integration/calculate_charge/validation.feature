@@ -180,6 +180,10 @@ Feature: Calculate Charge Validation
       | presroc | true  | true  | false | twoPartTariff       | false |
       | presroc | true  | true  | true  | twoPartTariff       | false |
 
+  Scenario: WaterUndertaker must be true when compensationCharge and waterCompanyCharge are both true
+    When I send the following invalid combinations I am told waterUndertaker must be true
+      | sroc    | true | true  | waterUndertaker | true |    
+
   # The values in the table relate to what will be sent in the request for
   # | ruleset | twoPartTariff | compensationCharge | section127Agreement |
   Scenario: Allows valid combinations

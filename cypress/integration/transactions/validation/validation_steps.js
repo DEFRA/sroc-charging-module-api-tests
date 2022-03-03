@@ -271,6 +271,34 @@ And('I send the following invalid combinations I am told what value a property s
   })
 })
 
+And('I send the following invalid combinations I am told waterUndertaker must be true', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+
+    const params = {
+      compensationCharge: (row[1] === 'true'),
+      waterCompanyCharge: (row[2] === 'true')
+    }
+
+    const incorrectProperty = row[3]
+    const correctValue = row[4]
+    const fixtureName = `standard.${ruleset}.transaction`
+
+    cy.log(`Testing '${ruleset}' combination ${JSON.stringify(params)}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.compensationCharge = params.compensationCharge
+      fixture.waterCompanyCharge = params.waterCompanyCharge
+
+      cy.get('@billRun').then((billRun) => {
+        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+          expect(response.body.message).to.equal(`"${incorrectProperty}" must be [${correctValue}]`)
+        })
+      })
+    })
+  })
+})
+
 And('I send the following valid combinations it creates the transaction without error', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const ruleset = row[0]
