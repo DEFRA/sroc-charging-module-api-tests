@@ -22,10 +22,12 @@ RUN apt-get update && \
 # Get the latest version of npm at time of build, regardless of node version, for speed and fixes.
 RUN npm i npm@latest -g
 
-# We have chosen /home/node as our working directory to be consistent with https://github.com/DEFRA/defra-docker-node
-# WORKDIR /home/node
-
 FROM node_base AS production
+
+# We have chosen /home/node as our working directory to be consistent with https://github.com/DEFRA/defra-docker-node
+WORKDIR /home/node/app
+
+RUN npm config -g set user $(whoami)
 
 # Install dependencies
 COPY . .
