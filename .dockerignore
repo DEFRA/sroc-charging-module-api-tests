@@ -5,3 +5,7 @@
 !cypress.json
 !package-lock.json
 !package.json
+
+.DS_Store
+cypress/reports/**/*.html
+cypress/reports/**/*.json
