@@ -15,6 +15,8 @@ RUN apt-get update && \
   libnss3 \
   libxss1 \
   libasound2 \
+  libxtst6 \
+  xauth \
   xvfb \
   && apt-get -y autoremove \
   && rm -rf /var/lib/apt/lists/*
