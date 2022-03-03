@@ -29,6 +29,8 @@ Feature: Calculate Charge Validation
       | sroc    | periodStart         |
       | sroc    | periodEnd           |
       | sroc    | adjustmentFactor    |
+      | sroc    | abatementFactor     |
+      | sroc    | aggregateProportion |
       | presroc | periodEnd           |
 
   Scenario: Checks for mandatory values when compensationCharge is true (SROC)
