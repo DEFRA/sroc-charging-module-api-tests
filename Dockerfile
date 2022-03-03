@@ -29,10 +29,24 @@ FROM node_base AS production
 # We have chosen /home/node as our working directory to be consistent with https://github.com/DEFRA/defra-docker-node
 WORKDIR /home/node/app
 
+# We need to set the use in npm config else we get an error when running npm install (or equivalents)
+#
+#   Cypress cannot write to the cache directory due to file permissions
+#   Failed to access /root/.cache/Cypress:
+#
+# https://github.com/cypress-io/cypress/issues/3081
+# https://stackoverflow.com/questions/55151786/getting-error-eacces-permission-denied-when-i-install-cypress
+#
+# Having checked Cypress' own Dockerfile files we could see they use both this and setting
+# `npm_config_unsafe_perm true`. However, our tests confirmed we just need to set the user in npm's config and then the
+# error goes away
 RUN npm config -g set user $(whoami)
 
-# Install dependencies
+# Copy the project into the image. .dockerignore controls which files actually get copied in.
 COPY . .
+
+# Install the project dependencies and then run `cypress verify`. This avoids having to wait for Cypress to run its
+# verification process each time you start a new container.
 RUN npm ci && \
   npx cypress verify
 
