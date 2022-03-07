@@ -10,6 +10,8 @@ You just need [Node.js](https://nodejs.org/en/) installed, ideally an LTS versio
 
 You'll also need [Chrome](https://www.google.com/intl/en_uk/chrome/). It's what we use when working on the tests, and is one of 2 browsers available to our users.
 
+The tests can be run using Docker; for this, you will first need to [install Docker](https://docs.docker.com/get-docker/). Chrome should not be needed in this case.
+
 ## Installation
 
 First clone the repository and then drop into your new local repo
@@ -23,6 +25,8 @@ Next download and install the dependencies
 ```bash
 npm install
 ```
+
+Alternatively, if you will be running the tests with Docker, just clone the repo -- `npm install` is not required at this stage.
 
 ## Configuration
 
@@ -42,9 +46,11 @@ Using these `.env` files allows us to store both config and credentials that cha
 
 Checkout [environments/.env.example](/environments/.env.example) for an example of the file you'll need to create for each environment.
 
+If you are running the tests in Docker, you should instead create a `.env` file in the root folder of the repo, using [`.env.example`](/.env.example) as a guide. Note that the format is exactly the same as [environments/.env.example](/environments/.env.example) except the base URL is specified as `CYPRESS_BASE_URL` instead of `baseUrl`.
+
 ## Execution
 
-You can run tests using the Cypress test runner or headlessly using the Cypress CLI.
+You can run tests using the Cypress test runner, or headlessly using either the Cypress CLI or Docker.
 
 ### Test runner
 
@@ -81,6 +87,18 @@ To open the test runner use `npm run cy:run:[env]` replacing `[env]` with your c
 ```bash
 npm run cy:run:local
 ```
+
+### Docker
+
+> Runs Cypress tests to completion using a headless instance of Chrome.
+
+For convenience, we use [VSCode](https://code.visualstudio.com/) tasks to build and run the tests in Docker. These are defined in [`.vscode/tasks.json`](/.vscode/tasks.json) and are are accessed by bringing up the [command palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) then selecting `Tasks: Run Task` followed by the task you wish to run.
+
+Start by running the task `🚧 BUILD (CMA-TEST)`, which will build the Docker image. The task `✅ TEST (CMA-TEST)` can then be used to run the tests. Tasks for rebuilding and dropping images are also defined in `tasks.json`. 
+
+If you prefer not to use VSCode tasks then simply refer to [`.vscode/tasks.json`](/.vscode/tasks.json) for details of the underlying commands.
+
+> Any changes to the tests, including changes to `.env`, will require the image to be built again as bind mounts are not currently used.
 
 ## Test structure
 
