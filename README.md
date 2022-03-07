@@ -44,7 +44,7 @@ Depending on the environment selected the [Cypress dotenv](https://github.com/mo
 
 Using these `.env` files allows us to store both config and credentials that change across environments in one place but it is important they are *_never_* committed to source control.
 
-Checkout [environments/.env.example](/environments/.env.example) for an example of the file you'll need to create for each environment.
+Checkout [environments/.example.env](/environments/.example.env) for an example of the file you'll need to create for each environment.
 
 If you are running the tests in Docker, you should instead create a `.env` file in the root folder of the repo, using [`.env.example`](/.env.example) as a guide. Note that the format is exactly the same as [environments/.env.example](/environments/.env.example) except the base URL is specified as `CYPRESS_BASE_URL` instead of `baseUrl`.
 
