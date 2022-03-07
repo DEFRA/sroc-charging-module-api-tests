@@ -45,5 +45,5 @@ jobs:
           context: .
           target: production
           push: true
-          labels: ${{ steps.meta_github.outputs.labels }}
-          tags: ${{ steps.meta_github.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
