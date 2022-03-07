@@ -1,0 +1,67 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "✅ TEST (CMA-TEST)",
+      "detail": "Run Cypress tests in docker",
+      "type": "shell",
+      "command": "docker run --env-file .env --interactive --tty sroc-charging-module-api-tests:latest",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "🚧 BUILD (CMA-TEST)",
+      "detail": "Build docker image",
+      "type": "shell",
+      "command": "docker build --tag sroc-charging-module-api-tests:latest .",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "🏗️ REBUILD (CMA-TEST)",
+      "detail": "Build docker image with no cache",
+      "type": "shell",
+      "command": "docker build --no-cache --tag sroc-charging-module-api-tests:latest .",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "⬇️ DOWN (CMA-TEST)",
+      "detail": "Drop any stopped containers",
+      "type": "shell",
+      "command": "docker rm $(docker stop $(docker ps -a -q --filter ancestor=sroc-charging-module-api-tests:latest --format='{{.ID}}'))",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    }
+  ]
+}
