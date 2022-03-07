@@ -10,7 +10,7 @@ jobs:
     steps:
       # Downloads a copy of the code in your repository before running CI tests
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Check for 'temporary' tags i.e. tags often used when working on a feature/scenario but which we don't want
       # appearing in the final commit to main
@@ -29,7 +29,7 @@ jobs:
 
       # Gets the version to use by referring to the previous step
       - name: Install Node
-        uses: actions/setup-node@v2.5.1
+        uses: actions/setup-node@v3
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
 
