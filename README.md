@@ -10,7 +10,7 @@ You just need [Node.js](https://nodejs.org/en/) installed, ideally an LTS versio
 
 You'll also need [Chrome](https://www.google.com/intl/en_uk/chrome/). It's what we use when working on the tests, and is one of 2 browsers available to our users.
 
-The tests can be run using Docker; for this, you will first need to [install Docker](https://docs.docker.com/get-docker/). Chrome should not be needed in this case.
+The tests can be run using [Docker](https://www.docker.com/); for this, you will first need to [install Docker](https://docs.docker.com/get-docker/). Chrome should not be needed in this case.
 
 ## Installation
 
@@ -34,19 +34,19 @@ Alternatively, if you will be running the tests with Docker, just clone the repo
 
 We have 6 environments where the CHA could be running; local, development, test, pre-production, integration, and production.
 
-Each has its own config file stored in `environments/`. Any configuration shared across the environments is stored in `cypress.json`. But this can be overidden in the environment config files.
+Each has its own config file stored in [`environments/`](/environments/). Any configuration shared across the environments is stored in [`cypress.json`](/cypress.json). But this can be overidden in the environment config files.
 
 ### Environment files
 
 The config or 'environment' files hold environment variables which are key-value pairs; _name of the thing_ and the _value of the thing_. For example, `CYPRESS_ADMIN_USER=cognitoadminusername`.
 
-Depending on the environment selected the [Cypress dotenv](https://github.com/morficus/cypress-dotenv) plugin will read in the values and make them available via [Cypress.env()](https://docs.cypress.io/api/cypress-api/env) in the tests.
+Depending on the environment selected the [Cypress dotenv](https://github.com/morficus/cypress-dotenv) plugin will read in the values and make them available via [`Cypress.env()`](https://docs.cypress.io/api/cypress-api/env) in the tests.
 
 Using these `.env` files allows us to store both config and credentials that change across environments in one place but it is important they are *_never_* committed to source control.
 
-Checkout [environments/.example.env](/environments/.example.env) for an example of the file you'll need to create for each environment.
+Checkout [`environments/.example.env`](/environments/.example.env) for an example of the file you'll need to create for each environment.
 
-If you are running the tests in Docker, you should instead create a `.env` file in the root folder of the repo, using [`.env.example`](/.env.example) as a guide. Note that the format is exactly the same as [environments/.env.example](/environments/.env.example) except the base URL is specified as `CYPRESS_BASE_URL` instead of `baseUrl`.
+If you are running the tests in Docker, you should instead create a `.env` file in the root folder of the repo, using [`.env.example`](/.env.example) as a guide. Note that the format is exactly the same as [`environments/.env.example`](/environments/.env.example) except the base URL is specified as `CYPRESS_BASE_URL` instead of `baseUrl`.
 
 ## Execution
 
@@ -90,7 +90,7 @@ npm run cy:run:local
 
 ### Docker
 
-> Runs Cypress tests to completion using a headless instance of Chrome.
+> Runs Cypress tests to completion using a headless instance of Chrome. The output will be similar to the CLI output and will be visible in the terminal which Docker is being run from.
 
 For convenience, we use [VSCode](https://code.visualstudio.com/) tasks to build and run the tests in Docker. These are defined in [`.vscode/tasks.json`](/.vscode/tasks.json) and are are accessed by bringing up the [command palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) then selecting `Tasks: Run Task` followed by the task you wish to run.
 
@@ -108,7 +108,7 @@ We have also opted to write our tests as `features` using the BDD style. As such
 
 ### Features
 
-Feature files (`*.feature`) need to be stored in `cypress/integration/` to be visible as tests. Along with each feature you will need to create a folder with the same name. In the folder create a `*.js` and add your steps for the feature there.
+Feature files (`*.feature`) need to be stored in [`cypress/integration/`](/cypress/integration/) to be visible as tests. Along with each feature you will need to create a folder with the same name. In the folder create a `*.js` and add your steps for the feature there.
 
 #### Steps
 
@@ -116,13 +116,13 @@ The [steps](https://cucumber.io/docs/cucumber/step-definitions/) file can be cal
 
 #### Common steps
 
-Any steps which can be shared across features can be placed in `cypress/integration/common/`. Check the existing files to see if one that fits already exists and add your steps to it. Else create a new `*.js` file. Again, the name of the file does not matter.
+Any steps which can be shared across features can be placed in [`cypress/integration/common/`](/cypress/integration/common/). Check the existing files to see if one that fits already exists and add your steps to it. Else create a new `*.js` file. Again, the name of the file does not matter.
 
 ### Endpoints
 
 Another preference of the team is to use the [Page object pattern](https://martinfowler.com/bliki/PageObject.html). In a typical web app with a UI this would mean storing all the code to interact with a page in one place. As an API we don't have pages but we do have **endpoints**. Tests interact with our endpoint (page) object and not the endpoint directly. So, should something change, we only have to change it in one place.
 
-Endpoints live in `cypress/endpoints`.
+Endpoints live in [`cypress/endpoints/`](/cypress/endpoints/).
 
 ## Contributing to this project
 
