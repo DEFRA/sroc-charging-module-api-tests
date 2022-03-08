@@ -14,7 +14,7 @@
     "section127Agreement": false,
     "section130Agreement": false,
     "aggregateProportion": 1.0,
-    "waterCompanyCharge": true,
+    "waterCompanyCharge": false,
     "loss": "Medium",
     "billableDays": 0,
     "authorisedDays": 143,

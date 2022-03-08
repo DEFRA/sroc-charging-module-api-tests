@@ -58,8 +58,6 @@ Feature: Calculate Charge Validation
 
   Scenario: Sets default values
     When I do not send the following values the CM sets the correct default
-      | sroc    | abatementFactor     | 1.0 |
-      | sroc    | aggregateProportion | 1.0 |
       | presroc | section126Factor    | 1.0 |
 
   Scenario: Checks data types of values
