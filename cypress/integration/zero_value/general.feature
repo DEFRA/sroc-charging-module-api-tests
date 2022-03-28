@@ -7,9 +7,7 @@ Feature: Zero Value
 
   Scenario: Invoice net total of £0 is zero value invoice (SROC)
     When I request a valid new sroc bill run
-     And I add a successful transaction with the following details
-     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
-      | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 0.00        |
+     And I add a successful sroc zeroValue transaction for customer CM00000001
      And I request to generate the bill run
      And bill run status is updated to "generated"
      And I request to view the bill run
@@ -66,9 +64,7 @@ Feature: Zero Value
 
   Scenario: Invoice net total of £0 is zero value invoice (PRESROC)
     When I request a valid new presroc bill run
-     And I add a successful transaction with the following details
-     #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
-      | standard        | presroc | CM00000001  | LIC/NUM/CM01 | 0.00        |
+     And I add a successful presroc zeroValue transaction for customer CM00000001
      And I request to generate the bill run
      And bill run status is updated to "generated"
      And I request to view the bill run

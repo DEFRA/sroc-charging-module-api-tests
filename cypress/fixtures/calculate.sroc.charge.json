@@ -10,6 +10,8 @@
   "waterUndertaker": false,
   "regionalChargingArea": "Midlands",
   "adjustmentFactor": 1.0,
+  "abatementFactor": 1.0,
+  "aggregateProportion": 1,
   "supportedSource": false,
   "supportedSourceName": "",
   "section127Agreement": false,

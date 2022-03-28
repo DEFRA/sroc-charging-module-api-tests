@@ -185,7 +185,7 @@ Scenario: Delete debit licence with small debit licence remaining (SROC)
      And I add a successful transaction with the following details
      #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
       | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 100.00      |
-      | standard        | sroc    | CM00000001  | LIC/NUM/CM02 | 0.00        |
+      | zeroValue       | sroc    | CM00000001  | LIC/NUM/CM02 | 1.00        |
      And I request to generate the bill run
      And bill run status is updated to "generated" 
      And I request to delete the licence LIC/NUM/CM01 for CM00000001
@@ -203,7 +203,7 @@ Scenario: Delete debit licence with small debit licence remaining (SROC)
      And I add a successful transaction with the following details
      #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
       | credit          | sroc    | CM00000001  | LIC/NUM/CM01 | 100.00      |
-      | standard        | sroc    | CM00000001  | LIC/NUM/CM02 | 0.00        |
+      | zeroValue       | sroc    | CM00000001  | LIC/NUM/CM02 | 1.00        |
      And I request to generate the bill run
      And bill run status is updated to "generated" 
      And I request to delete the licence LIC/NUM/CM01 for CM00000001
@@ -275,7 +275,7 @@ Scenario: Delete debit licence with small debit licence remaining (SROC)
      And I add a successful transaction with the following details
      #| transactionType | ruleset | customerRef | licenceNum   | chargeValue |
       | standard        | sroc    | CM00000001  | LIC/NUM/CM01 | 100.00      |
-      | standard        | sroc    | CM00000002  | LIC/NUM/CM02 | 0.00        |
+      | zeroValue       | sroc    | CM00000002  | LIC/NUM/CM02 | 1.00        |
      And I request to generate the bill run
      And bill run status is updated to "generated" 
      And I request to delete the licence LIC/NUM/CM01 for CM00000001

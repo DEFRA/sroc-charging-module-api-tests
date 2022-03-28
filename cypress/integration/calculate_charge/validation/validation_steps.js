@@ -400,6 +400,35 @@ When('I send the following valid combinations it calculates the charge without e
   })
 })
 
+When('I send the following invalid combinations I am told waterUndertaker must be true', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+
+    const params = {
+      compensationCharge: (row[1] === 'true'),
+      waterCompanyCharge: (row[2] === 'true')
+    }
+
+    const incorrectProperty = row[3]
+    const correctValue = row[4]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.log(`Testing '${ruleset}' combination ${JSON.stringify(params)}`)
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+
+      fixture.compensationCharge = params.compensationCharge
+      fixture.waterCompanyCharge = params.waterCompanyCharge
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(422)
+        expect(response.body.message).to.equal(`"${incorrectProperty}" must be [${correctValue}]`)
+      })
+    })
+  })
+})
+
 When('I send the following properties it corrects the case and calculates the charge without error', (dataTable) => {
   cy.wrap(dataTable.rawTable).each(row => {
     const ruleset = row[0]

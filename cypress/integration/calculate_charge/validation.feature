@@ -29,6 +29,8 @@ Feature: Calculate Charge Validation
       | sroc    | periodStart         |
       | sroc    | periodEnd           |
       | sroc    | adjustmentFactor    |
+      | sroc    | abatementFactor     |
+      | sroc    | aggregateProportion |
       | presroc | periodEnd           |
 
   Scenario: Checks for mandatory values when compensationCharge is true (SROC)
@@ -56,8 +58,6 @@ Feature: Calculate Charge Validation
 
   Scenario: Sets default values
     When I do not send the following values the CM sets the correct default
-      | sroc    | abatementFactor     | 1.0 |
-      | sroc    | aggregateProportion | 1.0 |
       | presroc | section126Factor    | 1.0 |
 
   Scenario: Checks data types of values
@@ -179,6 +179,10 @@ Feature: Calculate Charge Validation
       | presroc | true  | false | false | section127Agreement | true  |
       | presroc | true  | true  | false | twoPartTariff       | false |
       | presroc | true  | true  | true  | twoPartTariff       | false |
+
+  Scenario: WaterUndertaker must be true when compensationCharge and waterCompanyCharge are both true
+    When I send the following invalid combinations I am told waterUndertaker must be true
+      | sroc    | true | true  | waterUndertaker | true |    
 
   # The values in the table relate to what will be sent in the request for
   # | ruleset | twoPartTariff | compensationCharge | section127Agreement |

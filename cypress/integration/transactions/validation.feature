@@ -29,6 +29,8 @@ Feature: Create Transaction Validation
       | sroc | lineDescription           |
       | sroc | chargeCategoryDescription |
       | sroc | adjustmentFactor          |
+      | sroc | abatementFactor           |
+      | sroc | aggregateProportion       |
 
   Scenario: Checks for mandatory values (required in all requests) (PRESROC)
     When I request a valid new presroc bill run
@@ -215,6 +217,11 @@ Feature: Create Transaction Validation
       | sroc | true  | false | false  | section127Agreement | true  |
       | sroc | true  | true  | false  | twoPartTariff       | false |
       | sroc | true  | true  | true   | twoPartTariff       | false |
+
+  Scenario: WaterUndertaker must be true when compensationCharge and waterCompanyCharge are both true
+    When I request a valid new sroc bill run
+     And I send the following invalid combinations I am told waterUndertaker must be true
+      | sroc    | true | true  | waterUndertaker | true |  
 
 # The values in the table relate to what will be sent in the request plus what the CM will report as invalid and what
 # it should actually be
