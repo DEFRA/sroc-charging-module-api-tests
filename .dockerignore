@@ -1,0 +1,11 @@
+# ignore everything - except the dirs/files we want to include
+*
+!cypress
+!.nvmrc
+!cypress.json
+!package-lock.json
+!package.json
+
+.DS_Store
+cypress/reports/**/*.html
+cypress/reports/**/*.json

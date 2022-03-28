@@ -42,9 +42,7 @@ const path = require('path')
  * inspiration we have added the ability to set an environment when cypress is called and have the project read its
  * config from a matching `environments/.env` file
 */
-function loadDotenvPlugin (config) {
-  const environment = config.env.environment || 'local'
-
+function loadDotenvPlugin (config, environment) {
   const pathToEnvFile = path.resolve('environments', `.${environment}.env`)
 
   return dotenvPlugin(config, { path: pathToEnvFile }, true)
@@ -56,7 +54,12 @@ module.exports = (on, config) => {
 
   on('file:preprocessor', cucumber())
 
-  config = loadDotenvPlugin(config)
+  const environment = config.env.environment || 'local'
+
+  // If the environment is `docker` then the env vars will already be set, so we don't need to load them from a file
+  if (environment !== 'docker') {
+    config = loadDotenvPlugin(config, environment)
+  }
 
   return config
 }

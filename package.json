@@ -11,6 +11,7 @@
     "cy:open:pre": "rm -f cypress/reports/json/*.json && cypress open --env environment=pre",
     "cy:open:tra": "rm -f cypress/reports/json/*.json && cypress open --env environment=tra",
     "cy:run": "rm -f cypress/reports/json/*.json && cypress run",
+    "cy:run:docker": "rm -f cypress/reports/json/*.json && cypress run --env environment=docker",
     "cy:run:local": "rm -f cypress/reports/json/*.json && cypress run --env environment=local",
     "cy:run:dev": "rm -f cypress/reports/json/*.json && cypress run --env environment=dev",
     "cy:run:tst": "rm -f cypress/reports/json/*.json && cypress run --env environment=tst",
