@@ -9,6 +9,12 @@ Feature: Rebill Invoice General
     Then I get a successful response that includes details for the invoices created
      And I request to send the rebill bill run
 
+  Scenario: Successfully rebill a debit invoice (PRE-SROC)
+     And I have a billed presroc bill run
+    When I try to rebill a debit invoice to a new presroc bill run
+    Then I get a successful response that includes details for the invoices created
+     And I request to send the rebill bill run   
+
   Scenario: Successfully rebill a credit invoice 
      And I have a billed sroc bill run
     When I try to rebill a credit invoice to a new sroc bill run
@@ -54,11 +60,17 @@ Feature: Rebill Invoice General
     Then I get a conflict response
      And I am told the source bill run region does not have a status of billed
 
-  Scenario: Source bill run cannot be generated
+  Scenario: Source bill run cannot be generated (SROC)
      And I have a generated sroc bill run
     When I try to rebill it to a new sroc bill run
     Then I get a conflict response
      And I am told the source bill run region does not have a status of billed
+
+  Scenario: Source bill run cannot be generated (PRE-SROC)
+     And I have a generated presroc bill run
+    When I try to rebill it to a new presroc bill run
+    Then I get a conflict response
+     And I am told the source bill run region does not have a status of billed   
 
   Scenario: Source bill run cannot be approved
      And I have an approved sroc bill run
@@ -109,7 +121,16 @@ Feature: Rebill Invoice General
      And I request to delete the C rebill invoice
      And I request to delete the R rebill invoice
      And I try to rebill it again
-    Then I get a successful response that includes details for the invoices created 
+    Then I get a successful response that includes details for the invoices created
+
+  Scenario: Rebilled source invoice that has been deleted can be rebilled (PRE-SROC)
+     And I have a billed presroc bill run
+    When I try to rebill it to a new presroc bill run
+    Then I get a successful response that includes details for the invoices created
+     And I request to delete the C rebill invoice
+     And I request to delete the R rebill invoice
+     And I try to rebill it again
+    Then I get a successful response that includes details for the invoices created   
 
   Scenario: Credit (C) invoice cannot be rebilled
      And I have a billed sroc bill run
