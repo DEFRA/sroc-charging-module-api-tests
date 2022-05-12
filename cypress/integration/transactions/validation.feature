@@ -208,7 +208,7 @@ Feature: Create Transaction Validation
      And I send the following period dates I am told that periodStart is before the ruleset start date
       | presroc | 01-APR-2013 | 31-MAR-2014 | 2014-04-01 |
 
-  Scenario: Checks that periodEnd is less than or equal to the ruleset end date
+  Scenario: Checks that periodEnd is less than or equal to the ruleset end date (PRESROC)
     When I request a valid new presroc bill run
      And I send the following period dates I am told that periodEnd must be before or equal to the ruleset end date
       | presroc | 01-APR-2022 | 31-MAR-2023 | 2022-03-31 |        

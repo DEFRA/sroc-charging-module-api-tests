@@ -509,7 +509,7 @@ And('I send the following invalid combinations I am told Billrun and transaction
         cy.get('@billRun').then((billRun) => {
           TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
             expect(response.status).to.equal(422)
-            expect(response.body.message).to.equal(`Bill run ${billRun.id} is for region ${value} but transaction is for region ${value1}.`)
+            expect(response.body.message).to.equal(`Bill run ${billRun.id} is linked to region ${value} but transaction is linked to region ${value1}.`)
           })
         })
       })

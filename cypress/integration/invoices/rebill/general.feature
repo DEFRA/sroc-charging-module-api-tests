@@ -131,15 +131,15 @@ Feature: Rebill Invoice General
      And I request to delete the R rebill invoice
      And I try to rebill it again
     Then I get a successful response that includes details for the invoices created   
-
+@wip
   Scenario: Credit (C) invoice cannot be rebilled
      And I have a billed sroc bill run
     When I try to rebill it to a new sroc bill run
     Then I get a successful response that includes details for the invoices created
      And I request the new destination bill run to be billed
-     And I try to rebill the cancel invoice to a new sroc bill run
+     And I try to rebill the credit invoice to a new sroc bill run
     Then I am told a rebill credit invoice cannot be rebilled
-
+@wip
   Scenario: Rebill (R) invoice can be rebilled
      And I have a billed sroc bill run
     When I try to rebill it to a new sroc bill run

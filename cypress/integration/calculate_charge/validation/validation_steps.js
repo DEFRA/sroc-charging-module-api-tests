@@ -236,10 +236,10 @@ When('I send the following period start and end dates I am told they must have a
 
       CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
         expect(response.status).to.equal(422)
-        if (value === 'periodStart') {
-          expect(response.body.message).to.equal(`"${property}" must be in [DD-MMM-YYYY, DD-MM-YYYY, YYYY-MM-DD, DD/MM/YYYY, YYYY/MM/DD] format. "periodEnd" date references "ref:periodStart" which must have a valid date format`)
+        if (property === 'periodStart') {
+          expect(response.body.message).contains(`"${property}" must be in [DD-MMM-YYYY, DD-MM-YYYY, YYYY-MM-DD, DD/MM/YYYY, YYYY/MM/DD] format`)
         } else {
-          expect(response.body.message).to.equal(`"${property}" must be in [DD-MMM-YYYY, DD-MM-YYYY, YYYY-MM-DD, DD/MM/YYYY, YYYY/MM/DD] format. "periodStart" date references "ref:periodEnd" which must have a valid date format`)
+          expect(response.body.message).contains(`"${property}" must be in [DD-MMM-YYYY, DD-MM-YYYY, YYYY-MM-DD, DD/MM/YYYY, YYYY/MM/DD] format`)
         }
       })
     })
