@@ -203,8 +203,8 @@ Feature: View Bill Run General
   Scenario: New invoice not created if customer ref, financial year and licence numbers are the same
     When I request a valid new sroc bill run for region A
      And I add a successful transaction with the following FY details
-      | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
-      | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
+      | standard | sroc | CM00000001 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM01 |
+      | standard | sroc | CM00000001 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM01 |
      And I request to generate the bill run
      And bill run status is updated to "generated"
      And I request to view the bill run
@@ -215,8 +215,8 @@ Feature: View Bill Run General
   Scenario: New invoice not created if customer ref, financial year and licence numbers are different
     When I request a valid new sroc bill run
      And I add a successful transaction with the following FY details
-      | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
-      | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM02 |
+      | standard | sroc | CM00000001 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM01 |
+      | standard | sroc | CM00000001 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM02 |
      And I request to generate the bill run
      And bill run status is updated to "generated"
      And I request to view the bill run
@@ -228,8 +228,8 @@ Feature: View Bill Run General
   Scenario: New invoice created for same customer ref and different financial years
     When I request a valid new sroc bill run
      And I add a successful transaction with the following FY details
-      | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
       | standard | sroc | CM00000001 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM01 |
+      | standard | sroc | CM00000001 | 01-APR-2023 | 31-MAR-2024 | LIC/NUM/CM01 |
      And I request to generate the bill run
      And bill run status is updated to "generated"
      And I request to view the bill run
@@ -240,8 +240,8 @@ Feature: View Bill Run General
   Scenario: New invoice created for same financial year and different customer ref
     When I request a valid new sroc bill run
      And I add a successful transaction with the following FY details
-      | standard | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
-      | standard | sroc | CM00000002 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
+      | standard | sroc | CM00000001 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM01 |
+      | standard | sroc | CM00000002 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM01 |
      And I request to generate the bill run
      And bill run status is updated to "generated"
      And I request to view the bill run
@@ -253,9 +253,9 @@ Feature: View Bill Run General
   Scenario: New licence is not created if customer ref, financial year and licence numbers are the same
     When I request a valid new sroc bill run
      And I add a successful transaction with the following FY details
-      | standard  | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
-      | zeroValue | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
-      | credit    | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
+      | standard  | sroc | CM00000001 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM01 |
+      | zeroValue | sroc | CM00000001 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM01 |
+      | credit    | sroc | CM00000001 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM01 |
      And I request to generate the bill run
      And bill run status is updated to "generated"
      And I request to view the bill run
@@ -266,9 +266,9 @@ Feature: View Bill Run General
   Scenario: New licence is created if customer ref, financial year and licence numbers are different
     When I request a valid new sroc bill run
      And I add a successful transaction with the following FY details
-      | standard  | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM01 |
-      | zeroValue | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM02 |
-      | credit    | sroc | CM00000001 | 01-APR-2021 | 31-MAR-2022 | LIC/NUM/CM03 |
+      | standard  | sroc | CM00000001 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM01 |
+      | zeroValue | sroc | CM00000001 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM02 |
+      | credit    | sroc | CM00000001 | 01-APR-2022 | 31-MAR-2023 | LIC/NUM/CM03 |
      And I request to generate the bill run
      And bill run status is updated to "generated"
      And I request to view the bill run
