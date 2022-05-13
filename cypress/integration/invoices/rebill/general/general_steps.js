@@ -178,8 +178,6 @@ When('I try to rebill it to a new {word} bill run', (ruleset) => {
     const destinationBillRunId = response.body.billRun.id
 
     cy.get('@sourceBillRun').then((sourceBillRun) => {
-      // const rebillInvoice = sourceBillRun.invoices[0]
-
       const rebillInvoiceArray = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000001')
       const rebillInvoiceId = rebillInvoiceArray.id
 
@@ -670,9 +668,10 @@ When('I try to rebill it again', () => {
     const destinationBillRun1 = destinationBillRun.body.billRun
 
     cy.get('@sourceBillRun').then((sourceBillRun) => {
-      const rebillInvoice = sourceBillRun.invoices[0]
+      const rebillInvoiceArray = sourceBillRun.invoices.find(element => element.customerReference === 'CM00000001')
+      const rebillInvoiceId = rebillInvoiceArray.id
 
-      InvoiceEndpoints.rebill(destinationBillRun1.id, rebillInvoice.id, false).then((response) => {
+      InvoiceEndpoints.rebill(destinationBillRun1.id, rebillInvoiceId, false).then((response) => {
         cy.wrap(response).as('rebillResponse')
       })
     })
