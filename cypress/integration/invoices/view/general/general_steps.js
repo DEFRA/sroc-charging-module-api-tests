@@ -16,7 +16,11 @@ Then('the invoice level items are correct for a {word} invoice', (invoiceType) =
             expect(response.body.invoice.billRunId).to.equal(billRunId)
             expect(response.body.invoice.ruleset).to.equal(ruleset)
             expect(response.body.invoice.customerReference).to.equal(fixture.customerReference)
-            expect(response.body.invoice.financialYear).to.equal(2021)
+            if (ruleset === 'presroc') {
+              expect(response.body.invoice.financialYear).to.equal(2021)
+            } else {
+              expect(response.body.invoice.financialYear).to.equal(2022)
+            }
 
             if (invoiceType === 'debit') {
               expect(response.body.invoice.creditLineValue).to.equal(0)

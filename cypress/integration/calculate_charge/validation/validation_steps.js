@@ -237,9 +237,9 @@ When('I send the following period start and end dates I am told they must have a
       CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
         expect(response.status).to.equal(422)
         if (property === 'periodStart') {
-          expect(response.body.message).to.equal(`"${property}" must be in [DD-MMM-YYYY, DD-MM-YYYY, YYYY-MM-DD, DD/MM/YYYY, YYYY/MM/DD] format`)
+          expect(response.body.message).contains(`"${property}" must be in [DD-MMM-YYYY, DD-MM-YYYY, YYYY-MM-DD, DD/MM/YYYY, YYYY/MM/DD] format`)
         } else {
-          expect(response.body.message).to.equal(`"${property}" must be in [DD-MMM-YYYY, DD-MM-YYYY, YYYY-MM-DD, DD/MM/YYYY, YYYY/MM/DD] format. "periodStart" date references "ref:periodEnd" which must have a valid date format`)
+          expect(response.body.message).contains(`"${property}" must be in [DD-MMM-YYYY, DD-MM-YYYY, YYYY-MM-DD, DD/MM/YYYY, YYYY/MM/DD] format`)
         }
       })
     })
@@ -299,7 +299,7 @@ When(
       const periodEnd = row[2]
       const fixtureName = `calculate.${ruleset}.charge`
 
-      cy.log(`Testing '${ruleset}' when period is ${periodStart}-${periodEnd} periodStart is invalid`)
+      cy.log(`Testing '${ruleset}' when period is ${periodStart}-${periodEnd} periodEnd is invalid`)
 
       cy.fixture(fixtureName).then((fixture) => {
         fixture.ruleset = ruleset
@@ -308,7 +308,7 @@ When(
 
         CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
           expect(response.status).to.equal(422)
-          expect(response.body.message).to.equal('"periodStart" must be less than or equal to "ref:periodEnd"')
+          expect(response.body.message).to.equal('"periodEnd" must be greater than or equal to "ref:periodStart"')
         })
       })
     })
@@ -334,6 +334,29 @@ When('I send the following period dates I am told that periodStart is before the
         expect(response.body.message)
           .to
           .equal(`"periodStart" must be greater than or equal to "${startDate}T00:00:00.000Z"`)
+      })
+    })
+  })
+})
+
+When('I send the following period dates I am told that periodEnd must be before the ruleset end date', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const periodStart = row[1]
+    const periodEnd = row[2]
+    const endDate = row[3]
+    const fixtureName = `calculate.${ruleset}.charge`
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.ruleset = ruleset
+      fixture.periodStart = periodStart
+      fixture.periodEnd = periodEnd
+
+      CalculateChargeEndpoints.calculate(fixture, false).then((response) => {
+        expect(response.status).to.equal(422)
+        expect(response.body.message)
+          .to
+          .equal(`"periodEnd" must be less than or equal to "${endDate}T00:00:00.000Z"`)
       })
     })
   })

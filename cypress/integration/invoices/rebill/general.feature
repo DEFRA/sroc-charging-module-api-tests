@@ -137,7 +137,7 @@ Feature: Rebill Invoice General
     When I try to rebill it to a new sroc bill run
     Then I get a successful response that includes details for the invoices created
      And I request the new destination bill run to be billed
-     And I try to rebill the cancel invoice to a new sroc bill run
+     And I try to rebill the credit invoice to a new sroc bill run
     Then I am told a rebill credit invoice cannot be rebilled
 
   Scenario: Rebill (R) invoice can be rebilled

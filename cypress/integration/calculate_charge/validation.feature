@@ -127,11 +127,11 @@ Feature: Calculate Charge Validation
 
   Scenario: Checks period start and end dates are valid dates
     When I send the following period start and end dates I am told they must have a valid date format
-      | sroc    | periodStart | -APR-2021   |
-      | sroc    | periodStart | 01--2021    |
+      | sroc    | periodStart | -APR-2022   |
+      | sroc    | periodStart | 01--2022    |
       | sroc    | periodStart | 01-APR-20-- |
-      | sroc    | periodEnd   | -03-2022    |
-      | sroc    | periodEnd   | 31--2022    |
+      | sroc    | periodEnd   | -03-2023    |
+      | sroc    | periodEnd   | 31--2023    |
       | sroc    | periodEnd   | 31-MAR-20-- |
       | presroc | periodStart | -APR-2020   |
       | presroc | periodStart | 01--2020    |
@@ -142,10 +142,10 @@ Feature: Calculate Charge Validation
 
   Scenario: Allows period start and end dates in various formats
     When I send the following period start and end dates it calculates the charge without error
-      | sroc    | periodStart | 01-APR-2021 |
-      | sroc    | periodStart | 01-04-2021  |
-      | sroc    | periodEnd   | 31-MAR-2022 |
-      | sroc    | periodEnd   | 31-03-2022  |
+      | sroc    | periodStart | 01-APR-2022 |
+      | sroc    | periodStart | 01-04-2022  |
+      | sroc    | periodEnd   | 31-MAR-2023 |
+      | sroc    | periodEnd   | 31-03-2023  |
       | presroc | periodStart | 01-APR-2018 |
       | presroc | periodStart | 01-04-2018  |
       | presroc | periodEnd   | 31-MAR-2019 |
@@ -165,8 +165,12 @@ Feature: Calculate Charge Validation
 
   Scenario: Checks that periodStart is greater than or equal to the ruleset start date
     When I send the following period dates I am told that periodStart is before the ruleset start date
-      | sroc    | 01-APR-2020 | 31-MAR-2021 | 2021-04-01 |
+      | sroc    | 01-APR-2020 | 31-MAR-2021 | 2022-04-01 |
       | presroc | 01-APR-2013 | 31-MAR-2014 | 2014-04-01 |
+
+  Scenario: Checks that periodEnd is less than or equal to the ruleset end date
+    When I send the following period dates I am told that periodEnd must be before the ruleset end date
+      | presroc | 01-APR-2022 | 31-MAR-2023 | 2022-03-31 |    
 
   # The values in the table relate to what will be sent in the request plus what the CM will report as invalid and what
   # it should actually be

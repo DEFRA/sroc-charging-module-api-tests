@@ -205,7 +205,7 @@ And('I send the following period dates I am told that periodStart must be less t
         cy.get('@billRun').then((billRun) => {
           TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
             expect(response.status).to.equal(422)
-            expect(response.body.message).to.equal('"periodStart" must be less than or equal to "ref:periodEnd"')
+            expect(response.body.message).to.equal('"periodEnd" must be greater than or equal to "ref:periodStart"')
           })
         })
       })
@@ -232,6 +232,30 @@ And('I send the following period dates I am told that periodStart is before the 
           expect(response.body.message)
             .to
             .equal(`"periodStart" must be greater than or equal to "${startDate}T00:00:00.000Z"`)
+        })
+      })
+    })
+  })
+})
+
+And('I send the following period dates I am told that periodEnd must be before or equal to the ruleset end date', (dataTable) => {
+  cy.wrap(dataTable.rawTable).each(row => {
+    const ruleset = row[0]
+    const periodStart = row[1]
+    const periodEnd = row[2]
+    const endDate = row[3]
+    const fixtureName = `standard.${ruleset}.transaction`
+
+    cy.fixture(fixtureName).then((fixture) => {
+      fixture.periodStart = periodStart
+      fixture.periodEnd = periodEnd
+
+      cy.get('@billRun').then((billRun) => {
+        TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
+          expect(response.status).to.equal(422)
+          expect(response.body.message)
+            .to
+            .equal(`"periodEnd" must be less than or equal to "${endDate}T00:00:00.000Z"`)
         })
       })
     })
@@ -485,7 +509,7 @@ And('I send the following invalid combinations I am told Billrun and transaction
         cy.get('@billRun').then((billRun) => {
           TransactionEndpoints.create(billRun.id, fixture, false).then((response) => {
             expect(response.status).to.equal(422)
-            expect(response.body.message).to.equal(`Bill run ${billRun.id} is for region ${value} but transaction is for region ${value1}.`)
+            expect(response.body.message).to.equal(`Bill run ${billRun.id} is linked to region ${value} but transaction is linked to region ${value1}.`)
           })
         })
       })
