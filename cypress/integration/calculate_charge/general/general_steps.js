@@ -21,6 +21,8 @@ Then('I get a successful presroc {word} response', (type) => {
       sourceFactor: 3,
       seasonFactor: 1.6,
       lossFactor: 0.03,
+      section130Factor: null,
+      section127Factor: null,
       licenceHolderChargeAgreement: null,
       chargeElementAgreement: null,
       eiucSourceFactor: 0,
